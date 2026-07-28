@@ -1,3 +1,15 @@
+// Scroll progress bar
+const progressBar = document.querySelector('.scroll-progress');
+if (progressBar) {
+  const updateProgress = () => {
+    const doc = document.documentElement;
+    const max = doc.scrollHeight - doc.clientHeight;
+    progressBar.style.width = (max > 0 ? (doc.scrollTop / max) * 100 : 0) + '%';
+  };
+  document.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+}
+
 // Nav scroll state
 const nav = document.querySelector('.nav');
 const onScroll = () => {
@@ -65,7 +77,9 @@ if (revealEls.length && 'IntersectionObserver' in window) {
         }
       });
     },
-    { threshold: 0.15 }
+    // threshold 0 + rootMargin: sections taller than the viewport can never
+    // reach a 15% visibility ratio on small screens, which left them hidden.
+    { threshold: 0, rootMargin: '0px 0px -8% 0px' }
   );
   revealEls.forEach((el) => {
     el.style.opacity = '0';

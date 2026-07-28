@@ -4,7 +4,8 @@
    heavy condensed poster type, referencing her Eurovision "ICH KOMME" show.
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap');
+/* Fonts are loaded via <link rel="preconnect"> + <link rel="stylesheet">
+   in each page's <head> — @import here would block first render. */
 
 :root {
   --black: #0a0908;
@@ -813,3 +814,89 @@ section { position: relative; }
   background: rgba(243,237,226,0.1);
   margin: 4rem 0;
 }
+
+/* ==========================================================================
+   MOTION — hero choreography & scroll feedback
+   ========================================================================== */
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  width: 0;
+  background: linear-gradient(90deg, var(--red-glow), var(--gold-bright));
+  z-index: 300;
+}
+
+@keyframes hero-zoom {
+  from { transform: scale(1.08); }
+  to   { transform: scale(1); }
+}
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: none; }
+}
+.hero-bg img  { animation: hero-zoom 14s ease-out both; }
+.hero-chips   { animation: hero-rise 0.7s 0.15s cubic-bezier(.2,.7,.2,1) both; }
+.hero-title   { animation: hero-rise 0.8s 0.30s cubic-bezier(.2,.7,.2,1) both; }
+.hero-sub     { animation: hero-rise 0.8s 0.45s cubic-bezier(.2,.7,.2,1) both; }
+.hero-actions { animation: hero-rise 0.8s 0.60s cubic-bezier(.2,.7,.2,1) both; }
+
+.marquee:hover .marquee-track { animation-play-state: paused; }
+
+/* ==========================================================================
+   ACCESSIBILITY
+   ========================================================================== */
+.skip-link {
+  position: absolute;
+  left: -9999px; top: 0;
+  z-index: 400;
+  background: var(--gold);
+  color: var(--black);
+  padding: 0.8em 1.2em;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+}
+.skip-link:focus { left: 0; }
+
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--gold-bright);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .hero-bg img, .hero-chips, .hero-title, .hero-sub, .hero-actions { animation: none; }
+  .marquee-track { animation: none; }
+  [data-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
+
+/* ==========================================================================
+   TOUR — year grouping & social proof
+   ========================================================================== */
+.tour-year {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--gold-bright);
+  text-transform: uppercase;
+  margin: 3rem 0 0.4rem;
+}
+.tour-year:first-of-type { margin-top: 2.5rem; }
+.tour-year small {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--gray);
+  margin-top: 0.3rem;
+}
+
+.follow-stats {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+.follow-stats .chip b { color: var(--gold-bright); margin-right: 0.35em; }

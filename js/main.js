@@ -67,24 +67,44 @@ if (lightbox) {
 // Reveal-on-scroll
 const revealEls = document.querySelectorAll('[data-reveal]');
 if (revealEls.length && 'IntersectionObserver' in window) {
+  const pending = new Set(revealEls);
+
+  const show = (el) => {
+    el.style.opacity = '1';
+    el.style.transform = 'none';
+    pending.delete(el);
+    io.unobserve(el);
+  };
+
   const io = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'none';
-          io.unobserve(entry.target);
-        }
+        if (entry.isIntersecting) show(entry.target);
       });
     },
     // threshold 0 + rootMargin: sections taller than the viewport can never
     // reach a 15% visibility ratio on small screens, which left them hidden.
     { threshold: 0, rootMargin: '0px 0px -8% 0px' }
   );
+
+  // Safety net. A fast jump — scroll restoration on reload, an anchor link,
+  // the End key, momentum scrolling — can carry a section from below the
+  // viewport to above it without the intersection ratio ever leaving 0, so no
+  // callback fires and that section would stay invisible for good. Anything
+  // that ended up fully above the viewport but is still pending was skipped.
+  const sweepSkipped = () => {
+    pending.forEach((el) => {
+      if (el.getBoundingClientRect().bottom < 0) show(el);
+    });
+  };
+  document.addEventListener('scroll', sweepSkipped, { passive: true });
+  window.addEventListener('resize', sweepSkipped);
+
   revealEls.forEach((el) => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(24px)';
     el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
     io.observe(el);
   });
+  sweepSkipped();
 }

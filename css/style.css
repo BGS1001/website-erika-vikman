@@ -1733,5 +1733,78 @@ html.gsap .wi { display: inline-block; will-change: transform; }
   margin-top: 1rem;
 }
 
+/* ==========================================================================
+   TOUR — a schedule is an ordered list, not a stack of divs
+   ========================================================================== */
+.tour-list { list-style: none; margin: 0; padding: 0; }
+.tour-list li { margin: 0; }
+
+.tour-country {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  margin: 2.4rem 0 0.2rem;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+.tour-country::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(243, 237, 226, 0.12);
+}
+
+.tour-status {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+  border: 1px solid rgba(216, 174, 87, 0.4);
+  padding: 0.25em 0.6em;
+  white-space: nowrap;
+}
+
+/* The first European headline run is the news on this page — it gets a
+   banner rather than another row of the same list. */
+.tour-flag {
+  position: relative;
+  overflow: hidden;
+  margin-top: clamp(3rem, 7vw, 5rem);
+  padding: clamp(2rem, 5vw, 3.4rem);
+  border: 1px solid rgba(216, 174, 87, 0.3);
+  background:
+    radial-gradient(90% 140% at 100% 0%, rgba(216, 19, 36, 0.2), transparent 62%),
+    var(--near-black);
+}
+.tour-flag .kicker {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+}
+.tour-flag h3 {
+  font-size: clamp(1.9rem, 4.4vw, 3.2rem);
+  color: var(--white);
+  margin: 0.5rem 0 0.8rem;
+  letter-spacing: -0.01em;
+}
+.tour-flag .cities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.9rem;
+  margin-top: 1.4rem;
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.7vw, 1.35rem);
+  text-transform: uppercase;
+  color: var(--cream);
+}
+.tour-flag .cities span { color: var(--gold); }
+
 .video-pair { margin-top: 2.5rem; align-items: start; }
 .section-note { margin-top: 1.5rem; font-size: 0.86rem; color: var(--gray); max-width: 60ch; }
+.hi { color: var(--gold-bright); }

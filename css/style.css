@@ -1123,6 +1123,193 @@ img { height: auto; }
 .platform-link span { color: var(--gold-bright); }
 
 /* ==========================================================================
+   BIOGRAPHY — long-form reading
+   This is the one page people actually read, so body copy steps up from
+   the site's caption-grade grey to something built for paragraphs.
+   ========================================================================== */
+.prose p {
+  color: var(--cream);
+  font-size: clamp(1.02rem, 1.15vw, 1.14rem);
+  line-height: 1.72;
+  max-width: 62ch;
+}
+.prose p + p { margin-top: 1.1em; }
+.prose strong { color: var(--white); }
+.prose em { color: var(--gold-bright); font-style: italic; }
+
+/* Lead paragraph — the first line of a chapter carries more weight. */
+.prose .lead {
+  font-size: clamp(1.15rem, 1.5vw, 1.35rem);
+  line-height: 1.55;
+  color: var(--white);
+}
+
+/* ==========================================================================
+   TIMELINE
+   A life is a sequence, so the years are the structure rather than a
+   decorative counter bolted onto generic blocks.
+   ========================================================================== */
+.tl { position: relative; }
+.tl::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0.6rem; bottom: 0.6rem;
+  width: 1px;
+  background: linear-gradient(var(--gold), rgba(216, 174, 87, 0.05));
+}
+@media (min-width: 901px) {
+  .tl::before { left: 8.5rem; }
+}
+
+.tl-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.9rem;
+  padding: 0 0 clamp(3rem, 6vw, 5rem) 1.6rem;
+}
+@media (min-width: 901px) {
+  .tl-item {
+    grid-template-columns: 8.5rem minmax(0, 1fr);
+    gap: 0 clamp(2rem, 4vw, 3.5rem);
+    padding-left: 0;
+  }
+}
+.tl-item:last-child { padding-bottom: 0; }
+
+.tl-year {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 2.6vw, 2.3rem);
+  line-height: 1;
+  color: var(--gold-bright);
+  letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums;
+}
+@media (min-width: 901px) {
+  .tl-year { text-align: right; padding-right: 1.6rem; }
+}
+
+/* The marker sits on the rule itself. */
+.tl-item::before {
+  content: '';
+  position: absolute;
+  left: -4px;
+  top: 0.75rem;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--red-glow);
+  box-shadow: 0 0 0 4px var(--black);
+}
+@media (min-width: 901px) {
+  .tl-item::before { left: calc(8.5rem - 4px); }
+}
+
+.tl-body h3 {
+  font-family: var(--font-body);
+  font-size: clamp(1.2rem, 1.7vw, 1.45rem);
+  font-weight: 800;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--white);
+  margin-bottom: 0.55rem;
+  line-height: 1.3;
+}
+.tl-media {
+  margin-top: 1.4rem;
+  max-width: 420px;
+}
+.tl-media img {
+  width: 100%;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  border: 1px solid rgba(216, 174, 87, 0.22);
+}
+.tl-media.is-wide img { aspect-ratio: 3/2; }
+.tl-media figcaption {
+  margin-top: 0.6rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+
+/* ==========================================================================
+   AWARDS BAND — the strongest credential gets its own moment
+   ========================================================================== */
+.awards-band {
+  background: var(--near-black);
+  border-top: 1px solid rgba(216, 174, 87, 0.15);
+  border-bottom: 1px solid rgba(216, 174, 87, 0.15);
+}
+.awards-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1px;
+  margin-top: 2.8rem;
+  background: rgba(216, 174, 87, 0.18);
+  border: 1px solid rgba(216, 174, 87, 0.18);
+}
+.award-cell {
+  background: var(--near-black);
+  padding: clamp(1.6rem, 3vw, 2.4rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.award-cell .yr {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 4vw, 3.4rem);
+  line-height: 0.9;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--gold);
+  font-variant-numeric: tabular-nums;
+}
+.award-cell .what {
+  font-weight: 800;
+  color: var(--white);
+  font-size: 1rem;
+}
+.award-cell .who { color: var(--gray); font-size: 0.86rem; }
+
+/* ==========================================================================
+   NEXT — every page ends by pointing somewhere
+   ========================================================================== */
+.next-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1px;
+  background: rgba(243, 237, 226, 0.12);
+  border: 1px solid rgba(243, 237, 226, 0.12);
+  margin-top: 2.6rem;
+}
+.next-card {
+  background: var(--black);
+  padding: clamp(1.6rem, 3vw, 2.2rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: background 0.25s ease;
+}
+.next-card:hover { background: var(--near-black); }
+.next-card .k {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+}
+.next-card .t {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  color: var(--white);
+  text-transform: uppercase;
+}
+.next-card .d { color: var(--gray); font-size: 0.9rem; }
+.next-card .go { color: var(--gold-bright); font-size: 1.1rem; transition: transform 0.25s ease; }
+.next-card:hover .go { transform: translateX(5px); }
+
+/* ==========================================================================
    HOME — section tone classes
    These replace the inline style attributes the sections used to carry, so
    the palette stays in one place.
@@ -1465,4 +1652,13 @@ html.gsap .wi { display: inline-block; will-change: transform; }
   ::view-transition-new(*) { animation: none !important; }
   .nav { transition: none; }
   html.gsap .wi { transform: none; }
+}
+
+/* utilities used across pages */
+.pt-0 { padding-top: 0; }
+.footer-blurb {
+  color: var(--gray);
+  font-size: 0.85rem;
+  max-width: 32ch;
+  margin-top: 1rem;
 }

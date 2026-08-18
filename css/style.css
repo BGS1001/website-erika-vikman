@@ -608,8 +608,94 @@ section { position: relative; }
 .lightbox.open { display: flex; }
 .lightbox img {
   max-width: 100%;
-  max-height: 88vh;
+  max-height: 78vh;
+  width: auto;
   box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+}
+
+/* A viewer you can move through — opening one photo and having to close it
+   to see the next made an 18-frame archive unusable. */
+.lightbox-figure {
+  position: relative;
+  max-width: min(1100px, 92vw);
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  align-items: center;
+}
+.lightbox-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+  width: 100%;
+  color: var(--cream);
+}
+.lightbox-cap {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.lightbox-count {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--gold-bright);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.lightbox-nav {
+  position: absolute;
+  top: 38%;
+  transform: translateY(-50%);
+  width: 52px; height: 52px;
+  display: grid;
+  place-items: center;
+  background: rgba(10, 9, 8, 0.72);
+  border: 1px solid rgba(243, 237, 226, 0.28);
+  color: var(--white);
+  font-size: 1.25rem;
+  cursor: pointer;
+  z-index: 2;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.lightbox-nav:hover { background: var(--red); border-color: var(--red); }
+.lightbox-prev { left: -1.4rem; }
+.lightbox-next { right: -1.4rem; }
+@media (max-width: 800px) {
+  .lightbox-prev { left: 0.2rem; }
+  .lightbox-next { right: 0.2rem; }
+  .lightbox-nav { width: 44px; height: 44px; }
+}
+
+/* ==========================================================================
+   ARCHIVE SETS
+   ========================================================================== */
+.set-head {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin: clamp(2.6rem, 5vw, 4rem) 0 1.4rem;
+}
+.set-head:first-of-type { margin-top: 0; }
+.set-head h2 {
+  font-size: clamp(1.35rem, 2.4vw, 1.9rem);
+  color: var(--white);
+  white-space: nowrap;
+}
+.set-head .n {
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: var(--gold-bright);
+  font-variant-numeric: tabular-nums;
+}
+.set-head::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(243, 237, 226, 0.12);
 }
 .lightbox-close {
   position: absolute;

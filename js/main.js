@@ -127,41 +127,88 @@
     });
   });
 
-  /* ================= gallery lightbox =================================== */
+  /* ================= gallery lightbox ===================================
+     Moves through the whole archive: arrows, keyboard, caption and count.
+     Opening a photo used to be a dead end — you had to close and reopen to
+     reach the next one. */
   var lightbox = document.querySelector('.lightbox');
   if (lightbox) {
+    var tiles = Array.prototype.slice.call(document.querySelectorAll('.gallery-item'));
     var lightboxImg = lightbox.querySelector('img');
     var closeBtn = lightbox.querySelector('.lightbox-close');
+    var prevBtn = lightbox.querySelector('.lightbox-prev');
+    var nextBtn = lightbox.querySelector('.lightbox-next');
+    var capEl = lightbox.querySelector('.lightbox-cap');
+    var countEl = lightbox.querySelector('.lightbox-count');
     var lastFocused = null;
+    var index = 0;
 
-    document.querySelectorAll('.gallery-item').forEach(function (item) {
-      item.addEventListener('click', function () {
-        var img = item.querySelector('img');
-        if (!img) return;
-        lastFocused = item;
-        lightboxImg.src = img.currentSrc || img.src;
-        lightboxImg.alt = img.alt;
-        lightbox.classList.add('open');
-        lightbox.setAttribute('aria-hidden', 'false');
-        if (closeBtn) closeBtn.focus();
-      });
-    });
+    function render(i) {
+      index = (i + tiles.length) % tiles.length;
+      var tile = tiles[index];
+      var img = tile.querySelector('img');
+      if (!img) return;
+      lightboxImg.src = img.currentSrc || img.src;
+      lightboxImg.alt = img.alt;
+      var cap = tile.querySelector('.gallery-caption');
+      if (capEl) capEl.textContent = cap ? cap.textContent : '';
+      if (countEl) countEl.textContent = (index + 1) + ' / ' + tiles.length;
+    }
 
-    var closeLb = function () {
+    function openAt(i, origin) {
+      lastFocused = origin || null;
+      render(i);
+      lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      if (closeBtn) closeBtn.focus();
+    }
+
+    function closeLb() {
       lightbox.classList.remove('open');
       lightbox.setAttribute('aria-hidden', 'true');
       lightboxImg.src = '';
       if (lastFocused) lastFocused.focus();
-    };
+    }
+
+    tiles.forEach(function (tile, i) {
+      tile.addEventListener('click', function () { openAt(i, tile); });
+    });
+
     if (closeBtn) closeBtn.addEventListener('click', closeLb);
+    if (prevBtn) prevBtn.addEventListener('click', function () { render(index - 1); });
+    if (nextBtn) nextBtn.addEventListener('click', function () { render(index + 1); });
+
     lightbox.addEventListener('click', function (e) {
       if (e.target === lightbox) closeLb();
     });
+
     document.addEventListener('keydown', function (e) {
       if (!lightbox.classList.contains('open')) return;
-      if (e.key === 'Escape') closeLb();
-      if (e.key === 'Tab') { e.preventDefault(); if (closeBtn) closeBtn.focus(); }
+      if (e.key === 'Escape') { closeLb(); return; }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); render(index - 1); return; }
+      if (e.key === 'ArrowRight') { e.preventDefault(); render(index + 1); return; }
+      if (e.key === 'Tab') {
+        // keep focus inside the dialog
+        var focusables = [prevBtn, nextBtn, closeBtn].filter(Boolean);
+        if (!focusables.length) return;
+        var at = focusables.indexOf(document.activeElement);
+        e.preventDefault();
+        var step = e.shiftKey ? -1 : 1;
+        focusables[(at + step + focusables.length) % focusables.length].focus();
+      }
     });
+
+    // swipe on touch
+    var touchX = null;
+    lightbox.addEventListener('touchstart', function (e) {
+      touchX = e.changedTouches[0].clientX;
+    }, { passive: true });
+    lightbox.addEventListener('touchend', function (e) {
+      if (touchX === null) return;
+      var dx = e.changedTouches[0].clientX - touchX;
+      if (Math.abs(dx) > 45) render(index + (dx < 0 ? 1 : -1));
+      touchX = null;
+    }, { passive: true });
   }
 
   /* ================= GSAP choreography ================================== */

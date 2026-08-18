@@ -734,7 +734,7 @@ section { position: relative; }
 .tour-date .day { font-size: 2.2rem; display: block; }
 .tour-date .mon { font-size: 0.8rem; letter-spacing: 0.1em; }
 
-.tour-info h4 { font-size: 1.15rem; color: var(--white); font-weight: 800; text-transform: none; }
+.tour-info h4, .tour-info h3 { font-size: 1.15rem; color: var(--white); font-weight: 800; text-transform: none; letter-spacing: 0; }
 .tour-info span { color: var(--gray); font-size: 0.88rem; }
 
 .tag-next {

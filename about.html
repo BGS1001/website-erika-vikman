@@ -16,8 +16,12 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" href="assets/img/portrait-jacket.jpg" fetchpriority="high">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="css/style.css">
+<script type="speculationrules">
+{"prerender":[{"where":{"href_matches":"/*.html"},"eagerness":"moderate"}]}
+</script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -37,13 +41,13 @@
     </ul>
     <div class="nav-cta">
       <a href="https://open.spotify.com/artist/6JVB6uiYxpF2K1PGsPRpWR" target="_blank" rel="noopener" class="btn btn-gold">Listen</a>
-      <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+      <button class="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
   </div>
 </nav>
 
 <header class="page-header" id="main">
-  <div class="page-header-bg"><img src="assets/img/portrait-jacket.jpg" alt="Erika Vikman portrait"></div>
+  <div class="page-header-bg"><img src="assets/img/portrait-jacket.jpg" fetchpriority="high" alt="" width="1024" height="1280"></div>
   <div class="wrap">
     <span class="page-kicker">Biography</span>
     <h1 class="page-title display">The Tango Queen<br>of Finland</h1>
@@ -59,7 +63,7 @@
       <p class="section-lede" style="margin-top:1rem;">Erika's own road started in earnest in 2013 on season seven of Finnish <em>Idols</em>, where a wildcard return carried her to seventh place. She turned to tango next, finishing runner-up at Tangomarkkinat in 2015 before winning outright in 2016 — crowning her the <strong>Tango Queen of Finland</strong>.</p>
     </div>
     <div class="split-media">
-      <img loading="lazy" src="assets/img/backstage-corset.jpg" alt="Erika Vikman backstage in a studded corset">
+      <img loading="lazy" src="assets/img/backstage-corset.jpg" alt="Erika Vikman backstage in a studded corset" width="1024" height="1280">
     </div>
   </div>
 </section>
@@ -67,7 +71,7 @@
 <section class="pad" style="background:var(--near-black); border-top:1px solid rgba(216,174,87,.15); border-bottom:1px solid rgba(216,174,87,.15);">
   <div class="wrap split" data-reveal>
     <div class="split-media" style="order:2;">
-      <img loading="lazy" src="assets/img/denim-lifestyle.jpg" alt="Erika Vikman off stage">
+      <img loading="lazy" src="assets/img/denim-lifestyle.jpg" alt="Erika Vikman off stage" width="1024" height="1280">
     </div>
     <div style="order:1;">
       <span class="eyebrow">Breakthrough</span>
@@ -92,7 +96,7 @@
       </div>
     </div>
     <div class="split-media">
-      <img loading="lazy" src="assets/img/flying-mic-1.jpg" alt="Erika Vikman lifted on the golden microphone at Eurovision 2025">
+      <img loading="lazy" src="assets/img/flying-mic-1.jpg" alt="Erika Vikman lifted on the golden microphone at Eurovision 2025" width="600" height="400">
     </div>
   </div>
 </section>
@@ -103,10 +107,10 @@
     <h2 class="section-title">Beyond the <em>spotlight.</em></h2>
     <p class="section-lede">Erika released the EP "Erikavision" in 2025 and continues to write music that moves between tango-rooted balladry and maximalist electropop. She's known just as much for her fearless personal style — latex, spikes, sky-high boots — as for her vocals, and for a fanbase that shows up in matching "ICH" t-shirts.</p>
     <div class="gallery-grid" style="margin-top:2.5rem;">
-      <div class="gallery-item"><img loading="lazy" src="assets/img/eurovision-team.jpg" alt="Erika with her Eurovision team"><span class="gallery-caption">With the team, Basel 2025</span></div>
-      <div class="gallery-item"><img loading="lazy" src="assets/img/tshirt-ich-komme.jpg" alt="Fan wearing an ICH KOMME t-shirt"><span class="gallery-caption">Ich Komme merch</span></div>
-      <div class="gallery-item"><img loading="lazy" src="assets/img/green-carpet-duo.jpg" alt="Erika Vikman on the green carpet"><span class="gallery-caption">Award show, 2025</span></div>
-      <div class="gallery-item"><img loading="lazy" src="assets/img/fans-selfie.jpg" alt="Erika Vikman with fans"><span class="gallery-caption">With the fans</span></div>
+      <div class="gallery-item"><img loading="lazy" src="assets/img/eurovision-team.jpg" alt="Erika with her Eurovision team" width="1024" height="1279"><span class="gallery-caption">With the team, Basel 2025</span></div>
+      <div class="gallery-item"><img loading="lazy" src="assets/img/tshirt-ich-komme.jpg" alt="Fan wearing an ICH KOMME t-shirt" width="1024" height="1280"><span class="gallery-caption">Ich Komme merch</span></div>
+      <div class="gallery-item"><img loading="lazy" src="assets/img/green-carpet-duo.jpg" alt="Erika Vikman on the green carpet" width="1024" height="1277"><span class="gallery-caption">Award show, 2025</span></div>
+      <div class="gallery-item"><img loading="lazy" src="assets/img/fans-selfie.jpg" alt="Erika Vikman with fans" width="1024" height="1280"><span class="gallery-caption">With the fans</span></div>
     </div>
   </div>
 </section>
@@ -139,6 +143,6 @@
   </div>
 </footer>
 
-<script src="js/main.js"></script>
+<script src="js/main.js" defer></script>
 </body>
 </html>

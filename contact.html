@@ -16,8 +16,12 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" href="assets/img/backstage-mic-candid.jpg" fetchpriority="high">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="css/style.css">
+<script type="speculationrules">
+{"prerender":[{"where":{"href_matches":"/*.html"},"eagerness":"moderate"}]}
+</script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -37,13 +41,13 @@
     </ul>
     <div class="nav-cta">
       <a href="https://open.spotify.com/artist/6JVB6uiYxpF2K1PGsPRpWR" target="_blank" rel="noopener" class="btn btn-gold">Listen</a>
-      <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+      <button class="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
   </div>
 </nav>
 
 <header class="page-header" id="main">
-  <div class="page-header-bg"><img src="assets/img/backstage-mic-candid.jpg" alt="Erika Vikman backstage"></div>
+  <div class="page-header-bg"><img src="assets/img/backstage-mic-candid.jpg" fetchpriority="high" alt="" width="1024" height="1280"></div>
   <div class="wrap">
     <span class="page-kicker">Get in touch</span>
     <h1 class="page-title display">Contact</h1>
@@ -143,6 +147,6 @@
   </div>
 </footer>
 
-<script src="js/main.js"></script>
+<script src="js/main.js" defer></script>
 </body>
 </html>

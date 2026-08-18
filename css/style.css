@@ -818,13 +818,18 @@ section { position: relative; }
 /* ==========================================================================
    MOTION — hero choreography & scroll feedback
    ========================================================================== */
+/* scaleX rather than width: width is a layout property and would force a
+   reflow on every scroll frame; a transform stays on the compositor. */
 .scroll-progress {
   position: fixed;
   top: 0; left: 0;
   height: 3px;
-  width: 0;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
   background: linear-gradient(90deg, var(--red-glow), var(--gold-bright));
   z-index: 300;
+  will-change: transform;
 }
 
 @keyframes hero-zoom {
@@ -900,3 +905,197 @@ a:focus-visible, button:focus-visible {
   margin-top: 1.5rem;
 }
 .follow-stats .chip b { color: var(--gold-bright); margin-right: 0.35em; }
+
+/* ==========================================================================
+   MEDIA — sized boxes so nothing reflows once assets land
+   ========================================================================== */
+img { height: auto; }
+
+/* ==========================================================================
+   STREAMING EMBED FACADE
+   Reserves the player's exact box up front, so swapping in the real iframe
+   on click shifts nothing.
+   ========================================================================== */
+.embed-frame {
+  position: relative;
+  border: 1px solid rgba(216, 174, 87, 0.25);
+  background: var(--near-black);
+  overflow: hidden;
+}
+.embed-frame.is-video { aspect-ratio: 16 / 9; }
+.embed-frame.is-audio { height: 352px; }
+
+.embed-facade {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  background: var(--near-black);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: var(--cream);
+  font-family: var(--font-body);
+  text-align: center;
+}
+.embed-facade img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.4;
+  filter: grayscale(0.3);
+  transition: opacity 0.35s ease, transform 0.6s ease;
+}
+.embed-facade:hover img { opacity: 0.55; transform: scale(1.04); }
+
+.embed-play {
+  position: relative;
+  z-index: 1;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: var(--red);
+  display: grid;
+  place-items: center;
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+.embed-facade:hover .embed-play { transform: scale(1.08); background: var(--red-glow); }
+.embed-play::after {
+  content: '';
+  width: 0; height: 0;
+  margin-left: 5px;
+  border-left: 20px solid var(--white);
+  border-top: 13px solid transparent;
+  border-bottom: 13px solid transparent;
+}
+.embed-label {
+  position: relative;
+  z-index: 1;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cream);
+}
+.embed-label small {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  color: var(--gray);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   RELEASES — cover-led grid
+   ========================================================================== */
+.release-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1.6rem;
+  margin-top: 3rem;
+}
+.release-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  background: none;
+  border: none;
+  padding: 0;
+}
+.release-cover {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border: 1px solid rgba(243, 237, 226, 0.1);
+  background: var(--charcoal);
+  display: grid;
+  place-items: center;
+}
+.release-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.release-card:hover .release-cover img { transform: scale(1.05); }
+
+/* Releases without official cover art get a typographic tile rather than a
+   borrowed image — the year carries it, in the show's own palette. */
+.release-cover.is-type {
+  background:
+    radial-gradient(120% 100% at 50% 0%, rgba(216, 19, 36, 0.55), transparent 65%),
+    var(--charcoal);
+}
+.release-cover.is-type span {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 6vw, 3.6rem);
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--gold);
+  letter-spacing: 0.02em;
+}
+.release-cover.is-type::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10, 9, 8, 0.65), transparent 60%);
+}
+
+.release-meta { display: flex; flex-direction: column; gap: 0.25rem; }
+.release-meta .rel-title {
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--white);
+  line-height: 1.25;
+}
+.release-meta .rel-sub {
+  font-size: 0.8rem;
+  color: var(--gray);
+  font-variant-numeric: tabular-nums;
+}
+.release-links { display: flex; gap: 0.6rem; margin-top: 0.35rem; flex-wrap: wrap; }
+.release-links a {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+  border-bottom: 1px solid rgba(216, 174, 87, 0.4);
+  padding-bottom: 2px;
+}
+.release-links a:hover { color: var(--white); border-color: var(--white); }
+
+/* ==========================================================================
+   PLATFORM ROW — lighter and higher-converting than stacked players
+   ========================================================================== */
+.platform-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.8rem;
+  margin-top: 2.2rem;
+}
+.platform-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding: 1.05rem 1.3rem;
+  border: 1px solid rgba(243, 237, 226, 0.14);
+  font-weight: 800;
+  font-size: 0.88rem;
+  transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+}
+.platform-link:hover {
+  border-color: var(--gold);
+  background: rgba(216, 174, 87, 0.06);
+  transform: translateY(-2px);
+}
+.platform-link span { color: var(--gold-bright); }

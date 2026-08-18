@@ -16,8 +16,12 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" href="assets/img/silhouette-back.jpg" fetchpriority="high">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="css/style.css">
+<script type="speculationrules">
+{"prerender":[{"where":{"href_matches":"/*.html"},"eagerness":"moderate"}]}
+</script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -37,13 +41,13 @@
     </ul>
     <div class="nav-cta">
       <a href="https://open.spotify.com/artist/6JVB6uiYxpF2K1PGsPRpWR" target="_blank" rel="noopener" class="btn btn-gold">Listen</a>
-      <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+      <button class="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
   </div>
 </nav>
 
 <header class="page-header" id="main">
-  <div class="page-header-bg"><img src="assets/img/silhouette-back.jpg" alt="Erika Vikman silhouette on stage"></div>
+  <div class="page-header-bg"><img src="assets/img/silhouette-back.jpg" fetchpriority="high" alt="" width="267" height="400"></div>
   <div class="wrap">
     <span class="page-kicker">Gallery</span>
     <h1 class="page-title display">On Stage &amp;<br>Off</h1>
@@ -53,29 +57,29 @@
 <section class="pad">
   <div class="wrap" data-reveal>
     <div class="gallery-grid">
-      <div class="gallery-item tall"><img loading="lazy" src="assets/img/flying-mic-2.jpg" alt="Erika Vikman on the golden flying microphone, Eurovision 2025"><span class="gallery-caption">Eurovision 2025 · Basel</span></div>
-      <div class="gallery-item"><img loading="lazy" src="assets/img/silhouette-raise.jpg" alt="Silhouette raising the microphone stand"><span class="gallery-caption">Golden hour</span></div>
-      <div class="gallery-item"><img loading="lazy" src="assets/img/blue-lean.jpg" alt="Erika Vikman leaning back on stage under blue light"><span class="gallery-caption">Stage lights</span></div>
-      <div class="gallery-item wide"><img loading="lazy" src="assets/img/erika-wordmark-stage.jpg" alt="ERIKA in giant red letters on the Eurovision screen"><span class="gallery-caption">Basel arena</span></div>
-      <div class="gallery-item"><img loading="lazy" src="assets/img/award-trophy.jpg" alt="Erika Vikman holding the UMK winner's trophy"><span class="gallery-caption">UMK 2025 winner</span></div>
-      <div class="gallery-item"><img loading="lazy" src="assets/img/confetti-crowd.jpg" alt="Confetti falling over the crowd at a show"><span class="gallery-caption">Confetti finale</span></div>
-      <div class="gallery-item tall"><img loading="lazy" src="assets/img/portrait-gloves.jpg" alt="Erika Vikman studio portrait with printed gloves"><span class="gallery-caption">Studio portrait</span></div>
-      <div class="gallery-item"><img loading="lazy" src="assets/img/green-closeup.jpg" alt="Close-up of Erika Vikman singing on stage"><span class="gallery-caption">Close up</span></div>
-      <div class="gallery-item"><img loading="lazy" src="assets/img/orange-crowd.jpg" alt="Erika Vikman lifted over a crowd under fireworks"><span class="gallery-caption">Fireworks</span></div>
-      <div class="gallery-item wide"><img loading="lazy" src="assets/img/eurovision-team.jpg" alt="Erika Vikman with her Eurovision team"><span class="gallery-caption">With the ICH KOMME team</span></div>
-      <div class="gallery-item"><img loading="lazy" src="assets/img/backstage-mic-candid.jpg" alt="Backstage candid with the golden microphone rig"><span class="gallery-caption">Backstage rig</span></div>
-      <div class="gallery-item"><img loading="lazy" src="assets/img/backstage-corset.jpg" alt="Backstage portrait in a studded corset"><span class="gallery-caption">Backstage</span></div>
-      <div class="gallery-item"><img loading="lazy" src="assets/img/pink-stage.jpg" alt="Erika Vikman performing in a pink outfit"><span class="gallery-caption">Festival set</span></div>
-      <div class="gallery-item"><img loading="lazy" src="assets/img/green-carpet-duo.jpg" alt="Erika Vikman on the green carpet at an award show"><span class="gallery-caption">Award show</span></div>
-      <div class="gallery-item"><img loading="lazy" src="assets/img/duo-band.jpg" alt="Erika Vikman with her band backstage"><span class="gallery-caption">With the band</span></div>
-      <div class="gallery-item"><img loading="lazy" src="assets/img/fans-selfie.jpg" alt="Erika Vikman taking a selfie with fans"><span class="gallery-caption">With the fans</span></div>
-      <div class="gallery-item"><img loading="lazy" src="assets/img/tshirt-ich-komme.jpg" alt="Fan wearing an ICH KOMME t-shirt"><span class="gallery-caption">Ich Komme merch</span></div>
-      <div class="gallery-item"><img loading="lazy" src="assets/img/denim-lifestyle.jpg" alt="Erika Vikman off stage in a denim jacket"><span class="gallery-caption">Off duty</span></div>
+      <button type="button" class="gallery-item tall"><img loading="lazy" src="assets/img/flying-mic-2.jpg" alt="Erika Vikman on the golden flying microphone, Eurovision 2025" width="1024" height="1280"><span class="gallery-caption">Eurovision 2025 · Basel</span></button>
+      <button type="button" class="gallery-item"><img loading="lazy" src="assets/img/silhouette-raise.jpg" alt="Silhouette raising the microphone stand" width="599" height="399"><span class="gallery-caption">Golden hour</span></button>
+      <button type="button" class="gallery-item"><img loading="lazy" src="assets/img/blue-lean.jpg" alt="Erika Vikman leaning back on stage under blue light" width="600" height="400"><span class="gallery-caption">Stage lights</span></button>
+      <button type="button" class="gallery-item wide"><img loading="lazy" src="assets/img/erika-wordmark-stage.jpg" alt="ERIKA in giant red letters on the Eurovision screen" width="1023" height="1280"><span class="gallery-caption">Basel arena</span></button>
+      <button type="button" class="gallery-item"><img loading="lazy" src="assets/img/award-trophy.jpg" alt="Erika Vikman holding the UMK winner's trophy" width="1025" height="1280"><span class="gallery-caption">UMK 2025 winner</span></button>
+      <button type="button" class="gallery-item"><img loading="lazy" src="assets/img/confetti-crowd.jpg" alt="Confetti falling over the crowd at a show" width="600" height="400"><span class="gallery-caption">Confetti finale</span></button>
+      <button type="button" class="gallery-item tall"><img loading="lazy" src="assets/img/portrait-gloves.jpg" alt="Erika Vikman studio portrait with printed gloves" width="1024" height="1280"><span class="gallery-caption">Studio portrait</span></button>
+      <button type="button" class="gallery-item"><img loading="lazy" src="assets/img/green-closeup.jpg" alt="Close-up of Erika Vikman singing on stage" width="599" height="399"><span class="gallery-caption">Close up</span></button>
+      <button type="button" class="gallery-item"><img loading="lazy" src="assets/img/orange-crowd.jpg" alt="Erika Vikman lifted over a crowd under fireworks" width="599" height="399"><span class="gallery-caption">Fireworks</span></button>
+      <button type="button" class="gallery-item wide"><img loading="lazy" src="assets/img/eurovision-team.jpg" alt="Erika Vikman with her Eurovision team" width="1024" height="1279"><span class="gallery-caption">With the ICH KOMME team</span></button>
+      <button type="button" class="gallery-item"><img loading="lazy" src="assets/img/backstage-mic-candid.jpg" alt="Backstage candid with the golden microphone rig" width="1024" height="1280"><span class="gallery-caption">Backstage rig</span></button>
+      <button type="button" class="gallery-item"><img loading="lazy" src="assets/img/backstage-corset.jpg" alt="Backstage portrait in a studded corset" width="1024" height="1280"><span class="gallery-caption">Backstage</span></button>
+      <button type="button" class="gallery-item"><img loading="lazy" src="assets/img/pink-stage.jpg" alt="Erika Vikman performing in a pink outfit" width="1024" height="1280"><span class="gallery-caption">Festival set</span></button>
+      <button type="button" class="gallery-item"><img loading="lazy" src="assets/img/green-carpet-duo.jpg" alt="Erika Vikman on the green carpet at an award show" width="1024" height="1277"><span class="gallery-caption">Award show</span></button>
+      <button type="button" class="gallery-item"><img loading="lazy" src="assets/img/duo-band.jpg" alt="Erika Vikman with her band backstage" width="1024" height="1280"><span class="gallery-caption">With the band</span></button>
+      <button type="button" class="gallery-item"><img loading="lazy" src="assets/img/fans-selfie.jpg" alt="Erika Vikman taking a selfie with fans" width="1024" height="1280"><span class="gallery-caption">With the fans</span></button>
+      <button type="button" class="gallery-item"><img loading="lazy" src="assets/img/tshirt-ich-komme.jpg" alt="Fan wearing an ICH KOMME t-shirt" width="1024" height="1280"><span class="gallery-caption">Ich Komme merch</span></button>
+      <button type="button" class="gallery-item"><img loading="lazy" src="assets/img/denim-lifestyle.jpg" alt="Erika Vikman off stage in a denim jacket" width="1024" height="1280"><span class="gallery-caption">Off duty</span></button>
     </div>
   </div>
 </section>
 
-<div class="lightbox">
+<div class="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" aria-hidden="true">
   <button class="lightbox-close" aria-label="Close">✕</button>
   <img src="" alt="">
 </div>
@@ -108,6 +112,6 @@
   </div>
 </footer>
 
-<script src="js/main.js"></script>
+<script src="js/main.js" defer></script>
 </body>
 </html>

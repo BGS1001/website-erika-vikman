@@ -16,17 +16,29 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" href="assets/img/hero-portrait.jpg" fetchpriority="high">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="css/style.css">
+<script type="speculationrules">
+{"prerender":[{"where":{"href_matches":"/*.html"},"eagerness":"moderate"}]}
+</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Person",
+  "@type": "MusicGroup",
   "name": "Erika Vikman",
+  "alternateName": "Erika Susanna Vikman",
   "url": "https://website-erika-vikman.vercel.app/",
   "image": "https://website-erika-vikman.vercel.app/assets/img/hero-portrait.jpg",
-  "jobTitle": "Singer",
-  "birthPlace": "Tampere, Finland",
+  "genre": ["Electropop", "Pop", "Tango"],
+  "foundingLocation": {
+    "@type": "Place",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Tampere",
+      "addressCountry": "FI"
+    }
+  },
   "sameAs": [
     "https://www.instagram.com/erikavikman/",
     "https://www.tiktok.com/@erikavikmanofficial",
@@ -57,14 +69,14 @@
     </ul>
     <div class="nav-cta">
       <a href="https://open.spotify.com/artist/6JVB6uiYxpF2K1PGsPRpWR" target="_blank" rel="noopener" class="btn btn-gold">Listen</a>
-      <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+      <button class="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
   </div>
 </nav>
 
 <!-- HERO -->
 <header class="hero" id="main">
-  <div class="hero-bg"><img src="assets/img/hero-portrait.jpg" alt="Erika Vikman against red velvet curtain" fetchpriority="high"></div>
+  <div class="hero-bg"><img src="assets/img/hero-portrait.jpg" alt="Erika Vikman against red velvet curtain" fetchpriority="high" width="1280" height="800"></div>
   <div class="hero-content wrap">
     <div class="hero-chips">
       <span class="chip">♫ Ich Komme</span>
@@ -93,7 +105,7 @@
 <section class="pad">
   <div class="wrap split" data-reveal>
     <div class="split-media">
-      <img src="assets/img/portrait-gloves.jpg" alt="Erika Vikman studio portrait" loading="lazy">
+      <img src="assets/img/portrait-gloves.jpg" alt="Erika Vikman studio portrait" loading="lazy" width="1024" height="1280">
       <div class="stat-badge">
         <span class="num">#1</span>
         <span class="label">Finland Albums<br>Chart, 2021</span>
@@ -128,7 +140,7 @@
 
 <!-- FULL BLEED BANNER -->
 <section class="split-media" style="aspect-ratio:16/7; max-height:640px; overflow:hidden;" data-reveal>
-  <img src="assets/img/erika-wordmark-stage.jpg" alt="ERIKA lit up in giant red letters on stage in Basel" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
+  <img src="assets/img/erika-wordmark-stage.jpg" alt="ERIKA lit up in giant red letters on stage in Basel" style="width:100%;height:100%;object-fit:cover;" loading="lazy" width="1023" height="1280">
 </section>
 
 <!-- MUSIC TEASER -->
@@ -194,11 +206,11 @@
     <span class="eyebrow">In the flash</span>
     <h2 class="section-title">Backstage &amp; <em>on stage.</em></h2>
     <div class="gallery-grid" style="grid-auto-rows:200px; margin-top:2.5rem;">
-      <a class="gallery-item wide" href="gallery.html"><img src="assets/img/flying-mic-2.jpg" alt="Erika Vikman on the golden flying microphone" loading="lazy"></a>
-      <a class="gallery-item" href="gallery.html"><img src="assets/img/silhouette-raise.jpg" alt="Silhouette on stage" loading="lazy"></a>
-      <a class="gallery-item" href="gallery.html"><img src="assets/img/award-trophy.jpg" alt="Erika Vikman holding the UMK trophy" loading="lazy"></a>
-      <a class="gallery-item" href="gallery.html"><img src="assets/img/backstage-corset.jpg" alt="Backstage portrait" loading="lazy"></a>
-      <a class="gallery-item wide" href="gallery.html"><img src="assets/img/confetti-crowd.jpg" alt="Confetti falls over the crowd" loading="lazy"></a>
+      <a class="gallery-item wide" href="gallery.html"><img src="assets/img/flying-mic-2.jpg" alt="Erika Vikman on the golden flying microphone" loading="lazy" width="1024" height="1280"></a>
+      <a class="gallery-item" href="gallery.html"><img src="assets/img/silhouette-raise.jpg" alt="Silhouette on stage" loading="lazy" width="599" height="399"></a>
+      <a class="gallery-item" href="gallery.html"><img src="assets/img/award-trophy.jpg" alt="Erika Vikman holding the UMK trophy" loading="lazy" width="1025" height="1280"></a>
+      <a class="gallery-item" href="gallery.html"><img src="assets/img/backstage-corset.jpg" alt="Backstage portrait" loading="lazy" width="1024" height="1280"></a>
+      <a class="gallery-item wide" href="gallery.html"><img src="assets/img/confetti-crowd.jpg" alt="Confetti falls over the crowd" loading="lazy" width="600" height="400"></a>
     </div>
     <a href="gallery.html" class="btn btn-outline mt-lg">View full gallery →</a>
   </div>
@@ -247,6 +259,6 @@
   </div>
 </footer>
 
-<script src="js/main.js"></script>
+<script src="js/main.js" defer></script>
 </body>
 </html>

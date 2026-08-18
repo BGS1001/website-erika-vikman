@@ -80,23 +80,23 @@
 <header class="hero">
   <div class="hero-bg"><img src="assets/img/hero-portrait.jpg" alt="Erika Vikman against red velvet curtain" fetchpriority="high" width="1280" height="800"></div>
   <div class="hero-content wrap">
-    <div class="hero-chips">
-      <span class="chip">♫ Ich Komme</span>
-      <span class="chip">🇫🇮 Finland</span>
-      <span class="chip">★ Eurovision Style Icon 2025</span>
-    </div>
+    <p class="hero-meta">
+      <span>Helsinki <i>·</i> Finland</span>
+      <span class="sep" aria-hidden="true"></span>
+      <span>Eurovision <i>Style Icon</i> 2025</span>
+    </p>
     <h1 class="hero-title display">ERIKA<br>VIKMAN</h1>
-    <p class="hero-sub">Tango Queen turned pop provocateur. From Tampere dance halls to the Eurovision stage on a flying golden microphone — this is the world of Finland's boldest performer.</p>
+    <p class="hero-sub">Tango Queen turned pop provocateur — the singer who rode a flaming golden microphone into the Eurovision final and made the whole arena look up.</p>
     <div class="hero-actions">
-      <a href="music.html" class="btn btn-solid">Explore the music</a>
-      <a href="tour.html" class="btn btn-outline">See tour dates</a>
+      <a href="#ich-komme" class="btn btn-solid">Hear Ich Komme</a>
+      <a href="tour.html" class="btn btn-outline">Tour dates</a>
     </div>
   </div>
-  <div class="hero-scroll">SCROLL</div>
+  <div class="hero-scroll" aria-hidden="true">SCROLL</div>
 </header>
 
-<!-- MARQUEE -->
-<div class="marquee">
+<!-- MARQUEE — decorative ticker; the same titles are listed in Releases -->
+<div class="marquee" aria-hidden="true">
   <div class="marquee-track">
     <span>ICH KOMME <i>★</i> CICCIOLINA <i>★</i> SYNTISTEN PÖYTÄ <i>★</i> TANGO QUEEN <i>★</i> STYLE ICON 2025 <i>★</i> RUOSKA <i>★</i></span>
     <span>ICH KOMME <i>★</i> CICCIOLINA <i>★</i> SYNTISTEN PÖYTÄ <i>★</i> TANGO QUEEN <i>★</i> STYLE ICON 2025 <i>★</i> RUOSKA <i>★</i></span>
@@ -130,7 +130,7 @@
 <!-- BIG FEATURE -->
 <section class="big-feature pad">
   <div class="wrap big-feature-inner" data-reveal>
-    <div class="big-num display">25</div>
+    <span class="big-num display" aria-hidden="true">25</span>
     <div class="big-feature-text">
       <span class="eyebrow">Eurovision 2025 · Basel</span>
       <h3>The golden microphone moment.</h3>
@@ -145,45 +145,75 @@
   <img class="pos-band" src="assets/img/erika-wordmark-stage.jpg" alt="ERIKA lit up in giant red letters on stage in Basel"  loading="lazy" width="1023" height="1280">
 </section>
 
-<!-- MUSIC TEASER -->
+<!-- ICH KOMME — the song itself, on the landing page -->
+<section class="komme" id="ich-komme">
+  <div class="komme-art" aria-hidden="true">
+    <img src="assets/img/artwork-ich-komme.jpg" alt="" loading="lazy" width="1118" height="1280">
+  </div>
+  <div class="wrap" data-reveal>
+    <h2 class="komme-type">Ich<br><span class="fill">Komme</span></h2>
+    <p class="komme-sub">Finland's Eurovision 2025 entry, written and produced by Christel and Jori Roosberg. Press play — nothing loads from Spotify until you do.</p>
+    <div class="embed-frame is-audio" style="margin-top:2.6rem;">
+      <button class="embed-facade"
+              data-embed="https://open.spotify.com/embed/artist/6JVB6uiYxpF2K1PGsPRpWR?utm_source=generator&amp;theme=0"
+              data-embed-title="Erika Vikman on Spotify">
+        <img src="assets/img/artwork-ich-komme.jpg" alt="" width="1118" height="1280" loading="lazy">
+        <span class="embed-play" aria-hidden="true"></span>
+        <span class="embed-label">Play the Spotify player<small>Ich Komme and her top tracks</small></span>
+      </button>
+    </div>
+    <div class="komme-actions">
+      <a href="https://www.youtube.com/watch?v=Kg3QoTpnqyw" target="_blank" rel="noopener" class="btn btn-outline">Watch the video ↗</a>
+      <a href="music.html" class="btn btn-gold">Full discography</a>
+    </div>
+  </div>
+</section>
+
+<!-- RELEASES -->
 <section class="pad">
   <div class="wrap" data-reveal>
     <span class="eyebrow">Discography</span>
     <h2 class="section-title">The <em>hits</em>, so far.</h2>
     <p class="section-lede">From tango-pop confessionals to Eurovision electro-bangers — a run of singles that keeps getting louder.</p>
 
-    <div class="card-grid">
-      <div class="track-card">
-        <span class="track-year display">2025</span>
-        <h4>Ich Komme</h4>
-        <p>Finland's Eurovision 2025 entry — 11th place, 196 points, a Style Icon award, and a stage moment nobody forgot.</p>
-        <span class="track-tag">Single</span>
-      </div>
-      <div class="track-card">
-        <span class="track-year display">2024</span>
-        <h4>Ruoska (feat. Käärijä)</h4>
-        <p>A high-voltage team-up between two of Finland's most fearless pop performers.</p>
-        <span class="track-tag">Single</span>
-      </div>
-      <div class="track-card">
-        <span class="track-year display">2023</span>
-        <h4>Elizabeth Taylor</h4>
-        <p>Glossy, glamorous, and unmistakably Erika.</p>
-        <span class="track-tag">Single</span>
-      </div>
-      <div class="track-card">
-        <span class="track-year display">2020</span>
-        <h4>Cicciolina</h4>
-        <p>The breakthrough hit — named after Hungarian-Italian icon Ilona Staller — that turned Erika into a household name.</p>
-        <span class="track-tag">Single</span>
-      </div>
+    <div class="release-grid">
+      <article class="release-card">
+        <div class="release-cover">
+          <img src="assets/img/artwork-ich-komme.jpg" alt="Ich Komme single artwork" width="1118" height="1280" loading="lazy">
+        </div>
+        <div class="release-meta">
+          <span class="rel-title">Ich Komme</span>
+          <span class="rel-sub">Single · 2025 · Eurovision entry</span>
+        </div>
+      </article>
+      <article class="release-card">
+        <div class="release-cover is-type"><span aria-hidden="true">2024</span></div>
+        <div class="release-meta">
+          <span class="rel-title">Ruoska <span style="color:var(--gray);font-weight:600;">feat. Käärijä</span></span>
+          <span class="rel-sub">Single · 2024</span>
+        </div>
+      </article>
+      <article class="release-card">
+        <div class="release-cover is-type"><span aria-hidden="true">2023</span></div>
+        <div class="release-meta">
+          <span class="rel-title">Elizabeth Taylor</span>
+          <span class="rel-sub">Single · 2023</span>
+        </div>
+      </article>
+      <article class="release-card">
+        <div class="release-cover is-type"><span aria-hidden="true">2020</span></div>
+        <div class="release-meta">
+          <span class="rel-title">Cicciolina</span>
+          <span class="rel-sub">Single · 2020 · Breakthrough</span>
+        </div>
+      </article>
     </div>
     <a href="music.html" class="btn btn-outline mt-lg">Full discography →</a>
   </div>
 </section>
 
 <!-- TOUR TEASER -->
-<section class="pad" style="background:var(--near-black); border-top:1px solid rgba(216,174,87,.15); border-bottom:1px solid rgba(216,174,87,.15);">
+<section class="pad sec-panel">
   <div class="wrap" data-reveal>
     <span class="eyebrow">On stage</span>
     <h2 class="section-title">Catch her <em>live.</em></h2>
@@ -202,33 +232,42 @@
   </div>
 </section>
 
-<!-- GALLERY STRIP -->
-<section class="pad">
-  <div class="wrap" data-reveal>
-    <span class="eyebrow">In the flash</span>
-    <h2 class="section-title">Backstage &amp; <em>on stage.</em></h2>
-    <div class="gallery-grid" style="margin-top:2.5rem;">
-      <a class="gallery-item" href="gallery.html"><img src="assets/img/flying-mic-2.jpg" alt="Erika Vikman on the golden flying microphone" loading="lazy" width="1024" height="1280"></a>
-      <a class="gallery-item feature" href="gallery.html"><img src="assets/img/silhouette-raise.jpg" alt="Silhouette on stage" loading="lazy" width="599" height="399"></a>
-      <a class="gallery-item" href="gallery.html"><img src="assets/img/award-trophy.jpg" alt="Erika Vikman holding the UMK trophy" loading="lazy" width="1025" height="1280"></a>
-      <a class="gallery-item" href="gallery.html"><img src="assets/img/backstage-corset.jpg" alt="Backstage portrait" loading="lazy" width="1024" height="1280"></a>
-      <a class="gallery-item feature" href="gallery.html"><img src="assets/img/confetti-crowd.jpg" alt="Confetti falls over the crowd" loading="lazy" width="600" height="400"></a>
-      <a class="gallery-item" href="gallery.html"><img src="assets/img/erika-crowd-screen.jpg" alt="Erika Vikman on the arena screen above the crowd" loading="lazy" width="1024" height="1280"></a>
+<!-- PINNED PHOTO RAIL -->
+<section class="rail" id="rail">
+  <div class="rail-head">
+    <div class="wrap">
+      <span class="eyebrow">The archive</span>
+      <h2 class="section-title is-minor">Backstage &amp; <em>on stage.</em></h2>
     </div>
-    <a href="gallery.html" class="btn btn-outline mt-lg">View full gallery →</a>
   </div>
+  <div class="rail-viewport">
+    <div class="rail-track">
+      <figure class="rail-item"><img src="assets/img/flying-mic-2.jpg" alt="Erika Vikman on the golden flying microphone at Eurovision 2025" loading="lazy" width="1024" height="1280"><figcaption class="rail-cap">Basel · 2025</figcaption></figure>
+      <figure class="rail-item is-wide"><img src="assets/img/silhouette-raise.jpg" alt="Erika Vikman raising the microphone stand in silhouette" loading="lazy" width="599" height="399"><figcaption class="rail-cap">Golden hour</figcaption></figure>
+      <figure class="rail-item"><img src="assets/img/award-trophy.jpg" alt="Erika Vikman holding the UMK winner's trophy" loading="lazy" width="1025" height="1280"><figcaption class="rail-cap">UMK winner</figcaption></figure>
+      <figure class="rail-item"><img src="assets/img/backstage-corset.jpg" alt="Erika Vikman backstage in a studded corset" loading="lazy" width="1024" height="1280"><figcaption class="rail-cap">Backstage</figcaption></figure>
+      <figure class="rail-item is-wide"><img src="assets/img/confetti-crowd.jpg" alt="Confetti falling over the crowd at an Erika Vikman show" loading="lazy" width="600" height="400"><figcaption class="rail-cap">Confetti finale</figcaption></figure>
+      <figure class="rail-item"><img src="assets/img/erika-crowd-screen.jpg" alt="Erika Vikman on the arena screen above the crowd" loading="lazy" width="1024" height="1280"><figcaption class="rail-cap">Arena screen</figcaption></figure>
+      <figure class="rail-item"><img src="assets/img/portrait-gloves.jpg" alt="Erika Vikman studio portrait with printed gloves" loading="lazy" width="1024" height="1280"><figcaption class="rail-cap">Studio</figcaption></figure>
+      <figure class="rail-item is-wide"><img src="assets/img/orange-crowd.jpg" alt="Erika Vikman lifted over the crowd under fireworks" loading="lazy" width="599" height="399"><figcaption class="rail-cap">Fireworks</figcaption></figure>
+      <figure class="rail-item rail-end">
+        <a href="gallery.html" class="btn btn-gold">View full gallery →</a>
+      </figure>
+    </div>
+  </div>
+  <div class="rail-prog" aria-hidden="true"><span></span></div>
 </section>
 
 <!-- TOUR ALERTS CTA -->
-<section class="pad" style="background:var(--red); border-top:2px solid var(--black);">
+<section class="pad sec-loud">
   <div class="wrap" data-reveal>
     <span class="eyebrow cta-eyebrow">Never miss a show</span>
-    <h2 class="section-title" style="color:var(--white);">Get tour <em style="color:var(--black);">alerts.</em></h2>
-    <p class="section-lede" style="color:var(--white); font-weight:600;">Track Erika on your favourite platform and get notified the moment a date near you drops — the March 2027 European headline shows are expected to sell fast.</p>
-    <div class="hero-actions">
-      <a href="https://www.bandsintown.com/a/12410092-erika-vikman-official" target="_blank" rel="noopener" class="btn" style="background:var(--black); color:var(--white);">Track on Bandsintown ↗</a>
+    <h2 class="section-title">Get tour <em>alerts.</em></h2>
+    <p class="section-lede">The March 2027 European headline shows are her first — follow her where you already listen and the dates find you.</p>
+    <div class="btn-row">
+      <a href="https://www.bandsintown.com/a/12410092-erika-vikman-official" target="_blank" rel="noopener" class="btn btn-ink">Track on Bandsintown ↗</a>
       <a href="https://www.songkick.com/artists/9508664-erika-vikman" target="_blank" rel="noopener" class="btn btn-gold">Track on Songkick ↗</a>
-      <a href="https://www.instagram.com/erikavikman/" target="_blank" rel="noopener" class="btn" style="background:var(--white); color:var(--red-deep);">Follow on Instagram ↗</a>
+      <a href="https://www.instagram.com/erikavikman/" target="_blank" rel="noopener" class="btn btn-paper">Follow on Instagram ↗</a>
     </div>
   </div>
 </section>

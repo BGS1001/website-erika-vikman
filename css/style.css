@@ -296,13 +296,6 @@ section { position: relative; }
   padding-bottom: clamp(3rem, 8vw, 5.5rem);
 }
 
-.hero-chips {
-  display: flex;
-  gap: 0.75rem;
-  margin-bottom: 1.6rem;
-  flex-wrap: wrap;
-}
-
 .hero-title {
   font-size: clamp(3.2rem, 12vw, 8.5rem);
   color: var(--white);
@@ -381,12 +374,14 @@ section { position: relative; }
 /* ==========================================================================
    ABOUT TEASER / SPLIT
    ========================================================================== */
+/* Asymmetric by default — a 50/50 split reads static in editorial layout. */
 .split {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 0.85fr 1.15fr;
   gap: clamp(2rem, 5vw, 5rem);
   align-items: center;
 }
+.split.is-even { grid-template-columns: 1fr 1fr; }
 @media (max-width: 900px) {
   .split { grid-template-columns: 1fr; }
 }
@@ -455,14 +450,22 @@ section { position: relative; }
   border-bottom: 1px solid rgba(216,174,87,0.15);
   overflow: hidden;
 }
+/* The numeral is an absolutely-placed graphic now, so the copy runs in a
+   single measured column offset to the right of it. */
 .big-feature-inner {
   display: grid;
-  grid-template-columns: 1.1fr 1fr;
+  grid-template-columns: minmax(0, 1fr);
+  justify-content: end;
   align-items: center;
   gap: 2rem;
+  min-height: clamp(360px, 46vw, 560px);
+}
+.big-feature-inner > .big-feature-text {
+  max-width: 46ch;
+  margin-left: auto;
 }
 @media (max-width: 900px) {
-  .big-feature-inner { grid-template-columns: 1fr; }
+  .big-feature-inner > .big-feature-text { margin-left: 0; }
 }
 .big-num {
   font-family: var(--font-display);
@@ -860,7 +863,7 @@ section { position: relative; }
   to   { opacity: 1; transform: none; }
 }
 .hero-bg img  { animation: hero-zoom 14s ease-out both; }
-.hero-chips   { animation: hero-rise 0.7s 0.15s cubic-bezier(.2,.7,.2,1) both; }
+.hero-meta   { animation: hero-rise 0.7s 0.15s cubic-bezier(.2,.7,.2,1) both; }
 .hero-title   { animation: hero-rise 0.8s 0.30s cubic-bezier(.2,.7,.2,1) both; }
 .hero-sub     { animation: hero-rise 0.8s 0.45s cubic-bezier(.2,.7,.2,1) both; }
 .hero-actions { animation: hero-rise 0.8s 0.60s cubic-bezier(.2,.7,.2,1) both; }
@@ -891,7 +894,7 @@ a:focus-visible, button:focus-visible {
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .hero-bg img, .hero-chips, .hero-title, .hero-sub, .hero-actions { animation: none; }
+  .hero-bg img, .hero-meta, .hero-title, .hero-sub, .hero-actions { animation: none; }
   .marquee-track { animation: none; }
   [data-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
 }
@@ -1120,6 +1123,222 @@ img { height: auto; }
 .platform-link span { color: var(--gold-bright); }
 
 /* ==========================================================================
+   HOME — section tone classes
+   These replace the inline style attributes the sections used to carry, so
+   the palette stays in one place.
+   ========================================================================== */
+.sec-panel {
+  background: var(--near-black);
+  border-top: 1px solid rgba(216, 174, 87, 0.15);
+  border-bottom: 1px solid rgba(216, 174, 87, 0.15);
+}
+.sec-loud {
+  background: var(--red);
+  border-top: 2px solid var(--black);
+}
+.sec-loud .section-title { color: var(--white); }
+.sec-loud .section-title em { color: var(--black); }
+.sec-loud .section-lede { color: var(--white); font-weight: 600; }
+
+.btn-row { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+.btn-ink   { background: var(--black); color: var(--white); }
+.btn-paper { background: var(--white); color: var(--red-deep); }
+
+/* Section scale. Not every heading is a headline — the quiet ones step down
+   so the loud ones read as loud. */
+.section-title.is-major { font-size: clamp(2.8rem, 8vw, 6rem); }
+.section-title.is-minor { font-size: clamp(1.7rem, 3.4vw, 2.4rem); }
+
+/* ==========================================================================
+   HERO — editorial meta line, no emoji
+   ========================================================================== */
+.hero-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.9rem 1.4rem;
+  margin-bottom: 1.7rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cream);
+}
+.hero-meta i {
+  font-style: normal;
+  color: var(--gold-bright);
+}
+.hero-meta .sep {
+  width: 30px; height: 1px;
+  background: rgba(243, 237, 226, 0.35);
+}
+.hero-title {
+  letter-spacing: -0.018em;   /* Anton is tight by design; display sizes need
+                                 it tighter still or the name reads loose */
+}
+.hero-actions .btn { min-width: 0; }
+
+/* ==========================================================================
+   SIGNATURE — pinned horizontal photo rail
+   The one sustained, scroll-controlled moment on the page.
+   ========================================================================== */
+.rail {
+  position: relative;
+  overflow: hidden;
+  background: var(--black);
+}
+.rail-viewport {
+  height: 100svh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+.rail-track {
+  display: flex;
+  gap: clamp(1rem, 2.5vw, 2rem);
+  padding: 0 clamp(1.25rem, 6vw, 7rem);
+  will-change: transform;
+}
+.rail-item {
+  position: relative;
+  flex: 0 0 auto;
+  width: clamp(230px, 26vw, 380px);
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--charcoal);
+}
+.rail-item.is-wide {
+  width: clamp(330px, 42vw, 620px);
+  aspect-ratio: 3 / 2;
+}
+.rail-item img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: grayscale(0.4) contrast(1.05);
+  transition: filter 0.6s ease;
+}
+.rail-item:hover img { filter: grayscale(0) contrast(1.1); }
+/* Closing card — the rail ends in the way out, not a dead stop. */
+.rail-item.rail-end {
+  display: grid;
+  place-items: center;
+  background: var(--near-black);
+  border: 1px solid rgba(216, 174, 87, 0.3);
+  width: clamp(230px, 24vw, 320px);
+}
+.rail-cap {
+  position: absolute;
+  left: 0.9rem; bottom: 0.85rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--white);
+  text-shadow: 0 2px 12px rgba(0,0,0,0.8);
+}
+.rail-head {
+  position: absolute;
+  top: clamp(4.5rem, 12vh, 7rem);
+  left: 0; right: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.rail-head .wrap { pointer-events: auto; }
+.rail-prog {
+  position: absolute;
+  left: clamp(1.25rem, 6vw, 7rem);
+  right: clamp(1.25rem, 6vw, 7rem);
+  bottom: clamp(2rem, 6vh, 3.5rem);
+  height: 1px;
+  background: rgba(243, 237, 226, 0.16);
+  z-index: 2;
+}
+.rail-prog span {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: var(--gold-bright);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+/* Without GSAP the rail must still be usable — it becomes a swipeable row. */
+html:not(.gsap) .rail-viewport {
+  height: auto;
+  padding: clamp(2rem, 6vw, 4rem) 0;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+}
+html:not(.gsap) .rail-item { scroll-snap-align: center; }
+html:not(.gsap) .rail-head { position: static; padding-bottom: 1.5rem; }
+html:not(.gsap) .rail-prog { display: none; }
+
+/* ==========================================================================
+   ICH KOMME — full-bleed typographic moment
+   ========================================================================== */
+.komme {
+  position: relative;
+  overflow: hidden;
+  background: var(--black);
+  padding: clamp(4rem, 12vw, 9rem) 0;
+  border-top: 1px solid rgba(216, 174, 87, 0.15);
+}
+.komme-type {
+  font-family: var(--font-display);
+  font-size: clamp(3.4rem, 15vw, 13rem);
+  line-height: 0.84;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--white);
+  text-align: center;
+  margin: 0;
+}
+.komme-type .fill {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--red-glow);
+}
+.komme-sub {
+  margin: 1.8rem auto 0;
+  max-width: 46ch;
+  text-align: center;
+  color: var(--gray);
+}
+.komme-art {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.16;
+  pointer-events: none;
+}
+.komme-art img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: saturate(1.2);
+}
+.komme .wrap { position: relative; z-index: 1; }
+.komme-actions { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-top: 2.4rem; }
+
+/* ==========================================================================
+   BIG NUMBER — anchored graphic rather than a floating glyph
+   ========================================================================== */
+.big-feature-inner { position: relative; }
+.big-num {
+  position: absolute;
+  top: 50%; left: -2vw;
+  transform: translateY(-50%);
+  font-size: clamp(11rem, 34vw, 30rem);
+  line-height: 0.75;
+  z-index: 0;
+  opacity: 0.5;
+  -webkit-text-stroke: 1.5px var(--red-deep);
+  pointer-events: none;
+  user-select: none;
+}
+.big-feature-text { position: relative; z-index: 1; }
+@media (max-width: 900px) {
+  .big-num { left: -6vw; opacity: 0.35; }
+}
+
+/* ==========================================================================
    FULL-BLEED BANNER
    The wordmark shot is a portrait frame; the band deliberately crops to the
    letters, which is where that photograph's subject lives. Scale headroom
@@ -1218,12 +1437,12 @@ img { height: auto; }
    itself — the CSS entrance animations stand down so nothing runs twice.
    ========================================================================== */
 html.gsap .hero-bg img,
-html.gsap .hero-chips,
+html.gsap .hero-meta,
 html.gsap .hero-title,
 html.gsap .hero-sub,
 html.gsap .hero-actions { animation: none; }
 
-html.gsap .hero-chips,
+html.gsap .hero-meta,
 html.gsap .hero-sub,
 html.gsap .hero-actions,
 html.gsap .hero-scroll { opacity: 0; }

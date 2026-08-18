@@ -197,7 +197,10 @@
       }
     });
     lines.push(currentLine);
-    heroTitle.setAttribute('aria-label', heroTitle.textContent.trim());
+    // textContent drops the <br>, which ran the two lines together into
+    // "ERIKAVIKMAN" for screen readers. Rebuild the label from the lines.
+    heroTitle.setAttribute('aria-label',
+      lines.map(function (l) { return l.textContent.trim(); }).filter(Boolean).join(' '));
     heroTitle.innerHTML = '';
     lines.forEach(function (l) { heroTitle.appendChild(l); });
     heroTitle.querySelectorAll('.ht-line').forEach(function (l) {
@@ -212,7 +215,7 @@
     intro.fromTo('.hero-title .ht-char',
       { yPercent: 118, rotate: 5 },
       { yPercent: 0, rotate: 0, duration: 1.1, ease: 'power4.out', stagger: 0.04 }, 0.25);
-    intro.fromTo('.hero-chips', { y: 26, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.8 }, 0.7);
+    intro.fromTo('.hero-meta', { y: 26, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.8 }, 0.7);
     intro.fromTo('.hero-sub', { y: 26, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.8 }, 0.85);
     intro.fromTo('.hero-actions', { y: 26, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.8 }, 1.0);
     intro.fromTo('.hero-scroll', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.8 }, 1.3);
@@ -224,7 +227,7 @@
     // rather than time alone.)
     var heroSafety = setTimeout(function () {
       if (document.visibilityState === 'visible' && intro.progress() < 0.9) {
-        gsap.set(['.hero-chips', '.hero-sub', '.hero-actions', '.hero-scroll'],
+        gsap.set(['.hero-meta', '.hero-sub', '.hero-actions', '.hero-scroll'],
           { clearProps: 'opacity,visibility' });
         gsap.set('.hero-title .ht-char', { clearProps: 'transform' });
       }
@@ -260,16 +263,27 @@
     gsap.ticker.add(function () { skewTo(0); });
   }
 
-  /* ---- section reveals ---- */
+  /* ---- section reveals ----
+     One curve applied everywhere reads as "animation was added" rather than
+     choreographed, so a section's weight picks its entrance: loud panels
+     arrive with a push, quiet ones simply settle. */
   if (revealEls.length) {
     gsap.set(revealEls, { y: 44, autoAlpha: 0 });
     ScrollTrigger.batch(revealEls, {
       start: 'top 86%',
       once: true,
       onEnter: function (batch) {
-        gsap.to(batch, {
-          y: 0, autoAlpha: 1, duration: 1, stagger: 0.12,
-          overwrite: true, clearProps: 'transform'
+        batch.forEach(function (el, i) {
+          var loud = el.closest('.sec-loud, .komme, .big-feature');
+          gsap.to(el, {
+            y: 0,
+            autoAlpha: 1,
+            duration: loud ? 1.15 : 0.85,
+            ease: loud ? 'expo.out' : 'power2.out',
+            delay: i * (loud ? 0.06 : 0.1),
+            overwrite: true,
+            clearProps: 'transform'
+          });
         });
       }
     });
@@ -361,6 +375,52 @@
       onEnter: function (batch) {
         gsap.to(batch, { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.07, overwrite: true });
       }
+    });
+  }
+
+  /* ---- pinned horizontal rail ----
+     The page's one sustained, scroll-controlled moment: the section holds
+     while the archive travels sideways. ease "none" is required so scroll
+     distance maps 1:1 to horizontal position. */
+  var rail = document.querySelector('.rail');
+  var railTrack = rail && rail.querySelector('.rail-track');
+  if (rail && railTrack) {
+    var progFill = rail.querySelector('.rail-prog span');
+
+    var railTween = gsap.to(railTrack, {
+      x: function () {
+        return Math.min(0, rail.offsetWidth - railTrack.scrollWidth);
+      },
+      ease: 'none',
+      scrollTrigger: {
+        trigger: rail,
+        pin: true,
+        scrub: 0.8,
+        start: 'top top',
+        end: function () {
+          return '+=' + Math.max(1, railTrack.scrollWidth - rail.offsetWidth);
+        },
+        invalidateOnRefresh: true,
+        onUpdate: function (self) {
+          if (progFill) progFill.style.transform = 'scaleX(' + self.progress + ')';
+        }
+      }
+    });
+
+    // Cards lift in as they cross the middle of the pinned viewport.
+    gsap.utils.toArray('.rail-item').forEach(function (card) {
+      gsap.from(card, {
+        y: 46,
+        autoAlpha: 0,
+        duration: 0.6,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: card,
+          containerAnimation: railTween,
+          start: 'left 92%',
+          once: true
+        }
+      });
     });
   }
 

@@ -90,6 +90,11 @@ h1, h2, h3, .display {
   background: var(--gold-bright);
 }
 
+/* On the red CTA panel gold falls to 2.5:1 against the ground; white clears
+   5.2:1 instead. */
+.cta-eyebrow { color: var(--white); }
+.cta-eyebrow::before { background: var(--white); }
+
 .section-title {
   font-size: clamp(2.4rem, 6vw, 4.2rem);
   color: var(--white);
@@ -356,9 +361,12 @@ section { position: relative; }
   display: inline-flex;
   animation: scroll-left 32s linear infinite;
 }
+/* 24px puts this over WCAG's large-text threshold, where the 3:1 ratio
+   applies — black on this red is 3.83:1, which reads as intended here but
+   would fail the 4.5:1 required of smaller text. */
 .marquee span {
   font-family: var(--font-display);
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   text-transform: uppercase;
   padding: 0 1.2rem;
   display: inline-flex;

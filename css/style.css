@@ -392,6 +392,9 @@ section { position: relative; }
 }
 
 .split-media { position: relative; }
+/* 4/5 matches the portrait press shots exactly. A landscape frame in this
+   slot needs .is-wide, or cover would crop nearly half its width away. */
+.split-media.is-wide img { aspect-ratio: 3/2; }
 .split-media img {
   width: 100%;
   aspect-ratio: 4/5;
@@ -524,17 +527,27 @@ section { position: relative; }
 /* ==========================================================================
    GALLERY
    ========================================================================== */
+/* Tile shape follows the photograph's shape. A fixed row height forced the
+   portrait shots (all 1024x1280) into landscape cells, and object-fit: cover
+   then showed only a middle band of each one — which is what cut the heads
+   off. These ratios match the two source formats, so cover has nothing to
+   crop vertically. */
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 220px;
+  grid-auto-flow: row dense;
   gap: 0.6rem;
 }
-@media (max-width: 900px) {
-  .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 180px; }
+.gallery-item { aspect-ratio: 4 / 5; }              /* 1024x1280 sources */
+.gallery-item.feature {                              /* 600x400 sources */
+  grid-column: span 2;
+  aspect-ratio: 8 / 5;
 }
-@media (max-width: 520px) {
-  .gallery-grid { grid-template-columns: 1fr 1fr; grid-auto-rows: 150px; }
+@media (max-width: 900px) {
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .gallery-item.feature { grid-column: span 2; aspect-ratio: 3 / 2; }
 }
 
 .gallery-item {
@@ -562,8 +575,6 @@ section { position: relative; }
 }
 .gallery-item:hover::after { opacity: 1; }
 
-.gallery-item.tall { grid-row: span 2; }
-.gallery-item.wide { grid-column: span 2; }
 
 .gallery-caption {
   position: absolute;
@@ -1107,6 +1118,29 @@ img { height: auto; }
   transform: translateY(-2px);
 }
 .platform-link span { color: var(--gold-bright); }
+
+/* ==========================================================================
+   FULL-BLEED BANNER
+   The wordmark shot is a portrait frame; the band deliberately crops to the
+   letters, which is where that photograph's subject lives. Scale headroom
+   here is what the parallax travels through.
+   ========================================================================== */
+.banner-par {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 21 / 9;
+  max-height: 620px;
+}
+.banner-par img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 40%;
+  will-change: transform;
+}
+@media (max-width: 760px) {
+  .banner-par { aspect-ratio: 4 / 3; }
+}
 
 /* ==========================================================================
    CROP CONTROL

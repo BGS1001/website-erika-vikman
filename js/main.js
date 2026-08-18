@@ -217,6 +217,20 @@
     intro.fromTo('.hero-actions', { y: 26, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.8 }, 1.0);
     intro.fromTo('.hero-scroll', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.8 }, 1.3);
 
+    // The intro hides this copy before revealing it, so any failure to finish
+    // would leave the hero blank. If the page has been visible long enough
+    // for the timeline to have run and it hasn't, show the copy outright.
+    // (A backgrounded tab pauses rAF, which is why visibility is checked
+    // rather than time alone.)
+    var heroSafety = setTimeout(function () {
+      if (document.visibilityState === 'visible' && intro.progress() < 0.9) {
+        gsap.set(['.hero-chips', '.hero-sub', '.hero-actions', '.hero-scroll'],
+          { clearProps: 'opacity,visibility' });
+        gsap.set('.hero-title .ht-char', { clearProps: 'transform' });
+      }
+    }, 6000);
+    intro.eventCallback('onComplete', function () { clearTimeout(heroSafety); });
+
     /* hero parallax on the way out */
     if (heroBg) {
       gsap.to(heroBg, {

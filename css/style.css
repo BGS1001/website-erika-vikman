@@ -1107,3 +1107,109 @@ img { height: auto; }
   transform: translateY(-2px);
 }
 .platform-link span { color: var(--gold-bright); }
+
+/* ==========================================================================
+   CROP CONTROL
+   object-fit: cover in a wide, short box shows the *middle* band of a
+   portrait photo — chest height, heads cut off. These utilities pin the
+   crop window to where the face actually is in each photograph.
+   ========================================================================== */
+.pos-top   { object-position: 50% 10% !important; }
+.pos-upper { object-position: 50% 18% !important; }
+.pos-face  { object-position: 50% 26% !important; }
+.pos-mid   { object-position: 50% 34% !important; }
+.pos-band  { object-position: 50% 42% !important; }
+.pos-low   { object-position: 50% 58% !important; }
+
+/* Portrait photos in the wide header band: bias toward the top third by
+   default so faces survive even without a per-image class. */
+.page-header-bg img { object-position: 50% 22%; }
+
+/* ==========================================================================
+   CROSS-DOCUMENT VIEW TRANSITIONS
+   Full page loads dissolve into each other instead of flashing white.
+   Chromium-only; other engines simply ignore it.
+   ========================================================================== */
+@view-transition { navigation: auto; }
+::view-transition-old(root) {
+  animation: vt-out 0.3s cubic-bezier(0.4, 0, 1, 1) both;
+}
+::view-transition-new(root) {
+  animation: vt-in 0.45s cubic-bezier(0, 0, 0.2, 1) both;
+}
+@keyframes vt-out { to { opacity: 0; transform: translateY(-12px); } }
+@keyframes vt-in  { from { opacity: 0; transform: translateY(14px); } }
+
+/* ==========================================================================
+   CUSTOM CURSOR — gold ring in difference blend, desktop pointers only
+   ========================================================================== */
+@media (pointer: fine) {
+  .cursor-ring, .cursor-dot {
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 999;
+    border-radius: 50%;
+    will-change: transform;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    margin: -18px 0 0 -18px;
+    border: 1.5px solid var(--gold-bright);
+    mix-blend-mode: difference;
+    transition: width 0.25s ease, height 0.25s ease, margin 0.25s ease,
+                border-color 0.25s ease, opacity 0.3s ease;
+  }
+  .cursor-dot {
+    width: 5px; height: 5px;
+    margin: -2.5px 0 0 -2.5px;
+    background: var(--gold-bright);
+    mix-blend-mode: difference;
+  }
+  html.cursor-on .cursor-ring.is-active {
+    width: 64px; height: 64px;
+    margin: -32px 0 0 -32px;
+    border-color: var(--red-glow);
+  }
+  html.cursor-on .cursor-ring.is-hidden,
+  html.cursor-on .cursor-dot.is-hidden { opacity: 0; }
+}
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .cursor-ring, .cursor-dot { display: none; }
+}
+
+/* ==========================================================================
+   GSAP TAKEOVER
+   When GSAP boots it adds .gsap on <html> and choreographs everything
+   itself — the CSS entrance animations stand down so nothing runs twice.
+   ========================================================================== */
+html.gsap .hero-bg img,
+html.gsap .hero-chips,
+html.gsap .hero-title,
+html.gsap .hero-sub,
+html.gsap .hero-actions { animation: none; }
+
+html.gsap .hero-chips,
+html.gsap .hero-sub,
+html.gsap .hero-actions,
+html.gsap .hero-scroll { opacity: 0; }
+
+/* hero title split into per-line masks / per-char spans */
+.ht-line { display: block; overflow: hidden; padding-bottom: 0.06em; margin-bottom: -0.06em; }
+.ht-char { display: inline-block; will-change: transform; }
+
+/* section titles: word masks filled by ScrollTrigger */
+html.gsap .wm { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+html.gsap .wi { display: inline-block; will-change: transform; }
+
+/* nav hides on scroll down, returns on scroll up */
+.nav { transition: background 0.3s ease, backdrop-filter 0.3s ease, transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
+.nav.nav-hidden { transform: translateY(-100%); }
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) { animation: none !important; }
+  .nav { transition: none; }
+  html.gsap .wi { transform: none; }
+}

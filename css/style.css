@@ -1894,3 +1894,63 @@ html.gsap .wi { display: inline-block; will-change: transform; }
 .video-pair { margin-top: 2.5rem; align-items: start; }
 .section-note { margin-top: 1.5rem; font-size: 0.86rem; color: var(--gray); max-width: 60ch; }
 .hi { color: var(--gold-bright); }
+
+/* ==========================================================================
+   CONTACT
+   ========================================================================== */
+.contact-grid { align-items: start; }
+
+.contact-card {
+  border: 1px solid rgba(216, 174, 87, 0.28);
+  background:
+    radial-gradient(90% 130% at 0% 0%, rgba(216, 19, 36, 0.12), transparent 62%),
+    var(--near-black);
+  padding: clamp(1.6rem, 3.4vw, 2.4rem);
+}
+.contact-card + .contact-card { margin-top: 1.2rem; }
+.contact-card .role {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+}
+.contact-card .who {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  color: var(--white);
+  text-transform: uppercase;
+  margin: 0.5rem 0 0.3rem;
+}
+.contact-card .mail {
+  display: inline-block;
+  margin-top: 0.6rem;
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--gold-bright);
+  border-bottom: 1px solid rgba(216, 174, 87, 0.45);
+  padding-bottom: 2px;
+  word-break: break-word;
+}
+.contact-card .mail:hover { color: var(--white); border-color: var(--white); }
+.contact-card .note { color: var(--gray); font-size: 0.9rem; margin-top: 0.7rem; }
+
+/* Honest framing — this is a fan project, and the contact page is where a
+   visitor most needs to know that before they write to anyone. */
+.disclosure {
+  border: 1px dashed rgba(243, 237, 226, 0.22);
+  padding: clamp(1.4rem, 3vw, 2rem);
+  margin-top: 2.4rem;
+}
+.disclosure h3 {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 800;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--white);
+  margin-bottom: 0.6rem;
+}
+.disclosure p { color: var(--gray); font-size: 0.92rem; max-width: 58ch; }
+.disclosure p + p { margin-top: 0.7rem; }
+.mt-0 { margin-top: 0; }

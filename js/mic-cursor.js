@@ -392,12 +392,15 @@
 
   /* ---- lifecycle -------------------------------------------------------- */
   MicCursor.prototype.resize = function () {
-    this.w = global.innerWidth;
-    this.h = global.innerHeight;
-    this.canvas.width = Math.floor(this.w * this.dpr);
-    this.canvas.height = Math.floor(this.h * this.dpr);
-    this.canvas.style.width = this.w + 'px';
-    this.canvas.style.height = this.h + 'px';
+    var w = global.innerWidth || document.documentElement.clientWidth || 0;
+    var h = global.innerHeight || document.documentElement.clientHeight || 0;
+    if (w === this.w && h === this.h) return;
+    this.w = w;
+    this.h = h;
+    this.canvas.width = Math.floor(w * this.dpr);
+    this.canvas.height = Math.floor(h * this.dpr);
+    this.canvas.style.width = w + 'px';
+    this.canvas.style.height = h + 'px';
     this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
   };
 
@@ -433,6 +436,14 @@
     global.addEventListener('blur', this._onLeave);
     global.addEventListener('resize', this._onResize, { passive: true });
 
+    /* A hidden tab or a prerender can report a 0x0 viewport at start-up, and
+       coming back into view does not always fire resize — without this the
+       canvas would stay 0x0 and the cursor would never appear. */
+    if (global.ResizeObserver) {
+      this._ro = new global.ResizeObserver(this._onResize);
+      this._ro.observe(document.documentElement);
+    }
+
     this.active = true;
     this.raf = global.requestAnimationFrame(this.frame.bind(this));
   };
@@ -444,6 +455,7 @@
     document.documentElement.removeEventListener('mouseleave', this._onLeave);
     global.removeEventListener('blur', this._onLeave);
     global.removeEventListener('resize', this._onResize);
+    if (this._ro) { this._ro.disconnect(); this._ro = null; }
     if (this.canvas && this.canvas.parentNode) {
       this.canvas.parentNode.removeChild(this.canvas);
     }

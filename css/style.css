@@ -1836,34 +1836,46 @@ html:not(.gsap) .rail-prog { display: none; }
   .cursor-mic {
     position: fixed;
     top: 0; left: 0;
-    width: 116px; height: 40px;
-    /* the head sits at (96,20) in the viewBox, so pull the box back to put
+    width: 196px; height: 58px;
+    /* the head sits at (168,14) in the viewBox, so pull the box back to put
        that point exactly under the pointer */
-    margin: -20px 0 0 -96px;
-    transform-origin: 96px 20px;
+    margin: -14px 0 0 -168px;
+    transform-origin: 168px 14px;
     pointer-events: none;
     z-index: 998;
     opacity: 0;
-    transition: opacity 0.35s ease;
+    /* kept faint on purpose — a trace the pointer drags, not a drawing */
+    transition: opacity 0.4s ease;
     will-change: transform;
   }
-  html.cursor-on .cursor-mic.is-live { opacity: 1; }
-
-  .cursor-mic .shaft,
-  .cursor-mic .collar { transition: opacity 0.3s ease; }
+  html.cursor-on .cursor-mic.is-live { opacity: 0.85; }
 
   .cursor-mic .head {
-    transition: filter 0.3s ease;
-    filter: drop-shadow(0 0 6px rgba(255, 223, 148, 0.5));
+    transition: filter 0.35s ease;
+    filter: drop-shadow(0 0 7px rgba(255, 223, 148, 0.35));
   }
-  /* over something clickable the mic goes live */
+  /* over something clickable the rig lights up */
   .cursor-mic.is-active .head {
-    filter: drop-shadow(0 0 16px rgba(255, 45, 85, 0.85))
-            drop-shadow(0 0 30px rgba(255, 45, 85, 0.45));
+    filter: drop-shadow(0 0 14px rgba(255, 45, 85, 0.7))
+            drop-shadow(0 0 26px rgba(255, 45, 85, 0.35));
   }
+  .cursor-mic .shaft { filter: drop-shadow(0 0 5px rgba(255, 223, 148, 0.2)); }
+
+  .cursor-mic .sparks { filter: drop-shadow(0 0 5px rgba(255, 154, 60, 0.5)); }
+  .cursor-mic .sp {
+    fill: #ffe6b0;
+    animation: sp-flicker 0.7s steps(2, end) infinite;
+  }
+  .cursor-mic .sp:nth-of-type(2n) { animation-duration: 0.46s; }
+  .cursor-mic .sp:nth-of-type(3n) { animation-duration: 0.93s; }
+  @keyframes sp-flicker {
+    0%, 100% { opacity: 0.85; }
+    50%      { opacity: 0.25; }
+  }
+
   .cursor-mic .halo {
     opacity: 0;
-    transition: opacity 0.3s ease, r 0.3s ease;
+    transition: opacity 0.3s ease;
   }
   .cursor-mic.is-active .halo { opacity: 1; }
 }

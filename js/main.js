@@ -479,33 +479,67 @@
   if (window.matchMedia('(pointer: fine)').matches) {
     var mic = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     mic.setAttribute('class', 'cursor-mic');
-    mic.setAttribute('viewBox', '0 0 116 40');
+    mic.setAttribute('viewBox', '0 0 196 58');
     mic.setAttribute('aria-hidden', 'true');
+    // The real rig is a T: the mic head stands perpendicular at one end of a
+    // long boom, and the far end is a bell that throws sparks. Drawn as
+    // outline and haze rather than an illustration — it should read as a
+    // trace the pointer leaves, not a picture stuck to it.
     mic.innerHTML = [
       '<defs>',
-      '  <linearGradient id="micBrass" x1="0" y1="0" x2="0" y2="1">',
-      '    <stop offset="0" stop-color="#ffeec2"/>',
-      '    <stop offset="0.34" stop-color="#e2b95f"/>',
-      '    <stop offset="0.62" stop-color="#a97c24"/>',
-      '    <stop offset="1" stop-color="#f4d78f"/>',
+      '  <linearGradient id="micGlass" x1="0" y1="0" x2="0" y2="1">',
+      '    <stop offset="0" stop-color="#ffdf94" stop-opacity="0.55"/>',
+      '    <stop offset="0.5" stop-color="#e2b95f" stop-opacity="0.22"/>',
+      '    <stop offset="1" stop-color="#ffdf94" stop-opacity="0.40"/>',
       '  </linearGradient>',
-      '  <radialGradient id="micHead" cx="0.34" cy="0.28" r="0.78">',
-      '    <stop offset="0" stop-color="#fff3d2"/>',
-      '    <stop offset="0.45" stop-color="#e2b95f"/>',
-      '    <stop offset="1" stop-color="#966c1c"/>',
+      '  <linearGradient id="micFade" x1="1" y1="0" x2="0" y2="0">',
+      '    <stop offset="0" stop-color="#ffdf94" stop-opacity="0.6"/>',
+      '    <stop offset="0.55" stop-color="#ffdf94" stop-opacity="0.3"/>',
+      '    <stop offset="1" stop-color="#ffdf94" stop-opacity="0.05"/>',
+      '  </linearGradient>',
+      '  <radialGradient id="micFlame" cx="0.85" cy="0.5" r="0.7">',
+      '    <stop offset="0" stop-color="#fff0c4" stop-opacity="0.65"/>',
+      '    <stop offset="0.4" stop-color="#ff9a3c" stop-opacity="0.30"/>',
+      '    <stop offset="1" stop-color="#ff2d55" stop-opacity="0"/>',
       '  </radialGradient>',
       '</defs>',
-      '<g class="shaft">',
-      '  <rect x="14" y="17.7" width="70" height="4.6" rx="2.3" fill="url(#micBrass)"/>',
-      '  <rect x="80" y="15.6" width="7" height="8.8" rx="2" fill="url(#micBrass)"/>',
+
+      // spark plume off the bell — density rides on pointer speed
+      '<g class="sparks">',
+      '  <ellipse cx="20" cy="34" rx="26" ry="9" fill="url(#micFlame)"/>',
+      '  <circle class="sp" cx="26" cy="31" r="0.9"/>',
+      '  <circle class="sp" cx="18" cy="37" r="0.7"/>',
+      '  <circle class="sp" cx="11" cy="32" r="1.0"/>',
+      '  <circle class="sp" cx="30" cy="38" r="0.6"/>',
+      '  <circle class="sp" cx="5"  cy="36" r="0.8"/>',
+      '  <circle class="sp" cx="23" cy="27" r="0.6"/>',
+      '  <circle class="sp" cx="13" cy="41" r="0.7"/>',
       '</g>',
-      '<circle class="halo" cx="96" cy="20" r="17" fill="none" stroke="#ff2d55" stroke-width="1.2" opacity="0"/>',
+
+      // the boom, fading out toward the bell
+      '<g class="shaft">',
+      '  <path d="M40 30.6 L40 39.4 L30 44 L30 26 Z" fill="url(#micGlass)"',
+      '        stroke="#ffdf94" stroke-opacity="0.35" stroke-width="0.7"/>',
+      '  <rect x="40" y="31.4" width="118" height="4.2" rx="2.1" fill="url(#micFade)"/>',
+      '  <rect x="40" y="31.4" width="118" height="4.2" rx="2.1" fill="none"',
+      '        stroke="#ffdf94" stroke-opacity="0.30" stroke-width="0.6"/>',
+      '  <rect x="152" y="28.4" width="9" height="10.2" rx="2.4" fill="url(#micGlass)"',
+      '        stroke="#ffdf94" stroke-opacity="0.35" stroke-width="0.7"/>',
+      '</g>',
+
+      // the head, standing off the boom at a right angle
       '<g class="head">',
-      '  <circle cx="96" cy="20" r="10.6" fill="url(#micHead)"/>',
-      '  <circle cx="96" cy="20" r="10.6" fill="none" stroke="rgba(0,0,0,0.3)" stroke-width="0.9"/>',
-      '  <circle cx="96" cy="20" r="6.4" fill="none" stroke="rgba(0,0,0,0.16)" stroke-width="0.9"/>',
-      '  <circle cx="92.6" cy="16.6" r="2.4" fill="rgba(255,255,255,0.55)"/>',
-      '</g>'
+      '  <rect x="161.5" y="17" width="6.4" height="13" rx="2.6"',
+      '        transform="rotate(14 164.7 23.5)" fill="url(#micGlass)"',
+      '        stroke="#ffdf94" stroke-opacity="0.4" stroke-width="0.7"/>',
+      '  <circle cx="168" cy="14" r="8.6" fill="url(#micGlass)"',
+      '          stroke="#ffdf94" stroke-opacity="0.55" stroke-width="0.9"/>',
+      '  <circle cx="168" cy="14" r="5.2" fill="none"',
+      '          stroke="#ffdf94" stroke-opacity="0.28" stroke-width="0.6"/>',
+      '  <circle cx="165.2" cy="11.4" r="1.9" fill="#fff6de" fill-opacity="0.45"/>',
+      '</g>',
+      '<circle class="halo" cx="168" cy="14" r="16" fill="none"',
+      '        stroke="#ff2d55" stroke-opacity="0.7" stroke-width="1" opacity="0"/>'
     ].join('');
     document.body.appendChild(mic);
     document.documentElement.classList.add('cursor-on');
@@ -516,8 +550,12 @@
     var micRot = gsap.quickTo(mic, 'rotation', { duration: 0.5, ease: 'power2.out' });
     var micStretch = gsap.quickTo(mic, 'scaleX', { duration: 0.35, ease: 'power2.out' });
 
+    var sparks = mic.querySelector('.sparks');
+    var sparkTo = gsap.quickTo(sparks, 'opacity', { duration: 0.45, ease: 'power2.out' });
+    gsap.set(sparks, { opacity: 0 });
+
     var prevX = null, prevY = null;
-    var angle = -24;          // resting tilt, the way the prop hangs
+    var angle = -18;          // resting tilt, the way the rig hangs
     var idleTimer = null;
 
     window.addEventListener('pointermove', function (e) {
@@ -529,23 +567,25 @@
         var dx = x - prevX, dy = y - prevY;
         var speed = Math.hypot(dx, dy);
         if (speed > 2.2) {
-          // face where the pointer came from, so the shaft drags behind
+          // face where the pointer came from, so the boom drags behind
           var target = Math.atan2(dy, dx) * 180 / Math.PI;
           // unwrap so it swings the short way round instead of spinning
           while (target - angle > 180) target -= 360;
           while (target - angle < -180) target += 360;
           angle = target;
           micRot(angle);
-          // a touch of stretch at speed, like a boom flexing
-          micStretch(1 + Math.min(speed / 190, 0.16));
+          micStretch(1 + Math.min(speed / 220, 0.13));
         }
+        // the bell only fires when the rig is actually being moved
+        sparkTo(Math.min(speed / 34, 1));
       }
       prevX = x; prevY = y;
 
       clearTimeout(idleTimer);
       idleTimer = setTimeout(function () {
         micStretch(1);
-        var rest = angle - ((angle + 180) % 360 - 180) - 24;
+        sparkTo(0);
+        var rest = angle - ((angle + 180) % 360 - 180) - 18;
         micRot(rest);
         angle = rest;
       }, 420);

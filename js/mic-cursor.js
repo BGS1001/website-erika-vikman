@@ -215,6 +215,27 @@
     this.spriteSize = { w: w, h: h };
   };
 
+  /* ---- particle sprites -------------------------------------------------
+     Building a radial gradient per particle per frame costs more than the
+     rest of the loop put together — around a hundred allocations every
+     frame. The three tones are baked once and blitted instead. */
+  MicCursor.prototype.buildDots = function () {
+    var tones = [IVORY, CHAMPAGNE, GOLD];
+    var size = 32;
+    this.dots = tones.map(function (tone) {
+      var c = document.createElement('canvas');
+      c.width = c.height = size;
+      var g = c.getContext('2d');
+      var rg = g.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+      rg.addColorStop(0, 'rgba(' + tone + ',1)');
+      rg.addColorStop(0.42, 'rgba(' + tone + ',0.34)');
+      rg.addColorStop(1, 'rgba(' + GOLD + ',0)');
+      g.fillStyle = rg;
+      g.fillRect(0, 0, size, size);
+      return c;
+    });
+  };
+
   /* ---- particles -------------------------------------------------------- */
   MicCursor.prototype.emit = function (count) {
     var cfg = this.cfg;
@@ -236,7 +257,7 @@
         life: 1,
         decay: 0.011 + Math.random() * 0.021,
         r: (0.45 + Math.random() * 1.7) * cfg.particleSize,
-        warm: Math.random()
+        tone: (Math.random() * 3) | 0
       });
     }
   };
@@ -361,15 +382,9 @@
         if (p.life <= 0) { this.particles.splice(i, 1); continue; }
 
         var a = p.life * p.life * 0.62 * this.presence * cfg.glowIntensity;
-        var tone = p.warm > 0.72 ? IVORY : (p.warm > 0.34 ? CHAMPAGNE : GOLD);
-        var rg = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 3.4);
-        rg.addColorStop(0, 'rgba(' + tone + ',' + a + ')');
-        rg.addColorStop(0.45, 'rgba(' + tone + ',' + (a * 0.32) + ')');
-        rg.addColorStop(1, 'rgba(' + GOLD + ',0)');
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r * 3.4, 0, Math.PI * 2);
-        ctx.fillStyle = rg;
-        ctx.fill();
+        var d = p.r * 6.8;
+        ctx.globalAlpha = a;
+        ctx.drawImage(this.dots[p.tone], p.x - d / 2, p.y - d / 2, d, d);
       }
       ctx.restore();
 
@@ -418,6 +433,7 @@
     this.ctx = c.getContext('2d');
     this.resize();
     this.buildSprite();
+    this.buildDots();
 
     this._onMove = function (e) {
       this.pointer.x = e.clientX;

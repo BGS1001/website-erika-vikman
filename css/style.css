@@ -8,17 +8,37 @@
    in each page's <head> — @import here would block first render. */
 
 :root {
-  --black: #0a0908;
-  --near-black: #121110;
-  --charcoal: #1b1917;
-  --red: #d81324;
-  --red-deep: #8e0e19;
-  --red-glow: #ff2a3c;
-  --gold: #d8ae57;
-  --gold-bright: #f3ce80;
-  --cream: #f3ede2;
+  /* Cool, deep grounds. The old neutrals were warm and earthy (#0a0908,
+     #a79d92) — that reads matte and vintage, which fights an artist whose
+     whole language is latex, chrome and stage light. */
+  --black: #070609;
+  --near-black: #0f0e13;
+  --charcoal: #17161d;
+  --red: #e8112d;
+  --red-deep: #9c0f22;
+  --red-glow: #ff2d55;
+  --gold: #e2b95f;
+  --gold-bright: #ffdf94;
+  --cream: #f6f3f7;
   --white: #ffffff;
-  --gray: #a79d92;
+  --gray: #9d97a6;
+
+  /* ---- gloss system ----
+     One light source, top-left, applied consistently: a specular sheen for
+     lacquered surfaces, a metal ramp for gold, and coloured bloom for the
+     accents. Used as tokens so the shine stays systematic. */
+  --sheen: linear-gradient(157deg,
+            rgba(255, 255, 255, 0.16) 0%,
+            rgba(255, 255, 255, 0.05) 26%,
+            rgba(255, 255, 255, 0) 46%);
+  --sheen-strong: linear-gradient(152deg,
+            rgba(255, 255, 255, 0.30) 0%,
+            rgba(255, 255, 255, 0.08) 24%,
+            rgba(255, 255, 255, 0) 44%);
+  --gold-metal: linear-gradient(148deg, #ffeec2 0%, #e2b95f 34%, #a97c24 56%, #f4d78f 78%, #d9ab4c 100%);
+  --glow-red: 0 0 32px rgba(255, 45, 85, 0.38), 0 0 64px rgba(255, 45, 85, 0.18);
+  --glow-gold: 0 0 30px rgba(255, 223, 148, 0.35);
+  --edge: inset 0 1px 0 rgba(255, 255, 255, 0.16);
 
   --font-display: 'Anton', 'Archivo Black', 'Inter', sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
@@ -51,15 +71,31 @@ ul { list-style: none; }
   padding: 0 clamp(1.25rem, 4vw, 3rem);
 }
 
-/* ---- texture overlays ---- */
+/* ---- texture overlays ----
+   The grain used to sit at 0.035 in overlay blend, which laid a dusty film
+   across the whole site. Dropped to a whisper in soft-light so it adds
+   depth to the blacks without matting the image on top of it. */
 .grain {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 999;
-  opacity: 0.035;
+  opacity: 0.016;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  mix-blend-mode: overlay;
+  mix-blend-mode: soft-light;
+}
+
+/* Stage bloom — a cool wash from the top of the page, like light spill off
+   a rig. Sits under everything and gives the black some dimension. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(80% 55% at 50% -8%, rgba(255, 45, 85, 0.10), transparent 62%),
+    radial-gradient(60% 45% at 100% 0%, rgba(255, 223, 148, 0.06), transparent 60%);
 }
 
 /* ---- headings ---- */
@@ -133,39 +169,92 @@ section { position: relative; }
   transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease, border-color .25s ease;
 }
 
+/* Lacquered, not flat: a specular pass across the top-left of every filled
+   button, the way light catches patent leather. */
+.btn { position: relative; overflow: hidden; isolation: isolate; }
+.btn-solid::before,
+.btn-gold::before,
+.btn-ink::before,
+.btn-paper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--sheen);
+  pointer-events: none;
+  z-index: -1;
+}
 .btn:hover { transform: translateY(-2px); }
 
 .btn-solid {
   background: var(--red);
   color: var(--white);
+  box-shadow: var(--edge), 0 6px 20px rgba(232, 17, 45, 0.28);
 }
-.btn-solid:hover { background: var(--red-glow); }
+.btn-solid:hover {
+  background: var(--red-glow);
+  box-shadow: var(--edge), var(--glow-red);
+}
 
 .btn-gold {
-  background: var(--gold);
-  color: var(--black);
+  background: var(--gold-metal);
+  color: #241a05;
+  box-shadow: var(--edge), 0 6px 20px rgba(226, 185, 95, 0.25);
 }
-.btn-gold:hover { background: var(--gold-bright); }
+.btn-gold:hover {
+  box-shadow: var(--edge), var(--glow-gold);
+  filter: brightness(1.07);
+}
 
 .btn-outline {
-  border-color: rgba(243, 237, 226, 0.35);
+  border-color: rgba(246, 243, 247, 0.32);
   color: var(--cream);
+  background: rgba(255, 255, 255, 0.02);
 }
-.btn-outline:hover { border-color: var(--gold-bright); color: var(--gold-bright); }
+.btn-outline:hover {
+  border-color: var(--gold-bright);
+  color: var(--gold-bright);
+  background: rgba(255, 223, 148, 0.06);
+  box-shadow: 0 0 24px rgba(255, 223, 148, 0.14);
+}
 
+/* Wet glass rather than a flat pill. */
 .chip {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0.5em;
   padding: 0.55em 1.1em;
   border-radius: 100px;
-  background: rgba(10, 9, 8, 0.55);
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(243, 237, 226, 0.18);
+  background:
+    var(--sheen),
+    rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(10px) saturate(1.3);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: var(--edge);
   font-weight: 700;
   font-size: 0.8rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+
+/* ==========================================================================
+   GLOSS UTILITIES
+   ========================================================================== */
+/* Gold that reads as metal, not as a flat swatch. */
+.metal {
+  background: var(--gold-metal);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+/* A hairline highlight along the top edge — the tell of a lacquered panel. */
+.gloss-edge { position: relative; }
+.gloss-edge::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--sheen);
 }
 
 /* ==========================================================================
@@ -563,11 +652,11 @@ section { position: relative; }
   width: 100%; height: 100%;
   object-fit: cover;
   transition: transform 0.6s ease, filter 0.6s ease;
-  filter: grayscale(0.35) contrast(1.05);
+  filter: saturate(1.12) contrast(1.06);
 }
 .gallery-item:hover img {
   transform: scale(1.08);
-  filter: grayscale(0) contrast(1.1);
+  filter: saturate(1.24) contrast(1.1);
 }
 .gallery-item::after {
   content: '';
@@ -892,7 +981,7 @@ section { position: relative; }
 .page-header-bg img {
   width: 100%; height: 100%; object-fit: cover;
   opacity: 0.35;
-  filter: grayscale(0.3);
+  filter: saturate(1.15);
 }
 .page-header-bg::after {
   content: '';
@@ -1059,7 +1148,7 @@ img { height: auto; }
   height: 100%;
   object-fit: cover;
   opacity: 0.4;
-  filter: grayscale(0.3);
+  filter: saturate(1.15);
   transition: opacity 0.35s ease, transform 0.6s ease;
 }
 .embed-facade:hover img { opacity: 0.55; transform: scale(1.04); }
@@ -1557,10 +1646,10 @@ img { height: auto; }
 .rail-item img {
   width: 100%; height: 100%;
   object-fit: cover;
-  filter: grayscale(0.4) contrast(1.05);
+  filter: saturate(1.1) contrast(1.06);
   transition: filter 0.6s ease;
 }
-.rail-item:hover img { filter: grayscale(0) contrast(1.1); }
+.rail-item:hover img { filter: saturate(1.24) contrast(1.1); }
 /* Closing card — the rail ends in the way out, not a dead stop. */
 .rail-item.rail-end {
   display: grid;
@@ -1954,3 +2043,138 @@ html.gsap .wi { display: inline-block; will-change: transform; }
 .disclosure p { color: var(--gray); font-size: 0.92rem; max-width: 58ch; }
 .disclosure p + p { margin-top: 0.7rem; }
 .mt-0 { margin-top: 0; }
+
+/* ==========================================================================
+   GLOSS PASS — surfaces, accents, imagery
+   Applied as one system so the shine reads as art direction rather than a
+   pile of effects. Light always comes from the top left.
+   ========================================================================== */
+
+/* --- panels catch light along their top edge --- */
+.track-card,
+.award-cell,
+.next-card,
+.contact-card,
+.release-hero,
+.tour-flag,
+.embed-frame,
+.platform-link,
+.social-row {
+  position: relative;
+  box-shadow: var(--edge);
+}
+.release-hero::after,
+.tour-flag::after,
+.contact-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--sheen);
+}
+.release-hero > *,
+.tour-flag > *,
+.contact-card > * { position: relative; z-index: 1; }
+
+/* --- accents glow --- */
+.section-title em,
+.track-year,
+.tl-year {
+  text-shadow: 0 0 26px rgba(255, 45, 85, 0.45);
+}
+.eyebrow { text-shadow: 0 0 20px rgba(255, 223, 148, 0.35); }
+.eyebrow::before { box-shadow: 0 0 12px rgba(255, 223, 148, 0.6); }
+
+.hero-title {
+  text-shadow:
+    0 0 60px rgba(255, 45, 85, 0.22),
+    0 12px 44px rgba(0, 0, 0, 0.6);
+}
+
+.stat-badge {
+  background: var(--gold-metal);
+  box-shadow: var(--edge), 0 18px 44px rgba(0, 0, 0, 0.5), var(--glow-gold);
+}
+.stat-badge .num { color: #241a05; }
+.stat-badge .label { color: #3d2c08; }
+
+.tag-next {
+  box-shadow: var(--edge), 0 0 20px rgba(232, 17, 45, 0.5);
+}
+.tour-status { box-shadow: 0 0 16px rgba(255, 223, 148, 0.18); }
+
+/* the "25" and the outlined type read as neon now */
+.big-num { filter: drop-shadow(0 0 26px rgba(255, 45, 85, 0.32)); }
+.komme-type .fill { filter: drop-shadow(0 0 22px rgba(255, 45, 85, 0.45)); }
+.award-cell .yr { filter: drop-shadow(0 0 18px rgba(255, 223, 148, 0.3)); }
+
+/* --- imagery sits in a lit frame --- */
+.split-media img,
+.release-cover img,
+.tl-media img,
+.release-hero .cover img {
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+}
+.gallery-item,
+.rail-item { box-shadow: 0 16px 40px rgba(0, 0, 0, 0.42); }
+
+/* a wet highlight passes over a tile on hover */
+.gallery-item::before,
+.rail-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: var(--sheen-strong);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.gallery-item:hover::before,
+.rail-item:hover::before { opacity: 1; }
+
+/* --- the loud panel gets depth instead of a flat fill ---
+   The ramp never goes lighter than --red, and the sheen here is halved:
+   white body copy needs 4.5:1, and a brighter ground drops below it. */
+.sec-loud {
+  background: linear-gradient(158deg, var(--red) 0%, #a30c1f 100%);
+}
+/* No wash over this panel — even an 8% sheen lifted the red to 4.36:1
+   against white body copy, under the 4.5:1 it needs. The gloss here comes
+   from the ramp and a hairline top edge, which cover too little area to
+   move the text contrast. */
+.sec-loud {
+  box-shadow: var(--edge), inset 0 -1px 0 rgba(0, 0, 0, 0.35);
+}
+.sec-loud > * { position: relative; z-index: 1; }
+
+/* --- marquee: enamel strip --- */
+.marquee {
+  background: linear-gradient(180deg, #ff2d55 0%, var(--red) 46%, #b80f24 100%);
+  box-shadow: var(--edge), 0 10px 34px rgba(232, 17, 45, 0.28);
+}
+
+/* --- nav gains a glass state once it leaves the hero --- */
+.nav.is-scrolled {
+  background: rgba(10, 9, 14, 0.72);
+  backdrop-filter: blur(16px) saturate(1.5);
+  box-shadow: 0 1px 0 rgba(255, 223, 148, 0.18), 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+.logo span { text-shadow: 0 0 16px rgba(255, 45, 85, 0.7); }
+.nav-links a.active::after { box-shadow: 0 0 12px rgba(255, 45, 85, 0.8); }
+
+/* --- play buttons look like objects --- */
+.embed-play {
+  background: radial-gradient(120% 120% at 30% 20%, #ff5c7d 0%, var(--red) 48%, #a80d20 100%);
+  box-shadow: var(--edge), 0 10px 30px rgba(232, 17, 45, 0.45), var(--glow-red);
+}
+
+/* --- scroll progress reads as a filament --- */
+.scroll-progress {
+  background: linear-gradient(90deg, var(--red-glow), var(--gold-bright));
+  box-shadow: 0 0 14px rgba(255, 45, 85, 0.7);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-item::before, .rail-item::before { transition: none; }
+}

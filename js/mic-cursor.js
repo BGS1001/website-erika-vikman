@@ -114,8 +114,21 @@
       g.closePath();
     }
 
+    /* Geometry follows the reference: the microphone is not in line with the
+       stand, it breaks away from it at about 30 degrees, so head and boom
+       together read as a Γ. The head sits on the pointer at the origin, the
+       joint sits back and below it, and the stand runs on from there. */
+    var TILT = Math.PI / 6;              // 30 degrees
+    var BODY = 50;                       // head centre to joint
+    var jx = -Math.cos(TILT) * BODY;     // ≈ -43.3
+    var jy = Math.sin(TILT) * BODY;      // ≈ +25
+    this.standY = jy;
+    this.nozzle = { x: -L + 5, y: jy };
+
     /* --- the stand: thin shaft running back to the nozzle --- */
-    roundedBar(-L + 4, 0, L - 48, 5.4, 2.6);
+    g.save();
+    g.translate(0, jy);
+    roundedBar(-L + 4, 0, L - 4 + jx - 4, 5.4, 2.6);
     g.fillStyle = metal(0, -3, 0, 3, 1);
     g.fill();
 
@@ -124,40 +137,41 @@
     g.ellipse(-L + 5, 0, 4.2, 12.5, 0, 0, Math.PI * 2);
     g.fillStyle = metal(-L, -12, -L, 12, 0.95);
     g.fill();
+    g.restore();
 
-    /* --- clamp where the mic meets the stand --- */
+    /* --- clamp at the break, bridging stand and body --- */
     g.save();
-    g.translate(-46, 0);
-    g.rotate(-0.06);
-    roundedBar(-6, 0, 15, 13.5, 3);
-    g.fillStyle = metal(0, -7, 0, 7, 0.9);
+    g.translate(jx, jy);
+    g.rotate(-TILT / 2);
+    roundedBar(-8, 0, 19, 14, 3.4);
+    g.fillStyle = metal(0, -7, 0, 7, 0.92);
     g.fill();
     g.restore();
 
-    /* --- microphone body, set a little off the stand axis --- */
+    /* --- microphone body, angled up off the stand toward the head --- */
     g.save();
-    g.translate(-40, -1.5);
-    g.rotate(-0.16);
+    g.translate(jx, jy);
+    g.rotate(-TILT);                     // +X now points at the head
     g.beginPath();
-    g.moveTo(0, -5.6);
-    g.lineTo(-19, -7.4);
-    g.quadraticCurveTo(-24, -7.4, -24, -4.2);
-    g.lineTo(-24, 4.2);
-    g.quadraticCurveTo(-24, 7.4, -19, 7.4);
-    g.lineTo(0, 5.6);
-    g.quadraticCurveTo(3, 4.4, 3, 0);
-    g.quadraticCurveTo(3, -4.4, 0, -5.6);
+    g.moveTo(2, -5.4);
+    g.lineTo(BODY - 14, -7.6);
+    g.quadraticCurveTo(BODY - 9, -7.6, BODY - 9, -4.4);
+    g.lineTo(BODY - 9, 4.4);
+    g.quadraticCurveTo(BODY - 9, 7.6, BODY - 14, 7.6);
+    g.lineTo(2, 5.4);
+    g.quadraticCurveTo(-1, 4.2, -1, 0);
+    g.quadraticCurveTo(-1, -4.2, 2, -5.4);
     g.closePath();
-    g.fillStyle = metal(0, -7.5, 0, 7.5, 1);
+    g.fillStyle = metal(0, -7.6, 0, 7.6, 1);
     g.fill();
-    /* two collar rings */
+    /* collar rings near the grille */
     g.fillStyle = 'rgba(' + AMBER + ',0.5)';
-    g.fillRect(-8, -6.6, 1.6, 13.2);
-    g.fillRect(-13, -7, 1.6, 14);
+    g.fillRect(BODY - 20, -7, 1.7, 14);
+    g.fillRect(BODY - 26, -6.6, 1.7, 13.2);
     g.restore();
 
-    /* --- ball grille --- */
-    var hx = -13, hy = -4.6, hr = 13.4;
+    /* --- ball grille, sitting on the pointer --- */
+    var hx = 0, hy = 0, hr = 13.4;
     var ball = g.createRadialGradient(hx - 5, hy - 5, 1.5, hx, hy, hr);
     ball.addColorStop(0, 'rgba(' + IVORY + ',0.95)');
     ball.addColorStop(0.32, 'rgba(' + CHAMPAGNE + ',0.86)');
@@ -237,12 +251,21 @@
   };
 
   /* ---- particles -------------------------------------------------------- */
+  /* The nozzle no longer sits on the axis through the head — the stand is
+     offset below it — so its world position needs the full rotation. */
+  MicCursor.prototype.nozzleAt = function () {
+    var n = this.nozzle || { x: -this.cfg.micLength, y: 0 };
+    var cos = Math.cos(this.angle), sin = Math.sin(this.angle), s = this.scale;
+    return {
+      x: this.pos.x + (n.x * cos - n.y * sin) * s,
+      y: this.pos.y + (n.x * sin + n.y * cos) * s
+    };
+  };
+
   MicCursor.prototype.emit = function (count) {
     var cfg = this.cfg;
-    var cos = Math.cos(this.angle), sin = Math.sin(this.angle);
-    var d = -cfg.micLength * this.scale;
-    var nx = this.pos.x + d * cos;
-    var ny = this.pos.y + d * sin;
+    var n = this.nozzleAt();
+    var nx = n.x, ny = n.y;
 
     for (var i = 0; i < count; i++) {
       if (this.particles.length >= this.maxParticles) return;
@@ -270,11 +293,10 @@
 
     var len = (34 + e * 168) * cfg.trailLength * this.scale;
     var halfW = 4.2 + e * 7.5;
-    var d = -cfg.micLength * this.scale;
-    var cos = Math.cos(this.angle), sin = Math.sin(this.angle);
+    var n = this.nozzleAt();
 
     ctx.save();
-    ctx.translate(this.pos.x + d * cos, this.pos.y + d * sin);
+    ctx.translate(n.x, n.y);
     ctx.rotate(this.angle + Math.PI);
     ctx.globalCompositeOperation = 'lighter';
 

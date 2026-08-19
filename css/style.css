@@ -1828,39 +1828,47 @@ html:not(.gsap) .rail-prog { display: none; }
 /* ==========================================================================
    CUSTOM CURSOR — gold ring in difference blend, desktop pointers only
    ========================================================================== */
+/* Her signature prop is a microphone on a long boom — the thing she rides
+   at Eurovision and holds the way Freddie Mercury held a half-stand. The
+   pointer suggests it rather than draws it: a brass head at the cursor and
+   a shaft that trails behind, swinging round as you change direction. */
 @media (pointer: fine) {
-  .cursor-ring, .cursor-dot {
+  .cursor-mic {
     position: fixed;
     top: 0; left: 0;
+    width: 116px; height: 40px;
+    /* the head sits at (96,20) in the viewBox, so pull the box back to put
+       that point exactly under the pointer */
+    margin: -20px 0 0 -96px;
+    transform-origin: 96px 20px;
     pointer-events: none;
-    z-index: 999;
-    border-radius: 50%;
+    z-index: 998;
+    opacity: 0;
+    transition: opacity 0.35s ease;
     will-change: transform;
   }
-  .cursor-ring {
-    width: 36px; height: 36px;
-    margin: -18px 0 0 -18px;
-    border: 1.5px solid var(--gold-bright);
-    mix-blend-mode: difference;
-    transition: width 0.25s ease, height 0.25s ease, margin 0.25s ease,
-                border-color 0.25s ease, opacity 0.3s ease;
+  html.cursor-on .cursor-mic.is-live { opacity: 1; }
+
+  .cursor-mic .shaft,
+  .cursor-mic .collar { transition: opacity 0.3s ease; }
+
+  .cursor-mic .head {
+    transition: filter 0.3s ease;
+    filter: drop-shadow(0 0 6px rgba(255, 223, 148, 0.5));
   }
-  .cursor-dot {
-    width: 5px; height: 5px;
-    margin: -2.5px 0 0 -2.5px;
-    background: var(--gold-bright);
-    mix-blend-mode: difference;
+  /* over something clickable the mic goes live */
+  .cursor-mic.is-active .head {
+    filter: drop-shadow(0 0 16px rgba(255, 45, 85, 0.85))
+            drop-shadow(0 0 30px rgba(255, 45, 85, 0.45));
   }
-  html.cursor-on .cursor-ring.is-active {
-    width: 64px; height: 64px;
-    margin: -32px 0 0 -32px;
-    border-color: var(--red-glow);
+  .cursor-mic .halo {
+    opacity: 0;
+    transition: opacity 0.3s ease, r 0.3s ease;
   }
-  html.cursor-on .cursor-ring.is-hidden,
-  html.cursor-on .cursor-dot.is-hidden { opacity: 0; }
+  .cursor-mic.is-active .halo { opacity: 1; }
 }
 @media (pointer: coarse), (prefers-reduced-motion: reduce) {
-  .cursor-ring, .cursor-dot { display: none; }
+  .cursor-mic { display: none; }
 }
 
 /* ==========================================================================

@@ -471,41 +471,98 @@
     });
   }
 
-  /* ---- custom cursor ---- */
+  /* ---- cursor: the microphone ----
+     Her prop, abstracted. The brass head tracks the pointer with a little
+     weight; the shaft lags further behind and turns to face where the
+     pointer came from, so moving the mouse drags the stand round after it
+     and it settles when you stop. */
   if (window.matchMedia('(pointer: fine)').matches) {
-    var ring = document.createElement('div');
-    ring.className = 'cursor-ring is-hidden';
-    var dot = document.createElement('div');
-    dot.className = 'cursor-dot is-hidden';
-    document.body.appendChild(ring);
-    document.body.appendChild(dot);
+    var mic = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    mic.setAttribute('class', 'cursor-mic');
+    mic.setAttribute('viewBox', '0 0 116 40');
+    mic.setAttribute('aria-hidden', 'true');
+    mic.innerHTML = [
+      '<defs>',
+      '  <linearGradient id="micBrass" x1="0" y1="0" x2="0" y2="1">',
+      '    <stop offset="0" stop-color="#ffeec2"/>',
+      '    <stop offset="0.34" stop-color="#e2b95f"/>',
+      '    <stop offset="0.62" stop-color="#a97c24"/>',
+      '    <stop offset="1" stop-color="#f4d78f"/>',
+      '  </linearGradient>',
+      '  <radialGradient id="micHead" cx="0.34" cy="0.28" r="0.78">',
+      '    <stop offset="0" stop-color="#fff3d2"/>',
+      '    <stop offset="0.45" stop-color="#e2b95f"/>',
+      '    <stop offset="1" stop-color="#966c1c"/>',
+      '  </radialGradient>',
+      '</defs>',
+      '<g class="shaft">',
+      '  <rect x="14" y="17.7" width="70" height="4.6" rx="2.3" fill="url(#micBrass)"/>',
+      '  <rect x="80" y="15.6" width="7" height="8.8" rx="2" fill="url(#micBrass)"/>',
+      '</g>',
+      '<circle class="halo" cx="96" cy="20" r="17" fill="none" stroke="#ff2d55" stroke-width="1.2" opacity="0"/>',
+      '<g class="head">',
+      '  <circle cx="96" cy="20" r="10.6" fill="url(#micHead)"/>',
+      '  <circle cx="96" cy="20" r="10.6" fill="none" stroke="rgba(0,0,0,0.3)" stroke-width="0.9"/>',
+      '  <circle cx="96" cy="20" r="6.4" fill="none" stroke="rgba(0,0,0,0.16)" stroke-width="0.9"/>',
+      '  <circle cx="92.6" cy="16.6" r="2.4" fill="rgba(255,255,255,0.55)"/>',
+      '</g>'
+    ].join('');
+    document.body.appendChild(mic);
     document.documentElement.classList.add('cursor-on');
 
-    var ringX = gsap.quickTo(ring, 'x', { duration: 0.45, ease: 'power3.out' });
-    var ringY = gsap.quickTo(ring, 'y', { duration: 0.45, ease: 'power3.out' });
-    var dotX = gsap.quickTo(dot, 'x', { duration: 0.12, ease: 'power2.out' });
-    var dotY = gsap.quickTo(dot, 'y', { duration: 0.12, ease: 'power2.out' });
+    // head keeps up; the shaft angle trails, which is what reads as weight
+    var micX = gsap.quickTo(mic, 'x', { duration: 0.17, ease: 'power3.out' });
+    var micY = gsap.quickTo(mic, 'y', { duration: 0.17, ease: 'power3.out' });
+    var micRot = gsap.quickTo(mic, 'rotation', { duration: 0.5, ease: 'power2.out' });
+    var micStretch = gsap.quickTo(mic, 'scaleX', { duration: 0.35, ease: 'power2.out' });
+
+    var prevX = null, prevY = null;
+    var angle = -24;          // resting tilt, the way the prop hangs
+    var idleTimer = null;
 
     window.addEventListener('pointermove', function (e) {
-      ring.classList.remove('is-hidden');
-      dot.classList.remove('is-hidden');
-      ringX(e.clientX); ringY(e.clientY);
-      dotX(e.clientX); dotY(e.clientY);
+      var x = e.clientX, y = e.clientY;
+      mic.classList.add('is-live');
+      micX(x); micY(y);
+
+      if (prevX !== null) {
+        var dx = x - prevX, dy = y - prevY;
+        var speed = Math.hypot(dx, dy);
+        if (speed > 2.2) {
+          // face where the pointer came from, so the shaft drags behind
+          var target = Math.atan2(dy, dx) * 180 / Math.PI;
+          // unwrap so it swings the short way round instead of spinning
+          while (target - angle > 180) target -= 360;
+          while (target - angle < -180) target += 360;
+          angle = target;
+          micRot(angle);
+          // a touch of stretch at speed, like a boom flexing
+          micStretch(1 + Math.min(speed / 190, 0.16));
+        }
+      }
+      prevX = x; prevY = y;
+
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(function () {
+        micStretch(1);
+        var rest = angle - ((angle + 180) % 360 - 180) - 24;
+        micRot(rest);
+        angle = rest;
+      }, 420);
     }, { passive: true });
 
     document.addEventListener('pointerover', function (e) {
-      if (e.target.closest('a, button, [data-embed], .gallery-item')) {
-        ring.classList.add('is-active');
+      if (e.target.closest('a, button, [data-embed], .gallery-item, .rail-item')) {
+        mic.classList.add('is-active');
       }
     });
     document.addEventListener('pointerout', function (e) {
-      if (e.target.closest('a, button, [data-embed], .gallery-item')) {
-        ring.classList.remove('is-active');
+      if (e.target.closest('a, button, [data-embed], .gallery-item, .rail-item')) {
+        mic.classList.remove('is-active');
       }
     });
     document.documentElement.addEventListener('mouseleave', function () {
-      ring.classList.add('is-hidden');
-      dot.classList.add('is-hidden');
+      mic.classList.remove('is-live');
     });
   }
 })();

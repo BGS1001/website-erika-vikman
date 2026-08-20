@@ -1,0 +1,122 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - navigation "Main" [ref=e3]:
+    - generic [ref=e4]:
+      - link "ERIKA.VIKMAN" [ref=e5] [cursor=pointer]:
+        - /url: index.html
+      - list [ref=e6]:
+        - listitem [ref=e7]:
+          - link "Home" [ref=e8] [cursor=pointer]:
+            - /url: index.html
+        - listitem [ref=e9]:
+          - link "About" [ref=e10] [cursor=pointer]:
+            - /url: about.html
+        - listitem [ref=e11]:
+          - link "Music" [ref=e12] [cursor=pointer]:
+            - /url: music.html
+        - listitem [ref=e13]:
+          - link "Tour" [ref=e14] [cursor=pointer]:
+            - /url: tour.html
+        - listitem [ref=e15]:
+          - link "Gallery" [ref=e16] [cursor=pointer]:
+            - /url: gallery.html
+        - listitem [ref=e17]:
+          - link "Contact" [ref=e18] [cursor=pointer]:
+            - /url: contact.html
+      - link "Listen" [ref=e20] [cursor=pointer]:
+        - /url: https://open.spotify.com/artist/6JVB6uiYxpF2K1PGsPRpWR
+  - main [ref=e21]:
+    - generic [ref=e22]:
+      - img "Erika Vikman against red velvet curtain" [ref=e24]
+      - heading "ERIKA VIKMAN" [level=1] [ref=e26]:
+        - generic [ref=e27]:
+          - generic [ref=e28]: E
+          - generic [ref=e29]: R
+          - generic [ref=e30]: I
+          - generic [ref=e31]: K
+          - generic [ref=e32]: A
+        - generic [ref=e33]:
+          - generic [ref=e34]: V
+          - generic [ref=e35]: I
+          - generic [ref=e36]: K
+          - generic [ref=e37]: M
+          - generic [ref=e38]: A
+          - generic [ref=e39]: "N"
+    - generic [ref=e41]:
+      - generic [ref=e42]:
+        - text: ICH KOMME
+        - generic [ref=e43]: ★
+        - text: CICCIOLINA
+        - generic [ref=e44]: ★
+        - text: SYNTISTEN PÖYTÄ
+        - generic [ref=e45]: ★
+        - text: TANGO QUEEN
+        - generic [ref=e46]: ★
+        - text: STYLE ICON 2025
+        - generic [ref=e47]: ★
+        - text: RUOSKA
+        - generic [ref=e48]: ★
+      - generic [ref=e49]:
+        - text: ICH KOMME
+        - generic [ref=e50]: ★
+        - text: CICCIOLINA
+        - generic [ref=e51]: ★
+        - text: SYNTISTEN PÖYTÄ
+        - generic [ref=e52]: ★
+        - text: TANGO QUEEN
+        - generic [ref=e53]: ★
+        - text: STYLE ICON 2025
+        - generic [ref=e54]: ★
+        - text: RUOSKA
+        - generic [ref=e55]: ★
+    - generic [ref=e63]:
+      - generic [ref=e64]: The archive
+      - heading "Backstage & on stage." [level=2] [ref=e65]:
+        - generic [ref=e66]: Backstage
+        - generic [ref=e68]: "&"
+        - emphasis [ref=e70]:
+          - generic [ref=e71]: "on"
+          - generic [ref=e73]: stage.
+  - contentinfo [ref=e79]:
+    - generic [ref=e80]:
+      - generic [ref=e81]:
+        - generic [ref=e82]:
+          - link "ERIKA.VIKMAN" [ref=e83] [cursor=pointer]:
+            - /url: index.html
+          - paragraph [ref=e84]: Finland's tango queen turned Eurovision style icon. Ich komme.
+        - list [ref=e85]:
+          - listitem [ref=e86]:
+            - link "Home" [ref=e87] [cursor=pointer]:
+              - /url: index.html
+          - listitem [ref=e88]:
+            - link "About" [ref=e89] [cursor=pointer]:
+              - /url: about.html
+          - listitem [ref=e90]:
+            - link "Music" [ref=e91] [cursor=pointer]:
+              - /url: music.html
+          - listitem [ref=e92]:
+            - link "Tour" [ref=e93] [cursor=pointer]:
+              - /url: tour.html
+          - listitem [ref=e94]:
+            - link "Gallery" [ref=e95] [cursor=pointer]:
+              - /url: gallery.html
+          - listitem [ref=e96]:
+            - link "Contact" [ref=e97] [cursor=pointer]:
+              - /url: contact.html
+        - generic [ref=e98]:
+          - link "Instagram" [ref=e99] [cursor=pointer]:
+            - /url: https://www.instagram.com/erikavikman/
+            - text: IG
+          - link "TikTok" [ref=e100] [cursor=pointer]:
+            - /url: https://www.tiktok.com/@erikavikmanofficial
+            - text: TT
+          - link "Spotify" [ref=e101] [cursor=pointer]:
+            - /url: https://open.spotify.com/artist/6JVB6uiYxpF2K1PGsPRpWR
+            - text: SP
+      - generic [ref=e102]:
+        - generic [ref=e103]:
+          - text: Fan tribute site — not affiliated with
+          - strong [ref=e104]: Erika Vikman
+          - text: or her management.
+        - generic [ref=e105]: Photos © their respective owners / Erika Vikman's official channels.

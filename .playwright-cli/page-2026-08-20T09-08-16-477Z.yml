@@ -1,0 +1,136 @@
+- generic [active] [ref=f1e1]:
+  - link "Skip to content" [ref=f1e2] [cursor=pointer]:
+    - /url: "#main"
+  - navigation "Main" [ref=f1e3]:
+    - generic [ref=f1e4]:
+      - link "ERIKA.VIKMAN" [ref=f1e5] [cursor=pointer]:
+        - /url: index.html
+      - list [ref=f1e6]:
+        - listitem [ref=f1e7]:
+          - link "Home" [ref=f1e8] [cursor=pointer]:
+            - /url: index.html
+        - listitem [ref=f1e9]:
+          - link "About" [ref=f1e10] [cursor=pointer]:
+            - /url: about.html
+        - listitem [ref=f1e11]:
+          - link "Music" [ref=f1e12] [cursor=pointer]:
+            - /url: music.html
+        - listitem [ref=f1e13]:
+          - link "Tour" [ref=f1e14] [cursor=pointer]:
+            - /url: tour.html
+        - listitem [ref=f1e15]:
+          - link "Gallery" [ref=f1e16] [cursor=pointer]:
+            - /url: gallery.html
+        - listitem [ref=f1e17]:
+          - link "Contact" [ref=f1e18] [cursor=pointer]:
+            - /url: contact.html
+      - link "Listen" [ref=f1e20] [cursor=pointer]:
+        - /url: https://open.spotify.com/artist/6JVB6uiYxpF2K1PGsPRpWR
+  - main [ref=f1e21]:
+    - generic [ref=f1e24]:
+      - text: Biography
+      - heading "The Tango Queen of Finland" [level=1] [ref=f1e25]: The Tango Queenof Finland
+    - paragraph [ref=f1e28]: Erika Susanna Vikman spent a decade earning her place in Finland's oldest musical tradition before she blew it open — and then took the result to Basel on a flaming golden microphone.
+    - generic [ref=f1e30]:
+      - generic [ref=f1e31]: The road
+      - heading "From Tampere to Basel." [level=2] [ref=f1e32]:
+        - generic [ref=f1e33]: From
+        - generic [ref=f1e35]: Tampere
+        - emphasis [ref=f1e37]:
+          - generic [ref=f1e38]: to
+          - generic [ref=f1e40]: Basel.
+      - generic [ref=f1e42]:
+        - article [ref=f1e43]:
+          - generic [ref=f1e44]: "1993"
+          - generic [ref=f1e45]:
+            - heading "Born into it" [level=3] [ref=f1e46]
+            - paragraph [ref=f1e47]: Born on 20 February in Tampere, Finland, and raised between Lempäälä and Pori. Her mother was a tango singer who competed at Tangomarkkinat — Finland's storied tango festival — and her younger sister Jennika sings too.
+        - article [ref=f1e48]:
+          - generic [ref=f1e49]: "2013"
+          - generic [ref=f1e50]:
+            - heading "Idols, and a wildcard" [level=3] [ref=f1e51]
+            - paragraph [ref=f1e52]:
+              - text: Her professional road starts on season seven of Finnish
+              - emphasis [ref=f1e53]: Idols
+              - text: ", where a wildcard return carries her to seventh place."
+        - article [ref=f1e54]:
+          - generic [ref=f1e55]: "2016"
+          - generic [ref=f1e56]:
+            - heading "Tango Queen of Finland" [level=3] [ref=f1e57]
+            - paragraph [ref=f1e58]: Runner-up at Tangomarkkinat in 2015, she returns the following year and wins outright — taking the title that still follows her name.
+            - figure "The look that came later — leather, spikes, gold" [ref=f1e59]:
+              - img "Erika Vikman backstage in a studded corset" [ref=f1e60]
+        - article [ref=f1e62]:
+          - generic [ref=f1e63]: "2020"
+          - generic [ref=f1e64]:
+            - heading "Cicciolina, and the turn to pop" [level=3] [ref=f1e65]
+            - paragraph [ref=f1e66]: "\"Cicciolina\" — named after the Hungarian-Italian performer and politician Ilona Staller — places second at Uuden Musiikin Kilpailu but becomes her first top-five hit. \"Syntisten pöytä\" follows to number three and gives her a first number-one radio hit."
+            - paragraph [ref=f1e67]:
+              - text: The same year she competes as "The Wasp" on
+              - emphasis [ref=f1e68]: Masked Singer Suomi
+              - text: ", finishing third, and publicly comes out as bisexual."
+        - article [ref=f1e69]:
+          - generic [ref=f1e70]: "2021"
+          - generic [ref=f1e71]:
+            - heading "A number-one debut" [level=3] [ref=f1e72]
+            - paragraph [ref=f1e73]: Her self-titled debut album arrives in August and goes straight to number one in Finland — proof the tango hall had built a pop star made to last.
+            - figure "Off duty" [ref=f1e74]:
+              - img "Erika Vikman off stage in a denim jacket" [ref=f1e75]
+        - article [ref=f1e77]:
+          - generic [ref=f1e78]: "2025"
+          - generic [ref=f1e79]:
+            - heading "Ich Komme — Basel" [level=3] [ref=f1e80]
+            - paragraph [ref=f1e81]: Written and produced by Christel and Jori Roosberg, released through Warner Music Finland and Mökkitie Records, "Ich Komme" wins Uuden Musiikin Kilpailu on a 75% public / 25% jury split and carries Finland to the Eurovision Song Contest.
+            - paragraph [ref=f1e82]:
+              - text: She qualifies third from her semi-final with 115 points, then finishes
+              - strong [ref=f1e83]: 11th in the Grand Final with 196
+              - text: — the performance defined by being hoisted skyward on a giant golden microphone stand, throwing fireworks over the arena.
+            - figure "The golden microphone, Basel 2025" [ref=f1e84]:
+              - img "Erika Vikman lifted on the golden microphone at Eurovision 2025" [ref=f1e85]
+    - generic [ref=f1e88]:
+      - generic [ref=f1e89] [cursor=pointer]: With the team, Basel 2025
+      - generic [ref=f1e90] [cursor=pointer]: Ich Komme merch
+      - generic [ref=f1e91] [cursor=pointer]: Award show, 2025
+      - generic [ref=f1e92] [cursor=pointer]: With the fans
+  - contentinfo [ref=f1e94]:
+    - generic [ref=f1e95]:
+      - generic [ref=f1e96]:
+        - generic [ref=f1e97]:
+          - link "ERIKA.VIKMAN" [ref=f1e98] [cursor=pointer]:
+            - /url: index.html
+          - paragraph [ref=f1e99]: Finland's tango queen turned Eurovision style icon. Ich komme.
+        - list [ref=f1e100]:
+          - listitem [ref=f1e101]:
+            - link "Home" [ref=f1e102] [cursor=pointer]:
+              - /url: index.html
+          - listitem [ref=f1e103]:
+            - link "About" [ref=f1e104] [cursor=pointer]:
+              - /url: about.html
+          - listitem [ref=f1e105]:
+            - link "Music" [ref=f1e106] [cursor=pointer]:
+              - /url: music.html
+          - listitem [ref=f1e107]:
+            - link "Tour" [ref=f1e108] [cursor=pointer]:
+              - /url: tour.html
+          - listitem [ref=f1e109]:
+            - link "Gallery" [ref=f1e110] [cursor=pointer]:
+              - /url: gallery.html
+          - listitem [ref=f1e111]:
+            - link "Contact" [ref=f1e112] [cursor=pointer]:
+              - /url: contact.html
+        - generic [ref=f1e113]:
+          - link "Instagram" [ref=f1e114] [cursor=pointer]:
+            - /url: https://www.instagram.com/erikavikman/
+            - text: IG
+          - link "TikTok" [ref=f1e115] [cursor=pointer]:
+            - /url: https://www.tiktok.com/@erikavikmanofficial
+            - text: TT
+          - link "Spotify" [ref=f1e116] [cursor=pointer]:
+            - /url: https://open.spotify.com/artist/6JVB6uiYxpF2K1PGsPRpWR
+            - text: SP
+      - generic [ref=f1e117]:
+        - generic [ref=f1e118]:
+          - text: Fan tribute site — not affiliated with
+          - strong [ref=f1e119]: Erika Vikman
+          - text: or her management.
+        - generic [ref=f1e120]: Photos © their respective owners / Erika Vikman's official channels.

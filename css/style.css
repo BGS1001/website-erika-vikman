@@ -2141,3 +2141,86 @@ html.gsap .wi { display: inline-block; will-change: transform; }
 @media (prefers-reduced-motion: reduce) {
   .gallery-item::before, .rail-item::before { transition: none; }
 }
+
+/* ==========================================================================
+   MERCH — the store lives on sinnersclub.fi, so this page's job is to hand
+   the visitor over to it cleanly rather than to fake a shop.
+   ========================================================================== */
+.store-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(1.8rem, 4vw, 3.6rem);
+  align-items: center;
+  margin-top: 2.8rem;
+  padding: clamp(1.8rem, 4vw, 3rem);
+  border: 1px solid rgba(216, 174, 87, 0.3);
+  background:
+    radial-gradient(85% 130% at 100% 0%, rgba(232, 17, 45, 0.16), transparent 62%),
+    var(--near-black);
+  box-shadow: var(--edge);
+}
+.store-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--sheen);
+}
+.store-card > * { position: relative; z-index: 1; }
+@media (max-width: 860px) { .store-card { grid-template-columns: 1fr; } }
+
+.store-card .shot img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border: 1px solid rgba(243, 237, 226, 0.12);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+}
+.store-card .flag {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #241a05;
+  background: var(--gold-metal);
+  padding: 0.35em 0.8em;
+  margin-bottom: 1rem;
+}
+.store-card h2 {
+  font-size: clamp(2rem, 4.6vw, 3.2rem);
+  color: var(--white);
+  letter-spacing: -0.01em;
+  margin-bottom: 0.7rem;
+}
+
+.merch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1px;
+  margin-top: 2.6rem;
+  background: rgba(243, 237, 226, 0.12);
+  border: 1px solid rgba(243, 237, 226, 0.12);
+}
+.merch-cell {
+  background: var(--black);
+  padding: clamp(1.5rem, 3vw, 2.1rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.merch-cell .k {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+}
+.merch-cell .t {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+  color: var(--white);
+  text-transform: uppercase;
+}
+.merch-cell .d { color: var(--gray); font-size: 0.9rem; }

@@ -59,6 +59,7 @@
   function ioShow(el) {
     el.style.opacity = '1';
     el.style.transform = 'none';
+    el.style.filter = 'none';
     pending.delete(el);
     if (io) io.unobserve(el);
   }
@@ -82,8 +83,10 @@
     }, { threshold: 0, rootMargin: '0px 0px -8% 0px' });
     revealEls.forEach(function (el) {
       el.style.opacity = '0';
-      el.style.transform = 'translateY(24px)';
-      el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+      el.style.transform = 'translateY(20px)';
+      el.style.filter = 'blur(6px)';
+      /* same curve and tail as the GSAP tier, so the two paths feel alike */
+      el.style.transition = 'opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out), filter 0.9s var(--ease-out)';
       io.observe(el);
     });
   }
@@ -316,38 +319,84 @@
     gsap.ticker.add(function () { skewTo(0); });
   }
 
-  /* ---- section reveals ----
-     One curve applied everywhere reads as "animation was added" rather than
-     choreographed, so a section's weight picks its entrance: loud panels
-     arrive with a push, quiet ones simply settle. */
+  /* ---- section reveals: a soft float, row by row ----
+     A whole section arriving as one slab reads as a slide advancing. Blocks
+     are decomposed into their content rows so each floats on its own beat:
+     short travel, a long ease-out tail, and a little blur burning off. The
+     blur is what makes it read as soft rather than as a slide — the row
+     resolves into focus instead of sliding into place.
+     A classless wrapper, or one holding a section title, is scaffolding: it
+     should not move as a unit, so we float what it holds instead. */
+  var DRIFT_SEL = '.split-media, .tl-media, .release-hero .cover, .store-card .shot';
+  var SELF_STAGGERED = '.release-grid, .next-row, .awards-row, .merch-grid,' +
+                       '.platform-row, .social-list, .tour-list';
+
   if (revealEls.length) {
-    gsap.set(revealEls, {
-      y: touch ? 68 : 44,
-      scale: touch ? 0.965 : 1,
-      autoAlpha: 0,
-      transformOrigin: '50% 100%'
+    var items = [];
+    revealEls.forEach(function (block) {
+      var kids = [];
+      Array.prototype.slice.call(block.children).forEach(function (child) {
+        var scaffold = child.children.length > 1 &&
+          (!child.className || !!child.querySelector('.section-title'));
+        if (scaffold) {
+          kids.push.apply(kids, Array.prototype.slice.call(child.children));
+        } else {
+          kids.push(child);
+        }
+      });
+      items.push.apply(items, kids.length ? kids : [block]);
     });
-    ScrollTrigger.batch(revealEls, {
-      start: touch ? 'top 92%' : 'top 86%',
+
+    var vh = window.innerHeight || 800;
+    items = items.filter(function (el) { return !el.matches(SELF_STAGGERED); });
+    items.forEach(function (el) {
+      /* Anything that already owns a scroll-driven transform gets opacity
+         only — a second y tween would fight the drift, and clearing the
+         transform afterwards would wipe it. */
+      /* Section titles already rise word by word behind their masks; adding a
+         float on top of that smears two movements into one mush. */
+      var titled = el.matches('.section-title');
+      var owned = titled || el.matches(DRIFT_SEL) || !!el.closest('.banner-par');
+      /* Blur is a full repaint of the element each frame, so it is worth it
+         on a paragraph and not on a photo or a half-screen headline. */
+      var big = el.getBoundingClientRect().height > vh * 0.45;
+      var media = el.tagName === 'IMG' || !!el.querySelector('img, iframe, video, canvas');
+      el.__rv = { y: owned ? 0 : (touch ? 26 : 20), blur: (media || big || titled) ? 0 : (touch ? 4 : 6) };
+    });
+
+    gsap.set(items, { autoAlpha: 0 });
+    var moved = items.filter(function (el) { return el.__rv.y; });
+    var blurred = items.filter(function (el) { return el.__rv.blur; });
+    if (moved.length) gsap.set(moved, { y: function (i, el) { return el.__rv.y; } });
+    if (blurred.length) {
+      gsap.set(blurred, { filter: function (i, el) { return 'blur(' + el.__rv.blur + 'px)'; } });
+    }
+
+    ScrollTrigger.batch(items, {
+      start: touch ? 'top 94%' : 'top 90%',
       once: true,
       onEnter: function (batch) {
         batch.forEach(function (el, i) {
-          var loud = el.closest('.sec-loud, .komme, .big-feature');
-          gsap.to(el, {
-            y: 0,
-            scale: 1,
+          var clear = ['willChange'];
+          var vars = {
             autoAlpha: 1,
-            duration: touch ? 1.05 : (loud ? 1.15 : 0.85),
-            ease: touch ? 'expo.out' : (loud ? 'expo.out' : 'power2.out'),
-            delay: i * (loud ? 0.06 : 0.1),
-            overwrite: true,
-            clearProps: 'transform'
-          });
+            duration: 0.9,
+            /* power4.out is the GSAP twin of cubic-bezier(0.23, 1, 0.32, 1):
+               most of the distance is covered at once, then a long quiet
+               settle. That tail is the "soft" in soft float. */
+            ease: 'power4.out',
+            delay: i * 0.075,
+            overwrite: 'auto'
+          };
+          if (el.__rv.y) { vars.y = 0; clear.push('transform'); }
+          if (el.__rv.blur) { vars.filter = 'blur(0px)'; clear.push('filter'); }
+          vars.clearProps = clear.join(',');
+          gsap.to(el, vars);
         });
       }
     });
-    // sections above the fold on load (or after scroll restoration) must not
-    // wait for a scroll event
+    // rows above the fold on load (or after scroll restoration) must not wait
+    // for a scroll event
     ScrollTrigger.refresh();
   }
 
@@ -413,7 +462,7 @@
      frame would eat the badge and scaling the photo would push the border out
      of view. Moving the unit keeps both attached. */
   var DRIFT = touch ? 10 : 14;
-  gsap.utils.toArray('.split-media, .tl-media, .release-hero .cover, .store-card .shot')
+  gsap.utils.toArray(DRIFT_SEL)
     .filter(function (f) { return !f.closest('.banner-par') && f.querySelector('img'); })
     .forEach(function (frame) {
       gsap.fromTo(frame, { y: -DRIFT }, {

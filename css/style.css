@@ -8,6 +8,11 @@
    in each page's <head> — @import here would block first render. */
 
 :root {
+  /* Motion curve. The built-in ease-out is too weak to read as deliberate:
+     this one covers most of the distance at once, then settles on a long
+     quiet tail — the tail is what makes an entrance feel soft. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+
   /* Cool, deep grounds. The old neutrals were warm and earthy (#0a0908,
      #a79d92) — that reads matte and vintage, which fights an artist whose
      whole language is latex, chrome and stage light. */

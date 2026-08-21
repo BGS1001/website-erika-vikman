@@ -25,7 +25,8 @@
     maxScale:       1.16,
     idleAnimation:  true,
     micLength:      118,    // px from head to nozzle
-    zIndex:         60      // above content, below nav and dialogs
+    zIndex:         60,     // above content, below nav and dialogs
+    mode:           'pointer' // 'pointer' on mice, 'scroll' on touch
   };
 
   /* polished metal under studio light — nothing saturated */
@@ -469,9 +470,62 @@
     this._onLeave = function () { this.pointer.seen = false; }.bind(this);
     this._onResize = this.resize.bind(this);
 
-    global.addEventListener('pointermove', this._onMove, { passive: true });
-    document.documentElement.addEventListener('mouseleave', this._onLeave);
-    global.addEventListener('blur', this._onLeave);
+    if (this.cfg.mode === 'scroll') {
+      /* The rig flies alongside the column. Its resting height is fixed; the
+         scroll delta pushes it against the direction of travel, so scrolling
+         down throws it upward and it chases back down — the same lag that
+         makes the pointer version feel weighted. */
+      this._lastY = global.scrollY;
+      this._idleTimer = null;
+      this._onPageScroll = function () {
+        var y = global.scrollY;
+        var d = y - this._lastY;
+        this._lastY = y;
+
+        var restX = this.w * 0.74;
+        var restY = this.h * 0.5;
+        var throwY = clamp(-d * 5.5, -this.h * 0.3, this.h * 0.3);
+
+        this.pointer.x = restX;
+        this.pointer.y = restY + throwY;
+        if (!this.pointer.seen) {
+          this.pointer.seen = true;
+          this.pos.x = restX;
+          this.pos.y = restY;
+        }
+
+        clearTimeout(this._idleTimer);
+        this._idleTimer = setTimeout(function () {
+          /* withdraw once the page settles so it never sits over something
+             being read */
+          this.pointer.seen = false;
+        }.bind(this), 900);
+      }.bind(this);
+
+      /* a tap throws a small spark burst where the finger lands */
+      this._onTap = function (e) {
+        var t = e.changedTouches ? e.changedTouches[0] : e;
+        if (!t) return;
+        this.pointer.seen = true;
+        this.pos.x = t.clientX;
+        this.pos.y = t.clientY;
+        this.pointer.x = t.clientX;
+        this.pointer.y = t.clientY;
+        this.energy = 1;
+        this.emit(14);
+        clearTimeout(this._idleTimer);
+        this._idleTimer = setTimeout(function () {
+          this.pointer.seen = false;
+        }.bind(this), 900);
+      }.bind(this);
+
+      global.addEventListener('scroll', this._onPageScroll, { passive: true });
+      global.addEventListener('touchstart', this._onTap, { passive: true });
+    } else {
+      global.addEventListener('pointermove', this._onMove, { passive: true });
+      document.documentElement.addEventListener('mouseleave', this._onLeave);
+      global.addEventListener('blur', this._onLeave);
+    }
     global.addEventListener('resize', this._onResize, { passive: true });
 
     /* A hidden tab or a prerender can report a 0x0 viewport at start-up, and
@@ -493,6 +547,9 @@
     document.documentElement.removeEventListener('mouseleave', this._onLeave);
     global.removeEventListener('blur', this._onLeave);
     global.removeEventListener('resize', this._onResize);
+    if (this._onPageScroll) global.removeEventListener('scroll', this._onPageScroll);
+    if (this._onTap) global.removeEventListener('touchstart', this._onTap);
+    clearTimeout(this._idleTimer);
     if (this._ro) { this._ro.disconnect(); this._ro = null; }
     if (this.canvas && this.canvas.parentNode) {
       this.canvas.parentNode.removeChild(this.canvas);
@@ -506,10 +563,24 @@
     var fine = global.matchMedia('(pointer: fine)').matches;
     var still = global.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    /* no pointer to follow on touch, and motion-sensitive visitors opted out */
-    if (!fine || still) return null;
+    /* motion-sensitive visitors opted out */
+    if (still) return null;
 
-    var inst = new MicCursor(options);
+    /* Touch has no pointer to follow, so the rig rides the scroll instead —
+       same object, same physics, driven by the gesture that device actually
+       has. It shows while the page is moving and withdraws once it stops, so
+       it never sits on top of something being read. */
+    var opts = {};
+    var k;
+    if (options) for (k in options) opts[k] = options[k];
+    if (!fine) {
+      opts.mode = 'scroll';
+      if (opts.micLength === undefined) opts.micLength = 86;
+      if (opts.opacity === undefined) opts.opacity = 0.3;
+      if (opts.particleAmount === undefined) opts.particleAmount = 0.7;
+    }
+
+    var inst = new MicCursor(opts);
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', function () { inst.start(); });
     } else {

@@ -218,6 +218,12 @@
   gsap.registerPlugin(ScrollTrigger);
   gsap.defaults({ ease: 'power3.out', duration: 1 });
 
+  /* A narrow column swallows subtlety: the same 44px rise that reads as
+     choreography on a wide screen reads as "the content just appeared" on a
+     phone. Touch gets more travel and a little scale so blocks arrive
+     instead of fading up. */
+  var touch = window.matchMedia('(pointer: coarse)').matches;
+
   /* ---- hero: split the title into lines/chars and run the opening ---- */
   var heroTitle = document.querySelector('.hero-title');
   var hero = document.querySelector('.hero');
@@ -315,18 +321,24 @@
      choreographed, so a section's weight picks its entrance: loud panels
      arrive with a push, quiet ones simply settle. */
   if (revealEls.length) {
-    gsap.set(revealEls, { y: 44, autoAlpha: 0 });
+    gsap.set(revealEls, {
+      y: touch ? 68 : 44,
+      scale: touch ? 0.965 : 1,
+      autoAlpha: 0,
+      transformOrigin: '50% 100%'
+    });
     ScrollTrigger.batch(revealEls, {
-      start: 'top 86%',
+      start: touch ? 'top 92%' : 'top 86%',
       once: true,
       onEnter: function (batch) {
         batch.forEach(function (el, i) {
           var loud = el.closest('.sec-loud, .komme, .big-feature');
           gsap.to(el, {
             y: 0,
+            scale: 1,
             autoAlpha: 1,
-            duration: loud ? 1.15 : 0.85,
-            ease: loud ? 'expo.out' : 'power2.out',
+            duration: touch ? 1.05 : (loud ? 1.15 : 0.85),
+            ease: touch ? 'expo.out' : (loud ? 'expo.out' : 'power2.out'),
             delay: i * (loud ? 0.06 : 0.1),
             overwrite: true,
             clearProps: 'transform'
@@ -391,6 +403,47 @@
     gsap.fromTo(img, { scale: 1.12 }, {
       scale: 1, duration: 1.4, ease: 'power2.out',
       scrollTrigger: { trigger: img, start: 'top 88%', once: true }
+    });
+  });
+
+  /* Photographs drift inside their frames as the page moves. On a phone this
+     is most of what stops a stack of images reading as a static list. */
+  gsap.utils.toArray('.split-media img, .tl-media img, .release-hero .cover img, .store-card .shot img')
+    .filter(function (img) { return !img.closest('.banner-par'); })
+    .forEach(function (img) {
+      var frame = img.parentNode;
+      if (getComputedStyle(frame).overflow !== 'hidden') frame.style.overflow = 'hidden';
+      gsap.fromTo(img,
+        { yPercent: touch ? -6 : -4 },
+        {
+          yPercent: touch ? 6 : 4,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: frame,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: touch ? 0.6 : true
+          }
+        });
+      gsap.set(img, { scale: 1.14 });
+    });
+
+  /* Grid cards climb in one after another rather than all at once. */
+  [['.release-grid', '.release-card'], ['.next-row', '.next-card'],
+   ['.awards-row', '.award-cell'], ['.merch-grid', '.merch-cell'],
+   ['.platform-row', '.platform-link'], ['.social-list', '.social-row'],
+   ['.tour-list', '.tour-row']].forEach(function (pair) {
+    gsap.utils.toArray(pair[0]).forEach(function (group) {
+      var items = group.querySelectorAll(pair[1]);
+      if (!items.length) return;
+      gsap.from(items, {
+        y: touch ? 34 : 24,
+        autoAlpha: 0,
+        duration: 0.7,
+        ease: 'power3.out',
+        stagger: touch ? 0.08 : 0.06,
+        scrollTrigger: { trigger: group, start: 'top 90%', once: true }
+      });
     });
   });
   var banner = document.querySelector('.banner-par');

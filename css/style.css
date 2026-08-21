@@ -2264,3 +2264,21 @@ html.gsap .wi { display: inline-block; will-change: transform; }
 @media (prefers-reduced-motion: reduce) {
   .bg-video { display: none; }
 }
+
+/* A red circle with a white triangle is the YouTube convention. Putting it
+   over a streaming player promises a video that never arrives — so only the
+   video facades keep it. Audio facades get the site's gold and a level
+   meter, which says "sound" before anyone reads the label. */
+.is-audio .embed-play { background: var(--gold); }
+.is-audio .embed-facade:hover .embed-play { background: var(--gold-bright); }
+.is-audio .embed-play::after {
+  border: 0;
+  margin-left: 0;
+  width: 21px;
+  height: 20px;
+  background:
+    linear-gradient(var(--black), var(--black)) 0    50% / 3px 52% no-repeat,
+    linear-gradient(var(--black), var(--black)) 6px  50% / 3px 100% no-repeat,
+    linear-gradient(var(--black), var(--black)) 12px 50% / 3px 40% no-repeat,
+    linear-gradient(var(--black), var(--black)) 18px 50% / 3px 76% no-repeat;
+}

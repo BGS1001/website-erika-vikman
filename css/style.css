@@ -362,6 +362,13 @@ section { position: relative; }
   display: flex;
   align-items: flex-end;
   overflow: hidden;
+  /* The nav is fixed, so it occupies no space in flow. Bottom-aligned hero
+     copy therefore had nothing stopping it sliding under the bar once the
+     window got short — at 1280x600 the meta line overlapped it by 37px.
+     Reserving the nav height inside the box keeps them apart, and because
+     this is min-height the hero grows when the copy needs more room instead
+     of tucking it underneath. */
+  padding-top: calc(var(--nav-h) + clamp(0.5rem, 2vh, 1.25rem));
 }
 
 .hero-bg {

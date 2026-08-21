@@ -1172,6 +1172,9 @@ img { height: auto; }
   z-index: 1;
   width: 68px;
   height: 68px;
+  /* The facade is a flex column and a short 16/9 frame on a narrow screen
+     will happily crush a fixed height, turning the circle into an ellipse. */
+  flex-shrink: 0;
   border-radius: 50%;
   background: var(--red);
   display: grid;
@@ -2281,4 +2284,8 @@ html.gsap .wi { display: inline-block; will-change: transform; }
     linear-gradient(var(--black), var(--black)) 6px  50% / 3px 100% no-repeat,
     linear-gradient(var(--black), var(--black)) 12px 50% / 3px 40% no-repeat,
     linear-gradient(var(--black), var(--black)) 18px 50% / 3px 76% no-repeat;
+}
+/* the gloss layer glows every play button red; a gold one needs a gold glow */
+.is-audio .embed-play {
+  box-shadow: var(--edge), 0 10px 30px rgba(216, 174, 87, 0.4), var(--glow-gold);
 }

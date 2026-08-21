@@ -396,7 +396,7 @@
     });
   });
 
-  /* ---- imagery: settle-in scale + banner parallax ---- */
+  /* ---- imagery: settle-in scale + frame drift ---- */
   gsap.utils.toArray('.split-media img').filter(function (img) {
     return !img.closest('.banner-par'); // the banner has its own parallax
   }).forEach(function (img) {
@@ -406,26 +406,26 @@
     });
   });
 
-  /* Photographs drift inside their frames as the page moves. On a phone this
-     is most of what stops a stack of images reading as a static list. */
-  gsap.utils.toArray('.split-media img, .tl-media img, .release-hero .cover img, .store-card .shot img')
-    .filter(function (img) { return !img.closest('.banner-par'); })
-    .forEach(function (img) {
-      var frame = img.parentNode;
-      if (getComputedStyle(frame).overflow !== 'hidden') frame.style.overflow = 'hidden';
-      gsap.fromTo(img,
-        { yPercent: touch ? -6 : -4 },
-        {
-          yPercent: touch ? 6 : 4,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: frame,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: touch ? 0.6 : true
-          }
-        });
-      gsap.set(img, { scale: 1.14 });
+  /* Frames drift against the scroll, which on a phone is most of what stops a
+     stack of images reading as a static list. The whole frame moves, not the
+     photo inside it: the hairline border belongs to the image and .split-media
+     hangs its stat badge past the corner on negative offsets, so clipping the
+     frame would eat the badge and scaling the photo would push the border out
+     of view. Moving the unit keeps both attached. */
+  var DRIFT = touch ? 10 : 14;
+  gsap.utils.toArray('.split-media, .tl-media, .release-hero .cover, .store-card .shot')
+    .filter(function (f) { return !f.closest('.banner-par') && f.querySelector('img'); })
+    .forEach(function (frame) {
+      gsap.fromTo(frame, { y: -DRIFT }, {
+        y: DRIFT,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: frame,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: touch ? 0.6 : true
+        }
+      });
     });
 
   /* Grid cards climb in one after another rather than all at once. */

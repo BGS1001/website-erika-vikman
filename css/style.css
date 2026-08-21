@@ -2152,7 +2152,6 @@ html.gsap .wi { display: inline-block; will-change: transform; }
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: clamp(1.8rem, 4vw, 3.6rem);
   align-items: center;
-  margin-top: 2.8rem;
   padding: clamp(1.8rem, 4vw, 3rem);
   border: 1px solid rgba(216, 174, 87, 0.3);
   background:
@@ -2224,3 +2223,6 @@ html.gsap .wi { display: inline-block; will-change: transform; }
   text-transform: uppercase;
 }
 .merch-cell .d { color: var(--gray); font-size: 0.9rem; }
+/* the page header already carries bottom padding — a full section pad on top
+   of it opened a void before the first block */
+.pt-tight { padding-top: clamp(1.5rem, 3vw, 2.5rem); }

@@ -91,6 +91,64 @@
     });
   }
 
+
+  /* ================= background video slot ==============================
+     A section marked data-video="path/without/extension" upgrades its still
+     to a muted looping video. Placement note: this deliberately is not the
+     hero. The hero still is the LCP image, and a video that swaps in "once
+     scrolling starts" would begin downloading at the exact moment the
+     visitor first interacts — the worst moment on a phone, and phones are
+     the primary surface here. The full-bleed banner sits below the fold,
+     has no copy competing with it, and can buffer with runway to spare.
+
+     Nothing is requested until the section is near the viewport, and the
+     still remains underneath: if the file is missing or the browser refuses
+     to play it, the page keeps the photograph and no one sees a gap. */
+  document.querySelectorAll('[data-video]').forEach(function (host) {
+    var base = host.getAttribute('data-video');
+    var still = host.querySelector('img');
+    if (!base || reduceMotion) return;
+    var c = navigator.connection || {};
+    if (c.saveData === true || /2g/.test(c.effectiveType || '')) return;
+
+    var vid = document.createElement('video');
+    vid.className = 'bg-video';
+    vid.muted = true;
+    vid.loop = true;
+    vid.playsInline = true;
+    vid.setAttribute('muted', '');
+    vid.setAttribute('playsinline', '');
+    vid.preload = 'none';
+    vid.setAttribute('aria-hidden', 'true');
+    vid.tabIndex = -1;
+    if (still) vid.poster = still.currentSrc || still.src;
+
+    vid.addEventListener('error', function () { vid.remove(); }, { once: true });
+    // only reveal it once there are real frames to show, never on the poster
+    vid.addEventListener('playing', function () { host.classList.add('video-on'); });
+
+    ['webm', 'mp4'].forEach(function (ext) {
+      var s = document.createElement('source');
+      s.src = base + '.' + ext;
+      s.type = ext === 'webm' ? 'video/webm' : 'video/mp4';
+      vid.appendChild(s);
+    });
+    host.appendChild(vid);
+
+    // a paused offscreen video still costs decode and battery
+    var seen = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          if (vid.preload === 'none') { vid.preload = 'auto'; vid.load(); }
+          var p = vid.play();
+          if (p && p.catch) p.catch(function () { /* autoplay refused; keep the still */ });
+        } else {
+          vid.pause();
+        }
+      });
+    }, { rootMargin: '200px 0px' });
+    seen.observe(host);
+  });
   /* ================= mobile nav ========================================= */
   var navToggle = document.querySelector('.nav-toggle');
   if (navToggle && navLinks) {
@@ -289,10 +347,43 @@
       }
     }, 6000);
     intro.eventCallback('onComplete', function () { clearTimeout(heroSafety); });
+    /* ---- hero: the photograph turns into the arena as you scroll ----
+       The first frame is the LCP image and is left alone. A second frame is
+       dissolved over it on scrub, so the studio portrait becomes the Basel
+       arena in the same red — a cross-dissolve only reads as deliberate when
+       the two frames share a palette, otherwise it reads as a slideshow.
+       The frame carries no src in the markup. It is armed when the browser
+       goes idle, or on the first scroll, whichever lands first, and the
+       dissolve is only wired up once the file has actually decoded: fading in
+       an undecoded image would punch a dark hole through the hero. */
+    var frame = hero.querySelector('.hero-frame');
+    var conn = navigator.connection || {};
+    var thrifty = conn.saveData === true || /2g/.test(conn.effectiveType || '');
+    if (frame && !thrifty) {
+      var armed = false;
+      var arm = function () {
+        if (armed) return;
+        armed = true;
+        frame.addEventListener('load', function () {
+          gsap.to(frame, {
+            opacity: 1,
+            ease: 'none',
+            scrollTrigger: { trigger: hero, start: 'top top', end: '68% top', scrub: true }
+          });
+          ScrollTrigger.refresh();
+        }, { once: true });
+        frame.src = frame.getAttribute('data-frame');
+      };
+      window.addEventListener('scroll', arm, { once: true, passive: true });
+      if (window.requestIdleCallback) requestIdleCallback(arm, { timeout: 2500 });
+      else setTimeout(arm, 1800);
+    }
 
-    /* hero parallax on the way out */
+
+    /* hero parallax on the way out. Both frames drift together — parallaxing
+       only the lower one would let the two slide apart mid-dissolve. */
     if (heroBg) {
-      gsap.to(heroBg, {
+      gsap.to(hero.querySelectorAll(".hero-bg img"), {
         yPercent: 14,
         ease: 'none',
         scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true }

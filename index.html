@@ -79,7 +79,12 @@
 <main id="main">
 <!-- HERO -->
 <header class="hero">
-  <div class="hero-bg"><img src="assets/img/hero-portrait.jpg" alt="Erika Vikman against red velvet curtain" fetchpriority="high" width="1280" height="800"></div>
+  <div class="hero-bg">
+    <img src="assets/img/hero-portrait.jpg" alt="Erika Vikman against red velvet curtain" fetchpriority="high" width="1280" height="800">
+    <!-- Second frame. No src until the visitor is idle or scrolls, so a hero
+         that is only glanced at costs nothing extra. -->
+    <img class="hero-frame" data-frame="assets/img/erika-crowd-screen.jpg" alt="" aria-hidden="true" width="1024" height="1277">
+  </div>
   <div class="hero-content wrap">
     <p class="hero-meta">
       <span>Tampere <i>·</i> Finland</span>

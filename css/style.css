@@ -370,10 +370,19 @@ section { position: relative; }
   z-index: 0;
 }
 .hero-bg img {
+  position: absolute;
+  inset: 0;
   width: 100%; height: 100%;
   object-fit: cover;
   object-position: center 18%;
   filter: saturate(1.05) contrast(1.05);
+}
+/* The second frame sits on top of the first and is dissolved in by scroll.
+   It stays at zero until its file has actually decoded — fading in a frame
+   that has not loaded yet would punch a dark hole in the hero. */
+.hero-frame {
+  opacity: 0;
+  object-position: center 46%;
 }
 .hero-bg::after {
   content: '';
@@ -2231,3 +2240,27 @@ html.gsap .wi { display: inline-block; will-change: transform; }
 /* the page header already carries bottom padding — a full section pad on top
    of it opened a void before the first block */
 .pt-tight { padding-top: clamp(1.5rem, 3vw, 2.5rem); }
+
+/* ==========================================================================
+   BACKGROUND VIDEO — a still that upgrades itself
+   ========================================================================== */
+/* The video lies exactly over its still and stays transparent until it is
+   actually playing, so a missing file, a refused autoplay or a slow first
+   frame all resolve to the photograph rather than to a black rectangle. */
+.bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.9s var(--ease-out);
+  pointer-events: none;
+  z-index: 1;
+}
+.video-on .bg-video { opacity: 1; }
+[data-video] { position: relative; overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-video { display: none; }
+}

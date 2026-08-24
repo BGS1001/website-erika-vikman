@@ -2544,21 +2544,57 @@ html.gsap .wi { display: inline-block; will-change: transform; }
 }
 .sp-close:hover { background: rgba(255, 255, 255, 0.08); }
 
-.sp-frame { border-radius: 12px; overflow: hidden; background: #000; }
+/* The embed stays as the preview — it carries the real artwork and the real
+   track list — but it no longer pretends to be a player. Spotify serves the
+   preview audio publicly, so the tracks are not the problem; what hangs is
+   the player inside the frame, which cannot reach its own storage once the
+   browser partitions it as a third party. That is inside their origin, so
+   the page has no way to repair it.
 
-.sp-out {
-  display: block;
-  margin-top: 0.85rem;
-  text-align: center;
-  font-size: 0.75rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--gold);
+   A click cannot be caught inside a cross-origin frame either, and a popup
+   opened without a gesture in this document would be blocked. So the gesture
+   is moved here: a real link is laid over the frame, which keeps
+   middle-click, ctrl-click and the keyboard behaving the way links do. */
+.sp-frame { position: relative; border-radius: 12px; overflow: hidden; background: #000; }
+.sp-frame iframe { pointer-events: none; }
+
+.sp-cover {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
   text-decoration: none;
-  opacity: 0.75;
-  transition: opacity 0.2s var(--ease-out);
+  background: transparent;
+  transition: background 0.25s var(--ease-out);
 }
-.sp-out:hover { opacity: 1; }
+.sp-cover span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.7rem 1.2rem;
+  border-radius: 999px;
+  background: rgba(9, 7, 13, 0.86);
+  box-shadow: inset 0 0 0 1px rgba(226, 185, 95, 0.5);
+  color: var(--white);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+}
+.sp-cover:hover, .sp-cover:focus-visible { background: rgba(6, 5, 9, 0.5); }
+.sp-cover:hover span, .sp-cover:focus-visible span { opacity: 1; transform: none; }
+
+.sp-note {
+  margin: 0.9rem 0 0;
+  text-align: center;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.45);
+}
+
 .sp-frame iframe { display: block; width: 100%; height: 420px; border: 0; }
 
 @media (max-width: 520px) {
@@ -2568,4 +2604,5 @@ html.gsap .wi { display: inline-block; will-change: transform; }
 @media (prefers-reduced-motion: reduce) {
   .sp-modal, .sp-panel { transition: none; }
   .sp-panel { transform: none; }
+  .sp-cover, .sp-cover span { transition: none; }
 }

@@ -304,9 +304,12 @@
         '<div class="sp-panel">' +
           '<p class="sp-title" id="sp-title">Listen</p>' +
           '<button class="sp-close" type="button" aria-label="Close player">&times;</button>' +
-          '<div class="sp-frame"></div>' +
-          '<a class="sp-out" target="_blank" rel="noopener">Open in Spotify</a>' +
-        '</div>';
+          '<div class="sp-frame">' +
+            '<a class="sp-cover" target="_blank" rel="noopener">' +
+              '<span>Play on Spotify</span>' +
+            '</a>' +
+          '</div>' +
+          '<p class="sp-note">Playback opens in Spotify</p>';
       document.body.appendChild(spModal);
       spClose = spModal.querySelector('.sp-close');
       spFrame = spModal.querySelector('.sp-frame');
@@ -318,7 +321,7 @@
 
     var openSp = function (src, href) {
       if (!spModal) buildSp();
-      if (!spFrame.firstChild) {
+      if (!spFrame.querySelector('iframe')) {
         var f = document.createElement('iframe');
         // Permissions first, src last. A frame takes its permissions policy
         // when it starts navigating, so anything granted after the src is
@@ -329,10 +332,11 @@
         f.setAttribute('allowfullscreen', '');
         f.title = 'Spotify player';
         f.src = src;
-        spFrame.appendChild(f);
+        f.setAttribute('inert', '');
+        spFrame.insertBefore(f, spFrame.firstChild);
       }
-      var out = spModal.querySelector('.sp-out');
-      if (out) out.href = href;
+      var cover = spModal.querySelector('.sp-cover');
+      if (cover) cover.href = href;
       spLastFocused = document.activeElement;
       spPrevOverflow = document.body.style.overflow;
       document.body.style.overflow = 'hidden';
@@ -348,7 +352,10 @@
       // Let the panel finish fading before pulling the player, or it goes
       // black mid-transition. Re-check, in case it was reopened meanwhile.
       setTimeout(function () {
-        if (spModal && !spModal.classList.contains('open')) spFrame.innerHTML = '';
+        if (spModal && !spModal.classList.contains('open')) {
+          var gone = spFrame.querySelector('iframe');
+          if (gone) gone.remove();
+        }
       }, 320);
     }
 
@@ -366,8 +373,7 @@
       if (!spModal || !spModal.classList.contains('open')) return;
       if (e.key === 'Escape') { closeSp(); return; }
       if (e.key === 'Tab') {
-        var stops = [spClose, spFrame.querySelector('iframe'),
-                     spModal.querySelector('.sp-out')].filter(Boolean);
+        var stops = [spClose, spModal.querySelector('.sp-cover')].filter(Boolean);
         e.preventDefault();
         if (stops.length < 2) { stops[0].focus(); return; }
         var at = stops.indexOf(document.activeElement);

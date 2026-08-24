@@ -305,6 +305,7 @@
           '<p class="sp-title" id="sp-title">Listen</p>' +
           '<button class="sp-close" type="button" aria-label="Close player">&times;</button>' +
           '<div class="sp-frame"></div>' +
+          '<a class="sp-out" target="_blank" rel="noopener">Open in Spotify</a>' +
         '</div>';
       document.body.appendChild(spModal);
       spClose = spModal.querySelector('.sp-close');
@@ -315,16 +316,23 @@
       });
     };
 
-    var openSp = function (src) {
+    var openSp = function (src, href) {
       if (!spModal) buildSp();
       if (!spFrame.firstChild) {
         var f = document.createElement('iframe');
-        f.src = src;
-        f.title = 'Spotify player';
+        // Permissions first, src last. A frame takes its permissions policy
+        // when it starts navigating, so anything granted after the src is
+        // set can arrive too late — which is what was stopping playback:
+        // the player loaded without the autoplay and encrypted-media rights
+        // it needs, so tracks did nothing when clicked.
         f.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
-        f.loading = 'lazy';
+        f.setAttribute('allowfullscreen', '');
+        f.title = 'Spotify player';
+        f.src = src;
         spFrame.appendChild(f);
       }
+      var out = spModal.querySelector('.sp-out');
+      if (out) out.href = href;
       spLastFocused = document.activeElement;
       spPrevOverflow = document.body.style.overflow;
       document.body.style.overflow = 'hidden';
@@ -350,7 +358,7 @@
         if (!id) return; // no id to embed — let the link behave like a link
         e.preventDefault();
         openSp('https://open.spotify.com/embed/artist/' + id[1] +
-               '?utm_source=generator&theme=0');
+               '?utm_source=generator&theme=0', disc.href);
       });
     });
 
@@ -358,7 +366,8 @@
       if (!spModal || !spModal.classList.contains('open')) return;
       if (e.key === 'Escape') { closeSp(); return; }
       if (e.key === 'Tab') {
-        var stops = [spClose, spFrame.querySelector('iframe')].filter(Boolean);
+        var stops = [spClose, spFrame.querySelector('iframe'),
+                     spModal.querySelector('.sp-out')].filter(Boolean);
         e.preventDefault();
         if (stops.length < 2) { stops[0].focus(); return; }
         var at = stops.indexOf(document.activeElement);

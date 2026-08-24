@@ -2424,13 +2424,19 @@ html.gsap .wi { display: inline-block; will-change: transform; }
   filter: drop-shadow(0 1px 1.4px rgba(22, 12, 1, 0.95));
 }
 
-/* the plateau, cut away from the bevel by its own contact shadow */
+/* The plateau is black, so the mark reads as inlaid into the metal rather
+   than raised out of it. Gold on gold was the whole trouble: at this size a
+   light mark on a light hub has nowhere near the separation a play symbol
+   needs, and it washed out to white. Black against gold is the strongest
+   pairing available here, and it is also how the mark is cut on a real
+   pressed label. The bevel stays gold but narrows to a hairline, which keeps
+   the chamfer without letting the mark go muddy. */
 .disc-hub::after {
-  transform: translate(-50%, -50%) translateX(calc(var(--disc) * 0.0266)) scale(0.72);
+  transform: translate(-50%, -50%) translateX(calc(var(--disc) * 0.0266)) scale(0.82);
   transform-origin: 38.67% 50%;
   background: linear-gradient(146deg,
-    #f7e8c1 0%, #e6cb90 46%, #c9a257 78%, #ab8542 100%);
-  filter: drop-shadow(0 0 0.8px rgba(30, 17, 2, 0.9));
+    #3a3542 0%, #1b1822 42%, #0b0a0f 78%, #050408 100%);
+  filter: drop-shadow(0 0.5px 0 rgba(255, 247, 220, 0.5));
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -2445,6 +2451,23 @@ html.gsap .wi { display: inline-block; will-change: transform; }
   .disc-cta:hover::after { animation: disc-spin 9s linear infinite; }
 }
 @keyframes disc-spin { to { transform: rotate(360deg); } }
+
+/* Press. A control this tactile has to answer the finger, so the record
+   sinks and shrinks under the touch and its cast shadow collapses with it,
+   as though pushed toward the surface it sits on. The press is quick and the
+   release is not: 80ms down reads as a response to you, while the slower
+   return reads as the object settling back. This sits after the hover block
+   deliberately — both selectors weigh the same, so source order is what
+   lets a press beat a hover. */
+.disc-cta { -webkit-tap-highlight-color: transparent; }
+.disc-cta:active {
+  transform: translateY(1px) scale(0.94);
+  box-shadow:
+    0 3px 8px rgba(0, 0, 0, 0.6),
+    0 1px 2px rgba(0, 0, 0, 0.45),
+    inset 0 0 0 1px rgba(32, 20, 4, 0.7);
+  transition-duration: 0.08s;
+}
 
 @media (prefers-reduced-motion: reduce) {
   .disc-cta:hover::after { animation: none; }
@@ -2522,6 +2545,20 @@ html.gsap .wi { display: inline-block; will-change: transform; }
 .sp-close:hover { background: rgba(255, 255, 255, 0.08); }
 
 .sp-frame { border-radius: 12px; overflow: hidden; background: #000; }
+
+.sp-out {
+  display: block;
+  margin-top: 0.85rem;
+  text-align: center;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-decoration: none;
+  opacity: 0.75;
+  transition: opacity 0.2s var(--ease-out);
+}
+.sp-out:hover { opacity: 1; }
 .sp-frame iframe { display: block; width: 100%; height: 420px; border: 0; }
 
 @media (max-width: 520px) {

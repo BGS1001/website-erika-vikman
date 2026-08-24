@@ -22,6 +22,9 @@
     glowIntensity:  0.55,
     particleAmount: 1,      // emission multiplier
     particleSize:   1,
+    segments:       15,     // pieces the microphone parts into while moving
+    stretch:        1,      // separation multiplier
+    bond:           1,      // brightness of the links between pieces
     maxScale:       1.16,
     idleAnimation:  true,
     micLength:      118,    // px from head to nozzle
@@ -228,6 +231,157 @@
     this.sprite = c;
     this.spriteOrigin = { x: ox, y: oy };
     this.spriteSize = { w: w, h: h };
+    this.buildSlices();
+  };
+
+  /* ---- the microphone, cut into pieces --------------------------------
+     The rig is one sprite at rest and a column of strips once it moves.
+     Each strip carries its own position and angle and chases the rig with
+     its own delay, so travel pulls the form apart along the path it took
+     and stillness lets it close back up.
+
+     The added gap is the same at every joint rather than proportional to
+     how far back the strip sits. That matters because the sprite is wiped
+     out toward the tail — a proportional stretch would spend almost all of
+     its movement on the part that has already faded to nothing, and the
+     visible half would barely open at all.
+
+     Strips run rear to front, so k counts joints forward from the head:
+     the head holds station and everything behind it trails by k. */
+  MicCursor.prototype.buildSlices = function () {
+    var n = Math.max(4, this.cfg.segments | 0);
+    var ox = this.spriteOrigin.x;
+    var L = this.cfg.micLength;
+    var x0 = ox - L - 8;
+    var x1 = ox + 19;
+    var sw = (x1 - x0) / n;
+
+    this.slices = [];
+    for (var i = 0; i < n; i++) {
+      var sx = x0 + i * sw;
+      this.slices.push({
+        sx: sx,
+        sw: sw,
+        cx: sx + sw / 2 - ox,          // resting offset from the head
+        k: (n - 1 - i),                // joints behind the head
+        kn: (n - 1 - i) / (n - 1),     // the same, normalised
+        phase: Math.random() * Math.PI * 2,
+        x: 0, y: 0, ang: 0
+      });
+    }
+    this._placed = false;
+  };
+
+  /* Separation is driven by energy, so it opens on movement and closes the
+     moment the pointer rests. Nothing here is a timer: the same value that
+     lengthens the plume pulls the body apart, which is what keeps the two
+     reading as one object rather than two effects. */
+  MicCursor.prototype.updateSlices = function () {
+    var sl = this.slices;
+    if (!sl || !sl.length) return;
+
+    var cos = Math.cos(this.angle), sin = Math.sin(this.angle);
+    var s = this.scale;
+    var pull = this.energy * 4.4 * this.cfg.stretch;
+    var i, o, off, perp, tx, ty, f, da;
+
+    for (i = 0; i < sl.length; i++) {
+      o = sl[i];
+      off = (o.cx - pull * o.k) * s;
+      /* a little sideways drift so it breathes apart instead of telescoping */
+      perp = Math.sin(this.time * 0.055 + o.phase) * this.energy * 2.6 * o.kn * s;
+
+      tx = this.pos.x + off * cos - perp * sin;
+      ty = this.pos.y + off * sin + perp * cos;
+
+      if (!this._placed) { o.x = tx; o.y = ty; o.ang = this.angle; continue; }
+
+      /* the head answers at once, the tail drags — that spread of delay is
+         what bends the column along the path instead of sliding it */
+      f = 0.44 - 0.31 * o.kn;
+      o.x += (tx - o.x) * f;
+      o.y += (ty - o.y) * f;
+
+      da = this.angle - o.ang;
+      while (da > Math.PI) da -= Math.PI * 2;
+      while (da < -Math.PI) da += Math.PI * 2;
+      o.ang += da * f;
+    }
+    if (!this._placed && this.pointer.seen) this._placed = true;
+  };
+
+  /* The links. A bond only exists where a joint has actually opened, and it
+     thins and dims as it is drawn out, so the effect announces itself on
+     movement and disappears completely once the pieces close up. */
+  MicCursor.prototype.drawBonds = function (ctx) {
+    var sl = this.slices;
+    if (!sl || sl.length < 2 || this.energy < 0.05) return;
+
+    var lim = 30 * this.scale;
+    var base = this.presence * this.cfg.glowIntensity * this.cfg.bond * this.energy;
+    if (base < 0.01) return;
+
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.lineCap = 'round';
+
+    for (var i = 1; i < sl.length; i++) {
+      var a = sl[i - 1], b = sl[i];
+      var dx = b.x - a.x, dy = b.y - a.y;
+      var d = Math.sqrt(dx * dx + dy * dy);
+      var gap = d - Math.abs(b.cx - a.cx) * this.scale;
+      if (gap <= 0.7) continue;
+
+      var t = clamp(gap / lim, 0, 1);
+      var alpha = base * (1 - t) * 0.62;
+      if (alpha < 0.004) continue;
+
+      ctx.strokeStyle = 'rgba(' + CHAMPAGNE + ',' + alpha.toFixed(4) + ')';
+      ctx.lineWidth = Math.max(0.45, (1.8 - t * 1.25) * this.scale);
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.stroke();
+    }
+    ctx.restore();
+  };
+
+  /* Assembled, the rig is blitted whole: strips laid edge to edge can leave
+     hairline seams, and there is no reason to pay for them while nothing is
+     moving. The swap happens where separation is still under a pixel, so it
+     is not visible. */
+  MicCursor.prototype.drawMic = function (ctx, bobY, bobA) {
+    var alpha = this.presence * this.cfg.opacity * (0.82 + this.energy * 0.18);
+    var sl = this.slices;
+
+    if (!sl || !sl.length || !this._placed || this.energy < 0.02) {
+      ctx.save();
+      ctx.translate(this.pos.x, this.pos.y + bobY);
+      ctx.rotate(this.angle + bobA);
+      ctx.scale(this.scale, this.scale);
+      ctx.globalAlpha = alpha;
+      ctx.drawImage(this.sprite,
+        -this.spriteOrigin.x, -this.spriteOrigin.y,
+        this.spriteSize.w, this.spriteSize.h);
+      ctx.restore();
+      return;
+    }
+
+    var dpr = this.dpr, h = this.spriteSize.h, oy = this.spriteOrigin.y;
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    for (var i = 0; i < sl.length; i++) {
+      var o = sl[i];
+      ctx.save();
+      ctx.translate(o.x, o.y + bobY);
+      ctx.rotate(o.ang + bobA);
+      ctx.scale(this.scale, this.scale);
+      ctx.drawImage(this.sprite,
+        o.sx * dpr, 0, o.sw * dpr, h * dpr,
+        -o.sw / 2, -oy, o.sw, h);
+      ctx.restore();
+    }
+    ctx.restore();
   };
 
   /* ---- particle sprites -------------------------------------------------
@@ -256,7 +410,22 @@
      offset below it — so its world position needs the full rotation. */
   MicCursor.prototype.nozzleAt = function () {
     var n = this.nozzle || { x: -this.cfg.micLength, y: 0 };
-    var cos = Math.cos(this.angle), sin = Math.sin(this.angle), s = this.scale;
+    var s = this.scale;
+
+    /* Once the rig is in pieces the nozzle travels with the hindmost one,
+       so the plume stays attached to the end of the column instead of
+       hanging in the gap the stretch just opened. */
+    var sl = this.slices;
+    if (sl && sl.length && this._placed) {
+      var tail = sl[0];
+      var tc = Math.cos(tail.ang), ts = Math.sin(tail.ang);
+      return {
+        x: tail.x - n.y * ts * s,
+        y: tail.y + n.y * tc * s
+      };
+    }
+
+    var cos = Math.cos(this.angle), sin = Math.sin(this.angle);
     return {
       x: this.pos.x + (n.x * cos - n.y * sin) * s,
       y: this.pos.y + (n.x * sin + n.y * cos) * s
@@ -375,6 +544,8 @@
     var wantPresence = this.pointer.seen ? 1 : 0;
     this.presence += (wantPresence - this.presence) * 0.07;
 
+    this.updateSlices();
+
     /* idle breathing keeps it alive without asking for attention */
     var bobY = 0, bobA = 0;
     if (cfg.idleAnimation) {
@@ -411,18 +582,9 @@
       }
       ctx.restore();
 
-      /* the microphone itself */
-      ctx.save();
-      ctx.translate(this.pos.x, this.pos.y + bobY);
-      ctx.rotate(this.angle + bobA);
-      ctx.scale(this.scale, this.scale);
-      ctx.globalAlpha = this.presence * cfg.opacity * (0.82 + this.energy * 0.18);
-      ctx.drawImage(
-        this.sprite,
-        -this.spriteOrigin.x, -this.spriteOrigin.y,
-        this.spriteSize.w, this.spriteSize.h
-      );
-      ctx.restore();
+      /* the links first, so the pieces sit over them */
+      this.drawBonds(ctx);
+      this.drawMic(ctx, bobY, bobA);
     }
 
     this.raf = global.requestAnimationFrame(this.frame.bind(this));

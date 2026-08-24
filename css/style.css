@@ -2300,19 +2300,25 @@ html.gsap .wi { display: inline-block; will-change: transform; }
 /* ==========================================================================
    LISTEN — the nav CTA as a pressed record
    ========================================================================== */
-/* Built from gradients rather than an image so it stays crisp at any density
-   and costs no request. Four stacked layers, because that is what reads as
-   metal: a polished rim, a fixed specular sweep, the grooves, and a raised
-   hub carrying the play mark.
+/* Built from gradients rather than an image, so it stays crisp at any pixel
+   density and costs no request. Six layers, because that is what reads as
+   metal rather than as a yellow circle: a polished rim, a specular sweep, a
+   vignette that gives the face its curvature, the grooves, a raised hub, and
+   the play mark.
 
-   The specular sweep is a conic gradient with two bright lobes opposite each
-   other — that is how a light source actually falls on a turning disc, and it
-   is the difference between "metal" and "a yellow circle". The grooves ride
-   their own layer so they can turn on hover while the highlights stay put:
-   a reflection that rotates with the record would look wrong, because the
-   lamp does not move when the record does. */
+   The sweep is a conic gradient with two bright lobes set opposite each
+   other — that is how a light source actually falls across a turning disc.
+   The grooves ride their own layer so hover can turn them while the
+   highlights stay put: a reflection that rotated with the record would look
+   wrong, since the lamp does not move when the record does.
+
+   The play mark is deliberately brighter than the hub it sits on. Gold on
+   gold works in the reference because a large render carries deep bevels;
+   at nav scale those bevels fall below a pixel and the triangle vanishes
+   into the label. So the hub is darkened, the mark is lit, and a dark
+   contact shadow separates the two. */
 .disc-cta {
-  --disc: 48px;
+  --disc: 60px;
   position: relative;
   flex: 0 0 auto;
   width: var(--disc);
@@ -2322,85 +2328,88 @@ html.gsap .wi { display: inline-block; will-change: transform; }
   place-items: center;
   isolation: isolate;
   /* the polished outer rim */
-  background: conic-gradient(from 140deg,
-    #7a5418 0deg, #f5d79a 40deg, #fff4d8 60deg, #c99a44 94deg,
-    #5f3f12 138deg, #8e6320 176deg, #eec888 206deg, #fff6e0 230deg,
-    #c4923c 266deg, #513413 310deg, #86601c 342deg, #7a5418 360deg);
+  background: conic-gradient(from 138deg,
+    #6d4a13 0deg, #f7dca6 38deg, #fffdf2 58deg, #cb9c44 92deg,
+    #4e3410 136deg, #85591a 174deg, #f0cd8e 204deg, #fffaea 228deg,
+    #c08d34 264deg, #40290b 308deg, #7d5615 340deg, #6d4a13 360deg);
   box-shadow:
-    0 6px 18px rgba(0, 0, 0, 0.55),
-    0 1px 0 rgba(255, 244, 214, 0.35),
-    inset 0 0 0 1px rgba(46, 28, 6, 0.65);
+    0 8px 22px rgba(0, 0, 0, 0.6),
+    0 1px 0 rgba(255, 246, 220, 0.45),
+    inset 0 0 0 1px rgba(38, 22, 4, 0.7);
   transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out);
 }
 
-/* the face: specular sweep, held still */
+/* the face: specular sweep, held still, with a vignette for curvature */
 .disc-cta::before {
   content: '';
   position: absolute;
-  inset: 3px;
+  inset: calc(var(--disc) * 0.075);
   border-radius: 50%;
   z-index: 1;
-  background: conic-gradient(from 152deg,
-    #5b3d12 0deg, #d9ab55 36deg, #f7e3b4 58deg, #b1802f 92deg,
-    #462d0c 136deg, #7d5619 174deg, #d6ad63 204deg, #f9e8c4 228deg,
-    #ab7c2c 264deg, #3d270a 308deg, #6f4c15 340deg, #5b3d12 360deg);
+  background:
+    radial-gradient(circle at 50% 50%, transparent 52%, rgba(22, 12, 1, 0.5) 100%),
+    conic-gradient(from 150deg,
+      #4c3110 0deg, #dcae57 34deg, #fbeec9 56deg, #ab7a2c 90deg,
+      #35220a 134deg, #744e15 172deg, #dcb268 202deg, #fdf2d8 226deg,
+      #a2742a 262deg, #2c1c06 306deg, #67450f 338deg, #4c3110 360deg);
   box-shadow:
-    inset 0 1px 2px rgba(255, 246, 220, 0.45),
-    inset 0 -2px 4px rgba(38, 22, 4, 0.75);
+    inset 0 1px 2px rgba(255, 248, 226, 0.5),
+    inset 0 -2px 5px rgba(28, 16, 2, 0.8);
 }
 
 /* the grooves: their own layer, so hover can turn them alone */
 .disc-cta::after {
   content: '';
   position: absolute;
-  inset: 3px;
+  inset: calc(var(--disc) * 0.075);
   border-radius: 50%;
   z-index: 2;
   background: repeating-radial-gradient(circle at 50% 50%,
-    rgba(255, 238, 200, 0.10) 0 1px,
-    rgba(28, 16, 3, 0.16) 1px 2px);
-  mask-image: radial-gradient(circle at 50% 50%, transparent 40%, #000 44%);
+    rgba(255, 240, 205, 0.13) 0 1px,
+    rgba(22, 12, 2, 0.2) 1px 2px);
+  mask-image: radial-gradient(circle at 50% 50%, transparent 42%, #000 46%);
 }
 
-/* the raised hub */
+/* the raised hub, darkened so the play mark has something to sit against */
 .disc-hub {
   position: relative;
   z-index: 3;
-  width: 44%;
-  height: 44%;
+  width: 46%;
+  height: 46%;
   border-radius: 50%;
   display: grid;
   place-items: center;
   background:
-    radial-gradient(circle at 34% 26%, #fbe6bb 0%, #dcae5c 42%, #a2762c 78%, #6d4b16 100%);
+    radial-gradient(circle at 32% 24%, #e9c87e 0%, #c1943f 38%, #86601f 72%, #4a320e 100%);
   box-shadow:
-    inset 0 1px 1px rgba(255, 250, 232, 0.7),
-    inset 0 -1px 2px rgba(40, 24, 5, 0.7),
-    0 1px 3px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(60, 38, 10, 0.55);
+    inset 0 1px 1px rgba(255, 250, 232, 0.6),
+    inset 0 -2px 3px rgba(26, 14, 1, 0.85),
+    0 0 0 1px rgba(255, 236, 192, 0.5),
+    0 0 0 2px rgba(44, 27, 5, 0.85),
+    0 2px 6px rgba(0, 0, 0, 0.6);
 }
 
-/* the play mark, embossed into the hub */
+/* the play mark: lit, and cut away from the hub by a dark contact shadow */
 .disc-hub::after {
   content: '';
-  width: 10px;
-  height: 11px;
-  margin-left: 2px; /* a triangle's optical centre sits left of its bounding box */
-  background: linear-gradient(148deg, #fff6dd 0%, #e8c375 46%, #a97a2a 100%);
-  clip-path: polygon(4% 0%, 100% 50%, 4% 100%);
+  width: calc(var(--disc) * 0.23);
+  height: calc(var(--disc) * 0.25);
+  margin-left: calc(var(--disc) * 0.038); /* a triangle's optical centre sits left of its box */
+  background: linear-gradient(145deg, #fffdf3 0%, #f7dfa8 38%, #dcb057 74%, #b9882f 100%);
+  clip-path: polygon(6% 2%, 100% 50%, 6% 98%);
   filter:
-    drop-shadow(0 1px 0 rgba(255, 248, 222, 0.55))
-    drop-shadow(0 -1px 1px rgba(48, 28, 5, 0.85));
+    drop-shadow(0 0 1.2px rgba(26, 14, 1, 0.95))
+    drop-shadow(0 1px 0 rgba(255, 252, 240, 0.55));
 }
 
 @media (hover: hover) and (pointer: fine) {
   .disc-cta:hover {
     transform: translateY(-2px);
     box-shadow:
-      0 10px 24px rgba(0, 0, 0, 0.55),
-      0 1px 0 rgba(255, 244, 214, 0.5),
+      0 12px 28px rgba(0, 0, 0, 0.6),
+      0 1px 0 rgba(255, 246, 220, 0.55),
       var(--glow-gold),
-      inset 0 0 0 1px rgba(46, 28, 6, 0.65);
+      inset 0 0 0 1px rgba(38, 22, 4, 0.7);
   }
   .disc-cta:hover::after { animation: disc-spin 9s linear infinite; }
 }
@@ -2412,5 +2421,5 @@ html.gsap .wi { display: inline-block; will-change: transform; }
 }
 
 @media (max-width: 860px) {
-  .disc-cta { --disc: 44px; }
+  .disc-cta { --disc: 52px; }
 }

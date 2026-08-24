@@ -633,16 +633,63 @@
     this._onResize = this.resize.bind(this);
 
     if (this.cfg.mode === 'scroll') {
-      /* The rig flies alongside the column. Its resting height is fixed; the
-         scroll delta pushes it against the direction of travel, so scrolling
-         down throws it upward and it chases back down — the same lag that
-         makes the pointer version feel weighted. */
+      /* On a phone the finger is the pointer. A scroll gesture is itself a
+         touchmove, so following the finger hands touch the same rig the
+         mouse gets — the swing, the plume, the way the body comes apart
+         while travelling — rather than a thinner effect wired to scroll
+         events alone. Scroll still drives it, but only through the momentum
+         phase, once the finger has lifted and there is nothing to follow.
+
+         Reacting to scroll only was why the rig barely registered here: it
+         moved between two fixed points on the right of the screen, well
+         away from where anyone was looking. */
       this._lastY = global.scrollY;
       this._idleTimer = null;
+      this._touching = false;
+
+      var hold = function (ms) {
+        clearTimeout(this._idleTimer);
+        this._idleTimer = setTimeout(function () {
+          this.pointer.seen = false;
+        }.bind(this), ms);
+      }.bind(this);
+
+      var toFinger = function (e) {
+        var t = (e.touches && e.touches[0]) ||
+                (e.changedTouches && e.changedTouches[0]);
+        if (!t) return;
+        this.pointer.x = t.clientX;
+        this.pointer.y = t.clientY;
+        if (!this.pointer.seen) {
+          this.pointer.seen = true;
+          this.pos.x = t.clientX;
+          this.pos.y = t.clientY;
+        }
+      }.bind(this);
+
+      this._onTouchStart = function (e) {
+        this._touching = true;
+        clearTimeout(this._idleTimer);
+        toFinger(e);
+        this.energy = Math.max(this.energy, 0.45);
+        this.emit(10);
+      }.bind(this);
+
+      this._onTouchMove = toFinger;
+
+      this._onTouchEnd = function () {
+        this._touching = false;
+        hold(1100);
+      }.bind(this);
+
+      /* Momentum. The page keeps travelling after the finger goes, so the
+         rig is thrown against the direction of travel and chases back —
+         the same lag that gives the pointer version its weight. */
       this._onPageScroll = function () {
         var y = global.scrollY;
         var d = y - this._lastY;
         this._lastY = y;
+        if (this._touching) return;
 
         var restX = this.w * 0.74;
         var restY = this.h * 0.5;
@@ -655,34 +702,14 @@
           this.pos.x = restX;
           this.pos.y = restY;
         }
-
-        clearTimeout(this._idleTimer);
-        this._idleTimer = setTimeout(function () {
-          /* withdraw once the page settles so it never sits over something
-             being read */
-          this.pointer.seen = false;
-        }.bind(this), 900);
-      }.bind(this);
-
-      /* a tap throws a small spark burst where the finger lands */
-      this._onTap = function (e) {
-        var t = e.changedTouches ? e.changedTouches[0] : e;
-        if (!t) return;
-        this.pointer.seen = true;
-        this.pos.x = t.clientX;
-        this.pos.y = t.clientY;
-        this.pointer.x = t.clientX;
-        this.pointer.y = t.clientY;
-        this.energy = 1;
-        this.emit(14);
-        clearTimeout(this._idleTimer);
-        this._idleTimer = setTimeout(function () {
-          this.pointer.seen = false;
-        }.bind(this), 900);
+        hold(900);
       }.bind(this);
 
       global.addEventListener('scroll', this._onPageScroll, { passive: true });
-      global.addEventListener('touchstart', this._onTap, { passive: true });
+      global.addEventListener('touchstart', this._onTouchStart, { passive: true });
+      global.addEventListener('touchmove', this._onTouchMove, { passive: true });
+      global.addEventListener('touchend', this._onTouchEnd, { passive: true });
+      global.addEventListener('touchcancel', this._onTouchEnd, { passive: true });
     } else {
       global.addEventListener('pointermove', this._onMove, { passive: true });
       document.documentElement.addEventListener('mouseleave', this._onLeave);
@@ -710,7 +737,12 @@
     global.removeEventListener('blur', this._onLeave);
     global.removeEventListener('resize', this._onResize);
     if (this._onPageScroll) global.removeEventListener('scroll', this._onPageScroll);
-    if (this._onTap) global.removeEventListener('touchstart', this._onTap);
+    if (this._onTouchStart) {
+      global.removeEventListener('touchstart', this._onTouchStart);
+      global.removeEventListener('touchmove', this._onTouchMove);
+      global.removeEventListener('touchend', this._onTouchEnd);
+      global.removeEventListener('touchcancel', this._onTouchEnd);
+    }
     clearTimeout(this._idleTimer);
     if (this._ro) { this._ro.disconnect(); this._ro = null; }
     if (this.canvas && this.canvas.parentNode) {
@@ -737,9 +769,9 @@
     if (options) for (k in options) opts[k] = options[k];
     if (!fine) {
       opts.mode = 'scroll';
-      if (opts.micLength === undefined) opts.micLength = 86;
-      if (opts.opacity === undefined) opts.opacity = 0.3;
-      if (opts.particleAmount === undefined) opts.particleAmount = 0.7;
+      if (opts.micLength === undefined) opts.micLength = 98;
+      if (opts.opacity === undefined) opts.opacity = 0.38;
+      if (opts.particleAmount === undefined) opts.particleAmount = 0.85;
     }
 
     var inst = new MicCursor(opts);

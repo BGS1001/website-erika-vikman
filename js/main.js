@@ -387,6 +387,11 @@
 
   document.documentElement.classList.add('gsap');
   gsap.registerPlugin(ScrollTrigger);
+  /* A phone address bar that slides away mid-scroll resizes the viewport,
+     and ScrollTrigger's default response is to refresh — which yanks any
+     pinned section out from under the finger. Ignoring that one resize is
+     the documented remedy and the reason the rail can hold on touch. */
+  ScrollTrigger.config({ ignoreMobileResize: true });
   gsap.defaults({ ease: 'power3.out', duration: 1 });
 
   /* A narrow column swallows subtlety: the same 44px rise that reads as
@@ -745,6 +750,11 @@
       scrollTrigger: {
         trigger: rail,
         pin: true,
+        /* Touch pins by transform instead of position:fixed. Fixed pinning
+           drifts or drops out entirely when the viewport resizes under it,
+           which is what kept the archive from travelling on a phone. */
+        pinType: touch ? 'transform' : 'fixed',
+        anticipatePin: 1,
         scrub: 0.8,
         start: 'top top',
         end: function () {

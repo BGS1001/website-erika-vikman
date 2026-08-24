@@ -2296,3 +2296,121 @@ html.gsap .wi { display: inline-block; will-change: transform; }
 .is-audio .embed-play {
   box-shadow: var(--edge), 0 10px 30px rgba(216, 174, 87, 0.4), var(--glow-gold);
 }
+
+/* ==========================================================================
+   LISTEN — the nav CTA as a pressed record
+   ========================================================================== */
+/* Built from gradients rather than an image so it stays crisp at any density
+   and costs no request. Four stacked layers, because that is what reads as
+   metal: a polished rim, a fixed specular sweep, the grooves, and a raised
+   hub carrying the play mark.
+
+   The specular sweep is a conic gradient with two bright lobes opposite each
+   other — that is how a light source actually falls on a turning disc, and it
+   is the difference between "metal" and "a yellow circle". The grooves ride
+   their own layer so they can turn on hover while the highlights stay put:
+   a reflection that rotates with the record would look wrong, because the
+   lamp does not move when the record does. */
+.disc-cta {
+  --disc: 48px;
+  position: relative;
+  flex: 0 0 auto;
+  width: var(--disc);
+  height: var(--disc);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+  /* the polished outer rim */
+  background: conic-gradient(from 140deg,
+    #7a5418 0deg, #f5d79a 40deg, #fff4d8 60deg, #c99a44 94deg,
+    #5f3f12 138deg, #8e6320 176deg, #eec888 206deg, #fff6e0 230deg,
+    #c4923c 266deg, #513413 310deg, #86601c 342deg, #7a5418 360deg);
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.55),
+    0 1px 0 rgba(255, 244, 214, 0.35),
+    inset 0 0 0 1px rgba(46, 28, 6, 0.65);
+  transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out);
+}
+
+/* the face: specular sweep, held still */
+.disc-cta::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  z-index: 1;
+  background: conic-gradient(from 152deg,
+    #5b3d12 0deg, #d9ab55 36deg, #f7e3b4 58deg, #b1802f 92deg,
+    #462d0c 136deg, #7d5619 174deg, #d6ad63 204deg, #f9e8c4 228deg,
+    #ab7c2c 264deg, #3d270a 308deg, #6f4c15 340deg, #5b3d12 360deg);
+  box-shadow:
+    inset 0 1px 2px rgba(255, 246, 220, 0.45),
+    inset 0 -2px 4px rgba(38, 22, 4, 0.75);
+}
+
+/* the grooves: their own layer, so hover can turn them alone */
+.disc-cta::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  z-index: 2;
+  background: repeating-radial-gradient(circle at 50% 50%,
+    rgba(255, 238, 200, 0.10) 0 1px,
+    rgba(28, 16, 3, 0.16) 1px 2px);
+  mask-image: radial-gradient(circle at 50% 50%, transparent 40%, #000 44%);
+}
+
+/* the raised hub */
+.disc-hub {
+  position: relative;
+  z-index: 3;
+  width: 44%;
+  height: 44%;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 34% 26%, #fbe6bb 0%, #dcae5c 42%, #a2762c 78%, #6d4b16 100%);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 250, 232, 0.7),
+    inset 0 -1px 2px rgba(40, 24, 5, 0.7),
+    0 1px 3px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(60, 38, 10, 0.55);
+}
+
+/* the play mark, embossed into the hub */
+.disc-hub::after {
+  content: '';
+  width: 10px;
+  height: 11px;
+  margin-left: 2px; /* a triangle's optical centre sits left of its bounding box */
+  background: linear-gradient(148deg, #fff6dd 0%, #e8c375 46%, #a97a2a 100%);
+  clip-path: polygon(4% 0%, 100% 50%, 4% 100%);
+  filter:
+    drop-shadow(0 1px 0 rgba(255, 248, 222, 0.55))
+    drop-shadow(0 -1px 1px rgba(48, 28, 5, 0.85));
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .disc-cta:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 10px 24px rgba(0, 0, 0, 0.55),
+      0 1px 0 rgba(255, 244, 214, 0.5),
+      var(--glow-gold),
+      inset 0 0 0 1px rgba(46, 28, 6, 0.65);
+  }
+  .disc-cta:hover::after { animation: disc-spin 9s linear infinite; }
+}
+@keyframes disc-spin { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .disc-cta:hover::after { animation: none; }
+  .disc-cta { transition: none; }
+}
+
+@media (max-width: 860px) {
+  .disc-cta { --disc: 44px; }
+}

@@ -272,6 +272,101 @@
     }, { passive: true });
   }
 
+  /* ================= Spotify panel ======================================
+     The record opens the player in place instead of throwing you out to
+     spotify.com and losing the site.
+
+     The link keeps its real href and target, so with JS unavailable it still
+     does the useful thing rather than nothing. The embed is created on first
+     open, not on page load, so nobody is announced to Spotify for merely
+     visiting; and closing removes the iframe outright, which is what
+     actually stops playback — hiding the overlay would leave the audio
+     running behind it.
+
+     One honest limit: once focus is inside the player, key events belong to
+     Spotify's cross-origin frame, so Escape there is theirs, not ours. It
+     works everywhere else in the dialog. */
+  var discs = document.querySelectorAll('.disc-cta');
+  if (discs.length) {
+    var spModal = null;
+    var spFrame = null;
+    var spClose = null;
+    var spLastFocused = null;
+    var spPrevOverflow = '';
+
+    var buildSp = function () {
+      spModal = document.createElement('div');
+      spModal.className = 'sp-modal';
+      spModal.setAttribute('role', 'dialog');
+      spModal.setAttribute('aria-modal', 'true');
+      spModal.setAttribute('aria-labelledby', 'sp-title');
+      spModal.innerHTML =
+        '<div class="sp-panel">' +
+          '<p class="sp-title" id="sp-title">Listen</p>' +
+          '<button class="sp-close" type="button" aria-label="Close player">&times;</button>' +
+          '<div class="sp-frame"></div>' +
+        '</div>';
+      document.body.appendChild(spModal);
+      spClose = spModal.querySelector('.sp-close');
+      spFrame = spModal.querySelector('.sp-frame');
+      spClose.addEventListener('click', closeSp);
+      spModal.addEventListener('click', function (e) {
+        if (e.target === spModal) closeSp();
+      });
+    };
+
+    var openSp = function (src) {
+      if (!spModal) buildSp();
+      if (!spFrame.firstChild) {
+        var f = document.createElement('iframe');
+        f.src = src;
+        f.title = 'Spotify player';
+        f.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
+        f.loading = 'lazy';
+        spFrame.appendChild(f);
+      }
+      spLastFocused = document.activeElement;
+      spPrevOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      spModal.classList.add('open');
+      spClose.focus();
+    };
+
+    function closeSp() {
+      if (!spModal || !spModal.classList.contains('open')) return;
+      spModal.classList.remove('open');
+      document.body.style.overflow = spPrevOverflow;
+      if (spLastFocused) spLastFocused.focus();
+      // Let the panel finish fading before pulling the player, or it goes
+      // black mid-transition. Re-check, in case it was reopened meanwhile.
+      setTimeout(function () {
+        if (spModal && !spModal.classList.contains('open')) spFrame.innerHTML = '';
+      }, 320);
+    }
+
+    Array.prototype.forEach.call(discs, function (disc) {
+      disc.addEventListener('click', function (e) {
+        var id = /artist\/([A-Za-z0-9]+)/.exec(disc.getAttribute('href') || '');
+        if (!id) return; // no id to embed — let the link behave like a link
+        e.preventDefault();
+        openSp('https://open.spotify.com/embed/artist/' + id[1] +
+               '?utm_source=generator&theme=0');
+      });
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (!spModal || !spModal.classList.contains('open')) return;
+      if (e.key === 'Escape') { closeSp(); return; }
+      if (e.key === 'Tab') {
+        var stops = [spClose, spFrame.querySelector('iframe')].filter(Boolean);
+        e.preventDefault();
+        if (stops.length < 2) { stops[0].focus(); return; }
+        var at = stops.indexOf(document.activeElement);
+        stops[(at + (e.shiftKey ? -1 : 1) + stops.length) % stops.length].focus();
+      }
+    });
+  }
+
   /* ================= GSAP choreography ================================== */
   if (!useGsap) return;
 

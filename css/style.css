@@ -2301,22 +2301,22 @@ html.gsap .wi { display: inline-block; will-change: transform; }
    LISTEN — the nav CTA as a pressed record
    ========================================================================== */
 /* Built from gradients rather than an image, so it stays crisp at any pixel
-   density and costs no request. Six layers, because that is what reads as
-   metal rather than as a yellow circle: a polished rim, a specular sweep, a
-   vignette that gives the face its curvature, the grooves, a raised hub, and
-   the play mark.
+   density and costs no request.
 
-   The sweep is a conic gradient with two bright lobes set opposite each
-   other — that is how a light source actually falls across a turning disc.
+   Two things make this read as polished metal rather than as a gold circle.
+
+   First, the shadow lobes are cool. On the reference the dark bands are a
+   grey-brown steel, not dark gold — and it is that warm/cool split, not the
+   light/dark one, that makes the gold bands look lit. Keeping the shadows
+   warm is what left the earlier pass looking like a gradient.
+
+   Second, the speculars are narrow. Polished metal returns a light source as
+   a tight streak with a hard shoulder; a broad soft ramp reads as satin, so
+   the near-white stops sit only a few degrees wide.
+
    The grooves ride their own layer so hover can turn them while the
    highlights stay put: a reflection that rotated with the record would look
-   wrong, since the lamp does not move when the record does.
-
-   The play mark is deliberately brighter than the hub it sits on. Gold on
-   gold works in the reference because a large render carries deep bevels;
-   at nav scale those bevels fall below a pixel and the triangle vanishes
-   into the label. So the hub is darkened, the mark is lit, and a dark
-   contact shadow separates the two. */
+   wrong, since the lamp does not move when the record does. */
 .disc-cta {
   --disc: 60px;
   position: relative;
@@ -2327,89 +2327,120 @@ html.gsap .wi { display: inline-block; will-change: transform; }
   display: grid;
   place-items: center;
   isolation: isolate;
-  /* the polished outer rim */
-  background: conic-gradient(from 138deg,
-    #6d4a13 0deg, #f7dca6 38deg, #fffdf2 58deg, #cb9c44 92deg,
-    #4e3410 136deg, #85591a 174deg, #f0cd8e 204deg, #fffaea 228deg,
-    #c08d34 264deg, #40290b 308deg, #7d5615 340deg, #6d4a13 360deg);
+  cursor: pointer;
+  background: conic-gradient(from 132deg,
+    #574b43 0deg, #c9a45f 18deg, #fffaec 40deg, #fffefb 46deg,
+    #e9c88b 54deg, #a67f3c 74deg, #4a423b 112deg, #6f6154 140deg,
+    #cfa964 172deg, #fdf6e2 208deg, #fffefc 216deg, #edd096 226deg,
+    #a87f38 252deg, #3f3830 296deg, #6b5b48 330deg, #574b43 360deg);
   box-shadow:
-    0 8px 22px rgba(0, 0, 0, 0.6),
-    0 1px 0 rgba(255, 246, 220, 0.45),
-    inset 0 0 0 1px rgba(38, 22, 4, 0.7);
+    0 8px 24px rgba(0, 0, 0, 0.6),
+    0 2px 4px rgba(0, 0, 0, 0.4),
+    inset 0 0 0 1px rgba(32, 20, 4, 0.55);
   transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out);
 }
 
-/* the face: specular sweep, held still, with a vignette for curvature */
+/* the face: specular sweep held still, a gloss wash, and a vignette that
+   turns a flat circle into something with curvature */
 .disc-cta::before {
   content: '';
   position: absolute;
-  inset: calc(var(--disc) * 0.075);
+  inset: calc(var(--disc) * 0.085);
   border-radius: 50%;
   z-index: 1;
   background:
-    radial-gradient(circle at 50% 50%, transparent 52%, rgba(22, 12, 1, 0.5) 100%),
-    conic-gradient(from 150deg,
-      #4c3110 0deg, #dcae57 34deg, #fbeec9 56deg, #ab7a2c 90deg,
-      #35220a 134deg, #744e15 172deg, #dcb268 202deg, #fdf2d8 226deg,
-      #a2742a 262deg, #2c1c06 306deg, #67450f 338deg, #4c3110 360deg);
+    radial-gradient(ellipse 72% 46% at 40% 16%, rgba(255, 253, 245, 0.3), transparent 66%),
+    radial-gradient(circle at 50% 50%, transparent 48%, rgba(18, 12, 4, 0.55) 100%),
+    conic-gradient(from 146deg,
+      #443c35 0deg, #b48b45 16deg, #f7e3b2 38deg, #fffdf6 48deg,
+      #e2c184 58deg, #9d7936 80deg, #3b342d 118deg, #62543f 148deg,
+      #c39f5c 182deg, #f9edcd 210deg, #fffef9 220deg, #ddb877 234deg,
+      #96712f 260deg, #332c25 300deg, #5b4d3b 332deg, #443c35 360deg);
   box-shadow:
-    inset 0 1px 2px rgba(255, 248, 226, 0.5),
-    inset 0 -2px 5px rgba(28, 16, 2, 0.8);
+    inset 0 1px 2px rgba(255, 250, 234, 0.55),
+    inset 0 -2px 5px rgba(24, 14, 3, 0.85);
 }
 
 /* the grooves: their own layer, so hover can turn them alone */
 .disc-cta::after {
   content: '';
   position: absolute;
-  inset: calc(var(--disc) * 0.075);
+  inset: calc(var(--disc) * 0.085);
   border-radius: 50%;
   z-index: 2;
   background: repeating-radial-gradient(circle at 50% 50%,
-    rgba(255, 240, 205, 0.13) 0 1px,
-    rgba(22, 12, 2, 0.2) 1px 2px);
-  mask-image: radial-gradient(circle at 50% 50%, transparent 42%, #000 46%);
+    rgba(255, 244, 216, 0.14) 0 1px,
+    rgba(20, 12, 3, 0.22) 1px 2px);
+  mask-image: radial-gradient(circle at 50% 50%, transparent 40%, #000 45%);
 }
 
-/* the raised hub, darkened so the play mark has something to sit against */
+/* the raised hub, glossier than the face and darkened at its lower edge so
+   the play mark has something to sit against */
 .disc-hub {
   position: relative;
   z-index: 3;
-  width: 46%;
-  height: 46%;
+  width: 47%;
+  height: 47%;
   border-radius: 50%;
   display: grid;
   place-items: center;
   background:
-    radial-gradient(circle at 32% 24%, #e9c87e 0%, #c1943f 38%, #86601f 72%, #4a320e 100%);
+    radial-gradient(circle at 34% 22%,
+      #fdf3d5 0%, #ecd096 22%, #c69c48 52%, #8d6a25 78%, #4a350f 100%);
   box-shadow:
-    inset 0 1px 1px rgba(255, 250, 232, 0.6),
-    inset 0 -2px 3px rgba(26, 14, 1, 0.85),
-    0 0 0 1px rgba(255, 236, 192, 0.5),
-    0 0 0 2px rgba(44, 27, 5, 0.85),
-    0 2px 6px rgba(0, 0, 0, 0.6);
+    inset 0 1px 1px rgba(255, 252, 240, 0.75),
+    inset 0 -2px 3px rgba(24, 13, 1, 0.85),
+    0 0 0 1px rgba(255, 240, 200, 0.55),
+    0 0 0 2px rgba(40, 25, 5, 0.9),
+    0 2px 6px rgba(0, 0, 0, 0.65);
 }
 
-/* the play mark: lit, and cut away from the hub by a dark contact shadow */
+/* The play mark is chamfered, not filled flat: a lit outer bevel with a
+   calmer plateau inside it, which is how the reference draws it.
+
+   Both triangles share one box and one clip path; the inner one is scaled
+   about the centroid of the shape (38.67% 50% for this polygon) rather than
+   the box centre, so the bevel band stays an even width all the way round.
+   Scaling about the box centre would leave it fat at the base and thin at
+   the tip. That centroid is also the optical centre of a triangle, so
+   shifting it onto the middle of the hub is what stops the mark looking
+   left-heavy. */
+.disc-hub::before,
 .disc-hub::after {
   content: '';
-  width: calc(var(--disc) * 0.23);
-  height: calc(var(--disc) * 0.25);
-  margin-left: calc(var(--disc) * 0.038); /* a triangle's optical centre sits left of its box */
-  background: linear-gradient(145deg, #fffdf3 0%, #f7dfa8 38%, #dcb057 74%, #b9882f 100%);
-  clip-path: polygon(6% 2%, 100% 50%, 6% 98%);
-  filter:
-    drop-shadow(0 0 1.2px rgba(26, 14, 1, 0.95))
-    drop-shadow(0 1px 0 rgba(255, 252, 240, 0.55));
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(var(--disc) * 0.235);
+  height: calc(var(--disc) * 0.255);
+  clip-path: polygon(8% 3%, 100% 50%, 8% 97%);
+}
+
+/* the lit bevel */
+.disc-hub::before {
+  transform: translate(-50%, -50%) translateX(calc(var(--disc) * 0.0266));
+  background: linear-gradient(138deg,
+    #fffefa 0%, #fbeac2 26%, #e0b463 58%, #a87c30 84%, #7a5a1e 100%);
+  filter: drop-shadow(0 1px 1.4px rgba(22, 12, 1, 0.95));
+}
+
+/* the plateau, cut away from the bevel by its own contact shadow */
+.disc-hub::after {
+  transform: translate(-50%, -50%) translateX(calc(var(--disc) * 0.0266)) scale(0.72);
+  transform-origin: 38.67% 50%;
+  background: linear-gradient(146deg,
+    #f7e8c1 0%, #e6cb90 46%, #c9a257 78%, #ab8542 100%);
+  filter: drop-shadow(0 0 0.8px rgba(30, 17, 2, 0.9));
 }
 
 @media (hover: hover) and (pointer: fine) {
   .disc-cta:hover {
     transform: translateY(-2px);
     box-shadow:
-      0 12px 28px rgba(0, 0, 0, 0.6),
-      0 1px 0 rgba(255, 246, 220, 0.55),
+      0 12px 30px rgba(0, 0, 0, 0.6),
+      0 2px 4px rgba(0, 0, 0, 0.4),
       var(--glow-gold),
-      inset 0 0 0 1px rgba(38, 22, 4, 0.7);
+      inset 0 0 0 1px rgba(32, 20, 4, 0.55);
   }
   .disc-cta:hover::after { animation: disc-spin 9s linear infinite; }
 }
@@ -2422,4 +2453,82 @@ html.gsap .wi { display: inline-block; will-change: transform; }
 
 @media (max-width: 860px) {
   .disc-cta { --disc: 52px; }
+}
+
+/* ==========================================================================
+   The Spotify panel the record opens
+   ========================================================================== */
+/* The embed is built only when the panel is first opened and torn down when
+   it closes, so the page makes no request to Spotify unless someone asks for
+   one, and closing actually stops the audio rather than leaving it playing
+   behind a hidden overlay. */
+.sp-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+  background: rgba(6, 5, 9, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.28s var(--ease-out), visibility 0.28s;
+}
+.sp-modal.open { opacity: 1; visibility: visible; }
+
+.sp-panel {
+  position: relative;
+  width: min(94vw, 560px);
+  border-radius: 14px;
+  padding: 3rem 1.25rem 1.25rem;
+  background: linear-gradient(#17141c, #100e15);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), inset 0 0 0 1px rgba(226, 185, 95, 0.28);
+  transform: translateY(12px) scale(0.98);
+  transition: transform 0.32s var(--ease-out);
+}
+.sp-modal.open .sp-panel { transform: none; }
+
+.sp-title {
+  position: absolute;
+  top: 1.05rem;
+  left: 1.35rem;
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.sp-close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.7rem;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--white);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s var(--ease-out);
+}
+.sp-close:hover { background: rgba(255, 255, 255, 0.08); }
+
+.sp-frame { border-radius: 12px; overflow: hidden; background: #000; }
+.sp-frame iframe { display: block; width: 100%; height: 420px; border: 0; }
+
+@media (max-width: 520px) {
+  .sp-frame iframe { height: 380px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sp-modal, .sp-panel { transition: none; }
+  .sp-panel { transform: none; }
 }

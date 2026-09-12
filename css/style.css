@@ -158,7 +158,7 @@ body::before {
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(80% 55% at 50% -8%, rgba(255, 45, 85, 0.10), transparent 62%),
+    radial-gradient(80% 55% at 50% -8%, rgba(224, 51, 140, 0.10), transparent 62%),
     radial-gradient(60% 45% at 100% 0%, rgba(255, 223, 148, 0.06), transparent 60%);
 }
 
@@ -252,7 +252,7 @@ section { position: relative; }
 .btn-solid {
   background: var(--red);
   color: var(--white);
-  box-shadow: var(--edge), 0 6px 20px rgba(232, 17, 45, 0.28);
+  box-shadow: var(--edge), 0 6px 20px rgba(168, 30, 102, 0.28);
 }
 .btn-solid:hover {
   background: var(--red-glow);
@@ -331,12 +331,12 @@ section { position: relative; }
   z-index: 200;
   display: flex;
   align-items: center;
-  background: linear-gradient(to bottom, rgba(10,9,8,0.85), transparent);
+  background: linear-gradient(to bottom, rgba(14,9,18,0.85), transparent);
   transition: background 0.3s ease, box-shadow .3s ease, backdrop-filter .3s ease;
 }
 
 .nav.is-scrolled {
-  background: rgba(10, 9, 8, 0.92);
+  background: rgba(14, 9, 18, 0.92);
   backdrop-filter: blur(10px);
   box-shadow: 0 1px 0 rgba(216, 174, 87, 0.15);
 }
@@ -454,8 +454,8 @@ section { position: relative; }
   content: '';
   position: absolute; inset: 0;
   background:
-    linear-gradient(to top, rgba(10,9,8,0.97) 5%, rgba(10,9,8,0.35) 45%, rgba(10,9,8,0.15) 70%),
-    linear-gradient(to right, rgba(10,9,8,0.6) 0%, transparent 40%);
+    linear-gradient(to top, rgba(14,9,18,0.97) 5%, rgba(14,9,18,0.35) 45%, rgba(14,9,18,0.15) 70%),
+    linear-gradient(to right, rgba(14,9,18,0.6) 0%, transparent 40%);
 }
 
 .hero-content {
@@ -821,7 +821,7 @@ section { position: relative; }
   width: 52px; height: 52px;
   display: grid;
   place-items: center;
-  background: rgba(10, 9, 8, 0.72);
+  background: rgba(14, 9, 18, 0.72);
   border: 1px solid rgba(243, 237, 226, 0.28);
   color: var(--white);
   font-size: 1.25rem;
@@ -1066,7 +1066,7 @@ section { position: relative; }
 .page-header-bg::after {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(to bottom, rgba(10,9,8,0.4), var(--black) 92%);
+  background: linear-gradient(to bottom, rgba(14,9,18,0.4), var(--black) 92%);
 }
 .page-header .wrap { position: relative; z-index: 1; }
 .page-kicker {
@@ -1396,7 +1396,7 @@ img { height: auto; }
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(10, 9, 8, 0.65), transparent 60%);
+  background: linear-gradient(to top, rgba(14, 9, 18, 0.65), transparent 60%);
 }
 
 .release-meta { display: flex; flex-direction: column; gap: 0.25rem; }
@@ -2126,14 +2126,14 @@ html.gsap .wi { display: inline-block; will-change: transform; }
 .section-title em,
 .track-year,
 .tl-year {
-  text-shadow: 0 0 26px rgba(255, 45, 85, 0.45);
+  text-shadow: 0 0 26px rgba(224, 51, 140, 0.45);
 }
 .eyebrow { text-shadow: 0 0 20px rgba(255, 223, 148, 0.35); }
 .eyebrow::before { box-shadow: 0 0 12px rgba(255, 223, 148, 0.6); }
 
 .hero-title {
   text-shadow:
-    0 0 60px rgba(255, 45, 85, 0.22),
+    0 0 60px rgba(224, 51, 140, 0.22),
     0 12px 44px rgba(0, 0, 0, 0.6);
 }
 
@@ -2145,13 +2145,13 @@ html.gsap .wi { display: inline-block; will-change: transform; }
 .stat-badge .label { color: #3d2c08; }
 
 .tag-next {
-  box-shadow: var(--edge), 0 0 20px rgba(232, 17, 45, 0.5);
+  box-shadow: var(--edge), 0 0 20px rgba(168, 30, 102, 0.5);
 }
 .tour-status { box-shadow: 0 0 16px rgba(255, 223, 148, 0.18); }
 
 /* the "25" and the outlined type read as neon now */
-.big-num { filter: drop-shadow(0 0 26px rgba(255, 45, 85, 0.32)); }
-.komme-type .fill { filter: drop-shadow(0 0 22px rgba(255, 45, 85, 0.45)); }
+.big-num { filter: drop-shadow(0 0 26px rgba(224, 51, 140, 0.32)); }
+.komme-type .fill { filter: drop-shadow(0 0 22px rgba(224, 51, 140, 0.45)); }
 .award-cell .yr { filter: drop-shadow(0 0 18px rgba(255, 223, 148, 0.3)); }
 
 /* --- imagery sits in a lit frame --- */
@@ -2194,11 +2194,20 @@ html.gsap .wi { display: inline-block; will-change: transform; }
 }
 .sec-loud > * { position: relative; z-index: 1; }
 
-/* --- marquee: enamel strip --- */
+/* --- marquee: a painted board, not an enamel strip ---
+   Carried over as a glossy pink ribbon it read as candy, and a bright
+   saturated band directly under a cream hero is the loudest thing on the
+   page for no reason. Painted pine with the titles in paper puts it where it
+   belongs — a bill nailed across the front of the pavilion — and lets the
+   magenta go back to meaning something. */
 .marquee {
-  background: linear-gradient(180deg, #ff2d55 0%, var(--red) 46%, #b80f24 100%);
-  box-shadow: var(--edge), 0 10px 34px rgba(232, 17, 45, 0.28);
+  background: var(--pine-deep);
+  color: var(--paper);
+  border-top: 3px solid var(--ink);
+  border-bottom: 3px solid var(--ink);
+  box-shadow: none;
 }
+.marquee i { color: var(--crown-lit); font-style: normal; }
 
 /* --- nav gains a glass state once it leaves the hero --- */
 .nav.is-scrolled {
@@ -2206,19 +2215,19 @@ html.gsap .wi { display: inline-block; will-change: transform; }
   backdrop-filter: blur(16px) saturate(1.5);
   box-shadow: 0 1px 0 rgba(255, 223, 148, 0.18), 0 8px 30px rgba(0, 0, 0, 0.4);
 }
-.logo span { text-shadow: 0 0 16px rgba(255, 45, 85, 0.7); }
-.nav-links a.active::after { box-shadow: 0 0 12px rgba(255, 45, 85, 0.8); }
+.logo span { text-shadow: 0 0 16px rgba(224, 51, 140, 0.7); }
+.nav-links a.active::after { box-shadow: 0 0 12px rgba(224, 51, 140, 0.8); }
 
 /* --- play buttons look like objects --- */
 .embed-play {
   background: radial-gradient(120% 120% at 30% 20%, #ff5c7d 0%, var(--red) 48%, #a80d20 100%);
-  box-shadow: var(--edge), 0 10px 30px rgba(232, 17, 45, 0.45), var(--glow-red);
+  box-shadow: var(--edge), 0 10px 30px rgba(168, 30, 102, 0.45), var(--glow-red);
 }
 
 /* --- scroll progress reads as a filament --- */
 .scroll-progress {
   background: linear-gradient(90deg, var(--red-glow), var(--gold-bright));
-  box-shadow: 0 0 14px rgba(255, 45, 85, 0.7);
+  box-shadow: 0 0 14px rgba(224, 51, 140, 0.7);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2238,7 +2247,7 @@ html.gsap .wi { display: inline-block; will-change: transform; }
   padding: clamp(1.8rem, 4vw, 3rem);
   border: 1px solid rgba(216, 174, 87, 0.3);
   background:
-    radial-gradient(85% 130% at 100% 0%, rgba(232, 17, 45, 0.16), transparent 62%),
+    radial-gradient(85% 130% at 100% 0%, rgba(168, 30, 102, 0.16), transparent 62%),
     var(--near-black);
   box-shadow: var(--edge);
 }

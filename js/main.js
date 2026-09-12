@@ -392,7 +392,12 @@
      pinned section out from under the finger. Ignoring that one resize is
      the documented remedy and the reason the rail can hold on touch. */
   ScrollTrigger.config({ ignoreMobileResize: true });
-  gsap.defaults({ ease: 'power3.out', duration: 1 });
+  /* Tango is attack and arrest: a phrase crosses fast, stops hard, and then
+     holds. power3 over a full second drifts to its mark, which is the house
+     style of every scroll-reveal on the web. Crossing quicker and stopping
+     harder is the character, and the pauses between phrases carry the rest —
+     the hold is in the timeline, not in the curve. Matches --ease-tango. */
+  gsap.defaults({ ease: 'expo.out', duration: 0.72 });
 
   /* A narrow column swallows subtlety: the same 44px rise that reads as
      choreography on a wide screen reads as "the content just appeared" on a

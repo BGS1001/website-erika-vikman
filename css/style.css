@@ -3022,3 +3022,11 @@ input, textarea { caret-color: var(--magenta); }
   .page-header.pavilion .page-header-bg img { opacity: 1; }
   .page-header.pavilion .page-header-bg::after { background: none; }
 }
+
+/* Form controls do not inherit type from their parent — they fall back to the
+   platform UI font. Nothing visible was affected here (the only offender was
+   the textless menu button), but it is the kind of gap that stays invisible
+   until the day a select or an input lands on a page and quietly arrives in
+   Arial. html gets the family too, so nothing resolves to a serif default. */
+html { font-family: var(--font-body); }
+button, input, select, textarea { font: inherit; color: inherit; }

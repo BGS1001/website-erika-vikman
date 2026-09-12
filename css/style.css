@@ -2967,3 +2967,57 @@ input, textarea { caret-color: var(--magenta); }
   }
   .page-header.pavilion .wrap { padding-right: 0; }
 }
+
+/* ==========================================================================
+   HERO on a narrow screen — stack it, do not veil it
+   ==========================================================================
+   Two problems, one fix.
+
+   The bug: an earlier rule here set .hero-bg::after to none so the desktop
+   panel could have a hard painted edge, and being later in the file it also
+   cancelled the cream veil the narrow layout depended on. The copy ended up
+   sitting directly on the photograph at a contrast that was frankly unusable.
+
+   The fix is not a stronger veil. Laying type over a busy picture and then
+   fighting to keep it legible is a problem worth not having — the same reason
+   the dark scrim went in the first place. So the photograph becomes a band
+   across the top and the copy sits beneath it on solid cream: a printed bill,
+   picture above, words below, which is what the pavilion would actually put
+   on a wall. Contrast stops being something to manage. */
+@media (max-width: 860px) {
+  .hero {
+    align-items: flex-start;
+    padding-top: calc(46svh + clamp(1.5rem, 6vw, 2.5rem));
+  }
+  .hero-bg {
+    inset: 0 0 auto 0;
+    width: auto;
+    height: 46svh;
+    border-left: 0;
+    border-bottom: 3px solid var(--pine-deep);
+  }
+  .hero-bg img { object-position: center 18%; }
+  .hero-bg::after { background: none; }
+
+  .hero-content {
+    padding-right: 0;
+    padding-bottom: clamp(2.5rem, 9vw, 4rem);
+  }
+  .hero-scroll { display: none; }
+}
+
+/* The inner page headers stack the same way, for the same reason. */
+@media (max-width: 860px) {
+  .page-header.pavilion {
+    padding-top: calc(38svh + var(--nav-h));
+    padding-bottom: 3rem;
+  }
+  .page-header.pavilion .page-header-bg {
+    inset: 0 0 auto 0;
+    width: auto;
+    height: 38svh;
+    border-bottom: 3px solid var(--pine-deep);
+  }
+  .page-header.pavilion .page-header-bg img { opacity: 1; }
+  .page-header.pavilion .page-header-bg::after { background: none; }
+}

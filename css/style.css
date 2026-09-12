@@ -2845,3 +2845,46 @@ input, textarea { caret-color: var(--magenta); }
   .hero { align-items: flex-end; }
   .hero-content { padding-right: 0; padding-bottom: clamp(2.5rem, 8vw, 4rem); }
 }
+
+/* ==========================================================================
+   HERO — corrections after looking at it
+   ========================================================================== */
+
+/* The title was sized against the viewport while sitting in a column a little
+   under half that wide, so VIKMAN overran its line and the N was cut off by
+   the overflow clip the reveal animation needs. Display type in a split
+   layout has to be sized against its own column, not the window. */
+.hero-content { padding-right: clamp(0rem, 40vw, 34rem); }
+.hero-title { font-size: clamp(2.6rem, 6.6vw, 6.8rem); }
+
+/* The feathered edge was trying to dissolve our cream into the photograph's
+   own pale pink ground, and two near-but-unequal creams meeting in a soft
+   ramp just look like a mistake. A hard painted edge instead: the pavilion
+   language is printed bills and painted board, where an edge is a decision. */
+.hero-bg { border-left: 3px solid var(--pine-deep); }
+.hero-bg::after { background: none; }
+
+@media (max-width: 860px) {
+  .hero-bg { border-left: 0; }
+}
+
+/* ==========================================================================
+   NAV — a painted signboard
+   ==========================================================================
+   The bar was transparent over a dark hero, so on cream its own cream text
+   went nearly invisible. Rather than patch per-page contrast, the bar becomes
+   what it would be at a dance pavilion: a painted board with the name on it.
+   Legible over either ground, and it stops the nav being the one piece of
+   chrome with no opinion. */
+.nav {
+  background: var(--pine-deep);
+  border-bottom: 3px solid var(--ink);
+}
+.nav a, .nav .logo { color: var(--paper); }
+.nav-links a { color: var(--paper); opacity: 0.82; }
+.nav-links a:hover, .nav-links a.active { color: var(--crown-lit); opacity: 1; }
+.nav-links a.active::after, .nav-links a::after { background: var(--crown-lit); }
+.nav-toggle span { background: var(--paper); }
+
+/* it no longer needs to change on scroll — it was already solid */
+.nav.scrolled { background: var(--pine-deep); }

@@ -99,7 +99,8 @@
 
   /* One scale, seven steps. The previous site used 23 distinct sizes, which
      is not a scale but a decision taken again inside every component. */
-  --t-xs:  0.78rem;
+  --t-2xs: 0.72rem;
+  --t-xs:  0.8rem;
   --t-sm:  0.92rem;
   --t-md:  1.05rem;
   --t-lg:  1.3rem;
@@ -177,7 +178,7 @@ h1, h2, h3, .display {
   gap: 0.5em;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 0.78rem;
+  font-size: var(--t-xs);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--gold-bright);
@@ -209,7 +210,7 @@ h1, h2, h3, .display {
 .section-lede {
   max-width: 60ch;
   color: var(--gray);
-  font-size: 1.05rem;
+  font-size: var(--t-md);
 }
 
 section { position: relative; }
@@ -225,7 +226,7 @@ section { position: relative; }
   border-radius: 100px;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: var(--t-xs);
   letter-spacing: 0.05em;
   text-transform: uppercase;
   border: 1.5px solid transparent;
@@ -296,7 +297,7 @@ section { position: relative; }
   border: 1px solid rgba(255, 255, 255, 0.16);
   box-shadow: var(--edge);
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: var(--t-xs);
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
@@ -350,7 +351,7 @@ section { position: relative; }
 
 .logo {
   font-family: var(--font-display);
-  font-size: 1.5rem;
+  font-size: var(--t-lg);
   letter-spacing: 0.02em;
   color: var(--white);
   text-transform: uppercase;
@@ -364,7 +365,7 @@ section { position: relative; }
 }
 
 .nav-links a {
-  font-size: 0.82rem;
+  font-size: var(--t-xs);
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -492,7 +493,7 @@ section { position: relative; }
   bottom: 2.4rem;
   z-index: 2;
   writing-mode: vertical-rl;
-  font-size: 0.75rem;
+  font-size: var(--t-2xs);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--gray);
@@ -528,7 +529,7 @@ section { position: relative; }
    would fail the 4.5:1 required of smaller text. */
 .marquee span {
   font-family: var(--font-display);
-  font-size: 1.5rem;
+  font-size: var(--t-lg);
   text-transform: uppercase;
   padding: 0 1.2rem;
   display: inline-flex;
@@ -578,12 +579,12 @@ section { position: relative; }
 }
 .stat-badge .num {
   font-family: var(--font-display);
-  font-size: 2.6rem;
+  font-size: var(--t-xl);
   line-height: 1;
   display: block;
 }
 .stat-badge .label {
-  font-size: 0.68rem;
+  font-size: var(--t-2xs);
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -599,13 +600,13 @@ section { position: relative; }
   padding-bottom: 1.1rem;
   border-bottom: 1px solid rgba(243,237,226,0.1);
   color: var(--cream);
-  font-size: 0.98rem;
+  font-size: var(--t-sm);
 }
 .fact-list b {
   color: var(--gold-bright);
   font-family: var(--font-display);
   min-width: 4.5em;
-  font-size: 1.05rem;
+  font-size: var(--t-md);
   letter-spacing: 0.02em;
 }
 
@@ -673,23 +674,23 @@ section { position: relative; }
 
 .track-year {
   font-family: var(--font-display);
-  font-size: 2.4rem;
+  font-size: var(--t-xl);
   color: var(--red-glow);
   opacity: 0.9;
 }
 .track-card h4 {
   font-family: var(--font-body);
-  font-size: 1.15rem;
+  font-size: var(--t-md);
   font-weight: 800;
   color: var(--white);
   margin: 0.5rem 0 0.4rem;
   text-transform: none;
 }
-.track-card p { color: var(--gray); font-size: 0.9rem; }
+.track-card p { color: var(--gray); font-size: var(--t-sm); }
 .track-tag {
   display: inline-block;
   margin-top: 0.9rem;
-  font-size: 0.7rem;
+  font-size: var(--t-2xs);
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -752,7 +753,7 @@ section { position: relative; }
   position: absolute;
   left: 0.9rem; bottom: 0.8rem;
   z-index: 2;
-  font-size: 0.72rem;
+  font-size: var(--t-2xs);
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -801,13 +802,13 @@ section { position: relative; }
   color: var(--cream);
 }
 .lightbox-cap {
-  font-size: 0.78rem;
+  font-size: var(--t-xs);
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 .lightbox-count {
-  font-size: 0.78rem;
+  font-size: var(--t-xs);
   font-weight: 800;
   letter-spacing: 0.1em;
   color: var(--gold-bright);
@@ -824,7 +825,7 @@ section { position: relative; }
   background: rgba(14, 9, 18, 0.72);
   border: 1px solid rgba(243, 237, 226, 0.28);
   color: var(--white);
-  font-size: 1.25rem;
+  font-size: var(--t-lg);
   cursor: pointer;
   z-index: 2;
   transition: background 0.2s ease, border-color 0.2s ease;
@@ -854,7 +855,7 @@ section { position: relative; }
   white-space: nowrap;
 }
 .set-head .n {
-  font-size: 0.74rem;
+  font-size: var(--t-2xs);
   font-weight: 800;
   letter-spacing: 0.16em;
   color: var(--gold-bright);
@@ -870,7 +871,7 @@ section { position: relative; }
   position: absolute;
   top: 1.5rem; right: 1.8rem;
   font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-size: var(--t-md);
   color: var(--white);
   background: none;
   border: 1px solid rgba(255,255,255,0.3);
@@ -900,16 +901,16 @@ section { position: relative; }
   color: var(--gold-bright);
   line-height: 1;
 }
-.tour-date .day { font-size: 2.2rem; display: block; }
-.tour-date .mon { font-size: 0.8rem; letter-spacing: 0.1em; }
+.tour-date .day { font-size: var(--t-xl); display: block; }
+.tour-date .mon { font-size: var(--t-xs); letter-spacing: 0.1em; }
 
-.tour-info h4, .tour-info h3 { font-size: 1.15rem; color: var(--white); font-weight: 800; text-transform: none; letter-spacing: 0; }
-.tour-info span { color: var(--gray); font-size: 0.88rem; }
+.tour-info h4, .tour-info h3 { font-size: var(--t-md); color: var(--white); font-weight: 800; text-transform: none; letter-spacing: 0; }
+.tour-info span { color: var(--gray); font-size: var(--t-sm); }
 
 .tag-next {
   background: var(--red);
   color: var(--white);
-  font-size: 0.65rem;
+  font-size: var(--t-2xs);
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -927,7 +928,7 @@ section { position: relative; }
   padding: 1.4rem 1.6rem;
   border: 1px dashed rgba(216,174,87,0.35);
   color: var(--gray);
-  font-size: 0.92rem;
+  font-size: var(--t-sm);
 }
 .tour-note a { color: var(--gold-bright); font-weight: 700; }
 
@@ -951,9 +952,9 @@ section { position: relative; }
 .award-pill .yr {
   font-family: var(--font-display);
   color: var(--red-glow);
-  font-size: 1.3rem;
+  font-size: var(--t-lg);
 }
-.award-pill span { color: var(--cream); font-size: 0.9rem; }
+.award-pill span { color: var(--cream); font-size: var(--t-sm); }
 
 /* ==========================================================================
    CONTACT
@@ -975,15 +976,15 @@ section { position: relative; }
   transition: border-color 0.25s ease, background 0.25s ease;
 }
 .social-row:hover { border-color: var(--gold); background: rgba(216,174,87,0.05); }
-.social-row .name { font-weight: 800; font-size: 1rem; }
-.social-row .handle { color: var(--gray); font-size: 0.85rem; }
-.social-row .arrow { color: var(--gold-bright); font-size: 1.2rem; transition: transform .25s ease; }
+.social-row .name { font-weight: 800; font-size: var(--t-md); }
+.social-row .handle { color: var(--gray); font-size: var(--t-xs); }
+.social-row .arrow { color: var(--gold-bright); font-size: var(--t-lg); transition: transform .25s ease; }
 .social-row:hover .arrow { transform: translateX(4px); }
 
 .field { margin-bottom: 1.3rem; }
 .field label {
   display: block;
-  font-size: 0.75rem;
+  font-size: var(--t-2xs);
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -997,7 +998,7 @@ section { position: relative; }
   color: var(--white);
   padding: 0.9em 1em;
   font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-size: var(--t-sm);
 }
 .field input:focus, .field textarea:focus {
   outline: none;
@@ -1022,14 +1023,14 @@ section { position: relative; }
   padding-bottom: 2.5rem;
 }
 .footer-nav { display: flex; gap: 2rem; flex-wrap: wrap; }
-.footer-nav a { color: var(--gray); font-size: 0.85rem; font-weight: 600; }
+.footer-nav a { color: var(--gray); font-size: var(--t-xs); font-weight: 600; }
 .footer-nav a:hover { color: var(--gold-bright); }
 .footer-social { display: flex; gap: 1rem; }
 .footer-social a {
   width: 40px; height: 40px;
   border: 1px solid rgba(243,237,226,0.2);
   display: flex; align-items: center; justify-content: center;
-  font-size: 0.8rem;
+  font-size: var(--t-xs);
   font-weight: 800;
 }
 .footer-social a:hover { border-color: var(--gold-bright); color: var(--gold-bright); }
@@ -1041,7 +1042,7 @@ section { position: relative; }
   flex-wrap: wrap;
   gap: 0.8rem;
   color: var(--gray);
-  font-size: 0.78rem;
+  font-size: var(--t-xs);
 }
 .footer-bottom strong { color: var(--cream); }
 
@@ -1072,7 +1073,7 @@ section { position: relative; }
 .page-kicker {
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 0.78rem;
+  font-size: var(--t-xs);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--gold-bright);
@@ -1137,7 +1138,7 @@ section { position: relative; }
   padding: 0.8em 1.2em;
   font-weight: 800;
   text-transform: uppercase;
-  font-size: 0.8rem;
+  font-size: var(--t-xs);
   letter-spacing: 0.08em;
 }
 .skip-link:focus { left: 0; }
@@ -1159,7 +1160,7 @@ a:focus-visible, button:focus-visible {
    ========================================================================== */
 .tour-year {
   font-family: var(--font-display);
-  font-size: 1.5rem;
+  font-size: var(--t-lg);
   color: var(--gold-bright);
   text-transform: uppercase;
   margin: 3rem 0 0.4rem;
@@ -1168,7 +1169,7 @@ a:focus-visible, button:focus-visible {
 .tour-year small {
   display: block;
   font-family: var(--font-body);
-  font-size: 0.78rem;
+  font-size: var(--t-xs);
   font-weight: 700;
   letter-spacing: 0.14em;
   color: var(--gray);
@@ -1259,7 +1260,7 @@ img { height: auto; }
 .embed-label {
   position: relative;
   z-index: 1;
-  font-size: 0.78rem;
+  font-size: var(--t-xs);
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -1268,7 +1269,7 @@ img { height: auto; }
 .embed-label small {
   display: block;
   margin-top: 0.35rem;
-  font-size: 0.68rem;
+  font-size: var(--t-2xs);
   letter-spacing: 0.1em;
   color: var(--gray);
   font-weight: 600;
@@ -1358,7 +1359,7 @@ img { height: auto; }
 }
 .release-hero .flag {
   display: inline-block;
-  font-size: 0.68rem;
+  font-size: var(--t-2xs);
   font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -1378,7 +1379,7 @@ img { height: auto; }
   flex-wrap: wrap;
   gap: 0.5rem 1.6rem;
   margin: 1.2rem 0 1.4rem;
-  font-size: 0.82rem;
+  font-size: var(--t-xs);
   color: var(--gray);
   font-variant-numeric: tabular-nums;
 }
@@ -1402,18 +1403,18 @@ img { height: auto; }
 .release-meta { display: flex; flex-direction: column; gap: 0.25rem; }
 .release-meta .rel-title {
   font-weight: 800;
-  font-size: 1rem;
+  font-size: var(--t-md);
   color: var(--white);
   line-height: 1.25;
 }
 .release-meta .rel-sub {
-  font-size: 0.8rem;
+  font-size: var(--t-xs);
   color: var(--gray);
   font-variant-numeric: tabular-nums;
 }
 .release-links { display: flex; gap: 0.6rem; margin-top: 0.35rem; flex-wrap: wrap; }
 .release-links a {
-  font-size: 0.68rem;
+  font-size: var(--t-2xs);
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -1440,7 +1441,7 @@ img { height: auto; }
   padding: 1.05rem 1.3rem;
   border: 1px solid rgba(243, 237, 226, 0.14);
   font-weight: 800;
-  font-size: 0.88rem;
+  font-size: var(--t-sm);
   transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
 }
 .platform-link:hover {
@@ -1555,7 +1556,7 @@ img { height: auto; }
 .tl-media.is-wide img { aspect-ratio: 3/2; }
 .tl-media figcaption {
   margin-top: 0.6rem;
-  font-size: 0.74rem;
+  font-size: var(--t-2xs);
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -1596,9 +1597,9 @@ img { height: auto; }
 .award-cell .what {
   font-weight: 800;
   color: var(--white);
-  font-size: 1rem;
+  font-size: var(--t-md);
 }
-.award-cell .who { color: var(--gray); font-size: 0.86rem; }
+.award-cell .who { color: var(--gray); font-size: var(--t-sm); }
 
 /* ==========================================================================
    NEXT — every page ends by pointing somewhere
@@ -1621,7 +1622,7 @@ img { height: auto; }
 }
 .next-card:hover { background: var(--near-black); }
 .next-card .k {
-  font-size: 0.72rem;
+  font-size: var(--t-2xs);
   font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -1633,8 +1634,8 @@ img { height: auto; }
   color: var(--white);
   text-transform: uppercase;
 }
-.next-card .d { color: var(--gray); font-size: 0.9rem; }
-.next-card .go { color: var(--gold-bright); font-size: 1.1rem; transition: transform 0.25s ease; }
+.next-card .d { color: var(--gray); font-size: var(--t-sm); }
+.next-card .go { color: var(--gold-bright); font-size: var(--t-md); transition: transform 0.25s ease; }
 .next-card:hover .go { transform: translateX(5px); }
 
 /* ==========================================================================
@@ -1673,7 +1674,7 @@ img { height: auto; }
   flex-wrap: wrap;
   gap: 0.9rem 1.4rem;
   margin-bottom: 1.7rem;
-  font-size: 0.74rem;
+  font-size: var(--t-2xs);
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -1744,7 +1745,7 @@ img { height: auto; }
 .rail-cap {
   position: absolute;
   left: 0.9rem; bottom: 0.85rem;
-  font-size: 0.68rem;
+  font-size: var(--t-2xs);
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -1949,7 +1950,7 @@ html.gsap .wi { display: inline-block; will-change: transform; }
 .pt-0 { padding-top: 0; }
 .footer-blurb {
   color: var(--gray);
-  font-size: 0.85rem;
+  font-size: var(--t-xs);
   max-width: 32ch;
   margin-top: 1rem;
 }
@@ -1965,7 +1966,7 @@ html.gsap .wi { display: inline-block; will-change: transform; }
   align-items: baseline;
   gap: 0.9rem;
   margin: 2.4rem 0 0.2rem;
-  font-size: 0.74rem;
+  font-size: var(--t-2xs);
   font-weight: 800;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -1979,7 +1980,7 @@ html.gsap .wi { display: inline-block; will-change: transform; }
 }
 
 .tour-status {
-  font-size: 0.68rem;
+  font-size: var(--t-2xs);
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -2002,7 +2003,7 @@ html.gsap .wi { display: inline-block; will-change: transform; }
     var(--near-black);
 }
 .tour-flag .kicker {
-  font-size: 0.72rem;
+  font-size: var(--t-2xs);
   font-weight: 800;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -2027,7 +2028,7 @@ html.gsap .wi { display: inline-block; will-change: transform; }
 .tour-flag .cities span { color: var(--gold); }
 
 .video-pair { margin-top: 2.5rem; align-items: start; }
-.section-note { margin-top: 1.5rem; font-size: 0.86rem; color: var(--gray); max-width: 60ch; }
+.section-note { margin-top: 1.5rem; font-size: var(--t-sm); color: var(--gray); max-width: 60ch; }
 .hi { color: var(--gold-bright); }
 
 /* ==========================================================================
@@ -2044,7 +2045,7 @@ html.gsap .wi { display: inline-block; will-change: transform; }
 }
 .contact-card + .contact-card { margin-top: 1.2rem; }
 .contact-card .role {
-  font-size: 0.72rem;
+  font-size: var(--t-2xs);
   font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -2060,7 +2061,7 @@ html.gsap .wi { display: inline-block; will-change: transform; }
 .contact-card .mail {
   display: inline-block;
   margin-top: 0.6rem;
-  font-size: 1.02rem;
+  font-size: var(--t-md);
   font-weight: 700;
   color: var(--gold-bright);
   border-bottom: 1px solid rgba(216, 174, 87, 0.45);
@@ -2068,7 +2069,7 @@ html.gsap .wi { display: inline-block; will-change: transform; }
   word-break: break-word;
 }
 .contact-card .mail:hover { color: var(--white); border-color: var(--white); }
-.contact-card .note { color: var(--gray); font-size: 0.9rem; margin-top: 0.7rem; }
+.contact-card .note { color: var(--gray); font-size: var(--t-sm); margin-top: 0.7rem; }
 
 /* Honest framing — this is a fan project, and the contact page is where a
    visitor most needs to know that before they write to anyone. */
@@ -2079,14 +2080,14 @@ html.gsap .wi { display: inline-block; will-change: transform; }
 }
 .disclosure h3 {
   font-family: var(--font-body);
-  font-size: 1rem;
+  font-size: var(--t-md);
   font-weight: 800;
   text-transform: none;
   letter-spacing: 0;
   color: var(--white);
   margin-bottom: 0.6rem;
 }
-.disclosure p { color: var(--gray); font-size: 0.92rem; max-width: 58ch; }
+.disclosure p { color: var(--gray); font-size: var(--t-sm); max-width: 58ch; }
 .disclosure p + p { margin-top: 0.7rem; }
 .mt-0 { margin-top: 0; }
 
@@ -2270,7 +2271,7 @@ html.gsap .wi { display: inline-block; will-change: transform; }
 }
 .store-card .flag {
   display: inline-block;
-  font-size: 0.68rem;
+  font-size: var(--t-2xs);
   font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -2302,7 +2303,7 @@ html.gsap .wi { display: inline-block; will-change: transform; }
   gap: 0.5rem;
 }
 .merch-cell .k {
-  font-size: 0.7rem;
+  font-size: var(--t-2xs);
   font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -2314,7 +2315,7 @@ html.gsap .wi { display: inline-block; will-change: transform; }
   color: var(--white);
   text-transform: uppercase;
 }
-.merch-cell .d { color: var(--gray); font-size: 0.9rem; }
+.merch-cell .d { color: var(--gray); font-size: var(--t-sm); }
 /* the page header already carries bottom padding — a full section pad on top
    of it opened a void before the first block */
 .pt-tight { padding-top: clamp(1.5rem, 3vw, 2.5rem); }
@@ -2586,7 +2587,7 @@ html.gsap .wi { display: inline-block; will-change: transform; }
   top: 1.05rem;
   left: 1.35rem;
   margin: 0;
-  font-size: 0.72rem;
+  font-size: var(--t-2xs);
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -2605,7 +2606,7 @@ html.gsap .wi { display: inline-block; will-change: transform; }
   border-radius: 50%;
   background: none;
   color: var(--white);
-  font-size: 1.5rem;
+  font-size: var(--t-lg);
   line-height: 1;
   cursor: pointer;
   transition: background 0.2s var(--ease-out);
@@ -2645,7 +2646,7 @@ html.gsap .wi { display: inline-block; will-change: transform; }
   background: rgba(9, 7, 13, 0.86);
   box-shadow: inset 0 0 0 1px rgba(226, 185, 95, 0.5);
   color: var(--white);
-  font-size: 0.72rem;
+  font-size: var(--t-2xs);
   letter-spacing: 0.15em;
   text-transform: uppercase;
   opacity: 0;
@@ -2658,7 +2659,7 @@ html.gsap .wi { display: inline-block; will-change: transform; }
 .sp-note {
   margin: 0.9rem 0 0;
   text-align: center;
-  font-size: 0.72rem;
+  font-size: var(--t-2xs);
   letter-spacing: 0.04em;
   color: rgba(255, 255, 255, 0.45);
 }

@@ -2888,3 +2888,22 @@ input, textarea { caret-color: var(--magenta); }
 
 /* it no longer needs to change on scroll — it was already solid */
 .nav.scrolled { background: var(--pine-deep); }
+
+/* ==========================================================================
+   HERO — the column has to know how wide the panel is
+   ==========================================================================
+   The copy ran under the photograph because the column reserved 40vw while
+   the panel occupied 46vw. Two independent numbers describing one edge will
+   always drift apart, so the reservation is now the panel's own expression
+   plus a gutter — change the panel and the column follows. */
+.hero-content {
+  padding-right: calc(clamp(320px, 46vw, 660px) + clamp(1.5rem, 4vw, 3.5rem));
+}
+.hero-sub { max-width: 100%; }
+
+/* With the column honest, the title can carry the weight a hero needs. */
+.hero-title { font-size: clamp(2.7rem, 7.4vw, 7.6rem); }
+
+@media (max-width: 860px) {
+  .hero-content { padding-right: 0; }
+}

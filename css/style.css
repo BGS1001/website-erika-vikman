@@ -2916,3 +2916,54 @@ input, textarea { caret-color: var(--magenta); }
 @media (max-width: 860px) {
   .hero-content { padding-right: 0; }
 }
+
+/* ==========================================================================
+   PAGE HEADER on the pavilion
+   ==========================================================================
+   Giving the header the pavilion ground alone produced the worst of both:
+   pine type sitting on a darkened photograph, at a contrast nobody should be
+   asked to read. The ground was cream underneath, but a full-bleed image and
+   a black scrim were painted straight over it.
+
+   So inner pages take the hero's construction rather than a variant of it —
+   photograph in its own panel behind a painted edge, copy on cream, one
+   gutter expression shared by both so the column cannot drift under the
+   picture. The homepage and the inner pages are now the same idea at two
+   sizes instead of two ideas that happen to share a palette. */
+.page-header.pavilion { padding-bottom: 5rem; }
+
+.page-header.pavilion .page-header-bg {
+  inset: 0 0 0 auto;
+  width: clamp(240px, 38vw, 520px);
+  border-left: 3px solid var(--pine-deep);
+}
+.page-header.pavilion .page-header-bg img {
+  opacity: 1;
+  filter: saturate(1.02);
+  object-position: center 22%;
+}
+.page-header.pavilion .page-header-bg::after { background: none; }
+
+.page-header.pavilion .wrap {
+  padding-right: calc(clamp(240px, 38vw, 520px) + clamp(1.5rem, 4vw, 3.5rem));
+}
+.page-header.pavilion .page-title { color: var(--pine-deep); }
+.page-header.pavilion .page-kicker { color: var(--pine); }
+
+@media (max-width: 860px) {
+  .page-header.pavilion .page-header-bg {
+    inset: 0;
+    width: auto;
+    border-left: 0;
+  }
+  .page-header.pavilion .page-header-bg img { opacity: 0.9; }
+  /* a cream veil, so a small screen does not quietly return the page to the
+     dark-header convention this direction exists to leave behind */
+  .page-header.pavilion .page-header-bg::after {
+    background: linear-gradient(to bottom,
+      rgba(242, 233, 218, 0.55) 0%,
+      rgba(242, 233, 218, 0.92) 62%,
+      var(--paper-warm) 92%);
+  }
+  .page-header.pavilion .wrap { padding-right: 0; }
+}

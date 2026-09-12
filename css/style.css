@@ -8,45 +8,104 @@
    in each page's <head> — @import here would block first render. */
 
 :root {
-  /* Motion curve. The built-in ease-out is too weak to read as deliberate:
-     this one covers most of the distance at once, then settles on a long
-     quiet tail — the tail is what makes an entrance feel soft. */
-  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  /* ======================================================================
+     THE TANSSILAVA UNDER LATEX LIGHT — see DESIGN.md
 
-  /* Cool, deep grounds. The old neutrals were warm and earthy (#0a0908,
-     #a79d92) — that reads matte and vintage, which fights an artist whose
-     whole language is latex, chrome and stage light. */
-  --black: #070609;
-  --near-black: #0f0e13;
-  --charcoal: #17161d;
-  --red: #e8112d;
-  --red-deep: #9c0f22;
-  --red-glow: #ff2d55;
-  --gold: #e2b95f;
-  --gold-bright: #ffdf94;
-  --cream: #f6f3f7;
-  --white: #ffffff;
-  --gray: #9d97a6;
+     The site moves between two grounds, and that alternation is the whole
+     argument: the pavilion is the Finnish summer dance hall the tango crown
+     came from, the club is what she does with it. Neither is decoration for
+     the other.
+     ====================================================================== */
 
-  /* ---- gloss system ----
-     One light source, top-left, applied consistently: a specular sheen for
-     lacquered surfaces, a metal ramp for gold, and coloured bloom for the
-     accents. Used as tokens so the shine stays systematic. */
+  /* ---- the pavilion: painted wood in daylight ---- */
+  --paper:       #f2e9da;
+  --paper-warm:  #e7d9c0;
+  --paper-edge:  #d8c6a6;
+  --pine:        #8a5a2b;
+  --pine-deep:   #3f2916;
+
+  /* Warm, because the pavilion is wood. A cool grey-black here is the tell
+     of a palette picked from a screen rather than from a material. */
+  --ink:         #1c1510;
+  --ink-soft:    #6b5a49;
+  --ink-faint:   #9c8b78;
+
+  /* ---- the club: lacquer, not black ---- */
+  --night:       #17101f;
+  --night-2:     #241830;
+  --latex:       #0e0912;
+  --night-soft:  #b9aec6;
+
+  /* ---- the two lights that fall on her ---- */
+  --magenta:     #e0338c;
+  --magenta-dp:  #a81e66;
+  --magenta-lit: #ff5aa8;
+  --cyan:        #17b6c4;
+
+  /* ---- the crown: an accent, never a surface treatment ----
+     Gold is allowed on the microphone, the crown and the record button.
+     Spread any wider and an award turns into wallpaper, which is what
+     happened to the previous direction. */
+  --crown:       #c8a03c;
+  --crown-lit:   #ebc86a;
+  --gold-metal:  linear-gradient(148deg, #ffeec2 0%, #e2b95f 34%, #a97c24 56%, #f4d78f 78%, #d9ab4c 100%);
+
+  --white:       #ffffff;
+
+  /* ---- aliases, so the older component rules keep resolving while the
+     rebuild works through them page by page ---- */
+  --black:       var(--night);
+  --near-black:  var(--night);
+  --charcoal:    var(--night-2);
+  --red:         var(--magenta);
+  --red-deep:    var(--magenta-dp);
+  --red-glow:    var(--magenta-lit);
+  --gold:        var(--crown);
+  --gold-bright: var(--crown-lit);
+  --cream:       var(--paper);
+  --gray:        var(--night-soft);
+
+  /* ---- surface light ---- */
   --sheen: linear-gradient(157deg,
-            rgba(255, 255, 255, 0.16) 0%,
-            rgba(255, 255, 255, 0.05) 26%,
+            rgba(255, 255, 255, 0.14) 0%,
+            rgba(255, 255, 255, 0.04) 26%,
             rgba(255, 255, 255, 0) 46%);
   --sheen-strong: linear-gradient(152deg,
-            rgba(255, 255, 255, 0.30) 0%,
-            rgba(255, 255, 255, 0.08) 24%,
+            rgba(255, 255, 255, 0.26) 0%,
+            rgba(255, 255, 255, 0.07) 24%,
             rgba(255, 255, 255, 0) 44%);
-  --gold-metal: linear-gradient(148deg, #ffeec2 0%, #e2b95f 34%, #a97c24 56%, #f4d78f 78%, #d9ab4c 100%);
-  --glow-red: 0 0 32px rgba(255, 45, 85, 0.38), 0 0 64px rgba(255, 45, 85, 0.18);
-  --glow-gold: 0 0 30px rgba(255, 223, 148, 0.35);
-  --edge: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  --glow-red:  0 0 32px rgba(224, 51, 140, 0.34), 0 0 64px rgba(224, 51, 140, 0.16);
+  --glow-gold: 0 0 30px rgba(235, 200, 106, 0.32);
+  --edge: inset 0 1px 0 rgba(255, 255, 255, 0.14);
 
-  --font-display: 'Anton', 'Archivo Black', 'Inter', sans-serif;
-  --font-body: 'Inter', system-ui, sans-serif;
+  /* ---- motion: tango, not easing-out ----
+     Tango is attack and arrest — a phrase crosses fast, stops hard, and then
+     holds. --ease-tango covers almost all its distance immediately and has
+     nearly no tail, which is what makes a move read as arrested rather than
+     as drifting to a stop. --ease-out keeps a soft landing for the few
+     places that genuinely need one. */
+  --ease-tango: cubic-bezier(0.16, 1, 0.16, 1);
+  --ease-snap:  cubic-bezier(0.7, 0, 0.2, 1);
+  --ease-out:   cubic-bezier(0.23, 1, 0.32, 1);
+
+  /* ---- type ----
+     Archivo carries a width axis, which is the point: painted pavilion
+     signage is wide, and width is the voice here, not weight. Anton is
+     deliberately absent — it is the free condensed display every loud pop
+     site reaches for, and it was the clearest sign the old direction came
+     from the genre rather than from her. */
+  --font-display: 'Archivo', 'Archivo Expanded', system-ui, sans-serif;
+  --font-body:    'Instrument Sans', system-ui, -apple-system, sans-serif;
+
+  /* One scale, seven steps. The previous site used 23 distinct sizes, which
+     is not a scale but a decision taken again inside every component. */
+  --t-xs:  0.78rem;
+  --t-sm:  0.92rem;
+  --t-md:  1.05rem;
+  --t-lg:  1.3rem;
+  --t-xl:  clamp(1.9rem, 3.4vw, 2.8rem);
+  --t-2xl: clamp(2.8rem, 6vw, 5rem);
+  --t-3xl: clamp(4rem, 11vw, 9.5rem);
 
   --container: 1200px;
   --nav-h: 76px;
@@ -2606,3 +2665,88 @@ html.gsap .wi { display: inline-block; will-change: transform; }
   .sp-panel { transform: none; }
   .sp-cover, .sp-cover span { transition: none; }
 }
+
+/* ==========================================================================
+   FOUNDATION — the pavilion / club system
+   ==========================================================================
+   See DESIGN.md. The site alternates between two grounds and the alternation
+   is the argument, so this layer sits last and settles which ground a section
+   stands on before any component styling is read. */
+
+/* ---- display type: width carries the voice, not weight ----
+   Archivo has a width axis, and painted pavilion signage is wide. Setting
+   weight alone would have produced the same heavy-condensed register the old
+   direction used, which is the register every loud pop site already occupies. */
+h1, h2, h3, .display, .hero-title, .section-title, .page-title {
+  font-family: var(--font-display);
+  font-variation-settings: 'wdth' 116, 'wght' 800;
+  font-weight: 800;
+  letter-spacing: -0.008em;
+  line-height: 0.94;
+  text-transform: uppercase;
+}
+
+body {
+  background: var(--night);
+  color: var(--paper);
+  font-family: var(--font-body);
+}
+
+/* The club ground is lacquer rather than black: violet-shifted, with the two
+   stage lights bleeding in from the top corners instead of a red wash. */
+body::before {
+  background:
+    radial-gradient(78% 52% at 22% -6%, rgba(224, 51, 140, 0.12), transparent 62%),
+    radial-gradient(62% 46% at 96% 2%, rgba(23, 182, 196, 0.08), transparent 60%);
+}
+
+/* ---- the pavilion ----
+   Warm cream and varnished pine, for the material that is actually sincere:
+   the tango, the crown, the story, the archive. This is the ground the site
+   opens on, which is the single decision that stops it reading like every
+   other pop site — they all open dark. */
+.pavilion {
+  background:
+    linear-gradient(180deg, var(--paper) 0%, var(--paper-warm) 100%);
+  color: var(--ink);
+}
+.pavilion h1, .pavilion h2, .pavilion h3,
+.pavilion .display, .pavilion .section-title { color: var(--pine-deep); }
+.pavilion p, .pavilion li { color: var(--ink-soft); }
+.pavilion .eyebrow { color: var(--pine); }
+.pavilion .eyebrow::before { background: var(--pine); }
+.pavilion a { color: var(--pine-deep); }
+.pavilion em { color: var(--magenta-dp); font-style: normal; }
+
+/* the seam where pavilion meets club — a painted edge, not a fade */
+.pavilion + section:not(.pavilion),
+section:not(.pavilion) + .pavilion {
+  border-top: 3px solid var(--pine-deep);
+}
+
+/* ---- club-side emphasis ---- */
+section:not(.pavilion) em { color: var(--magenta-lit); font-style: normal; }
+
+/* ==========================================================================
+   Browser surfaces
+   ==========================================================================
+   Selection, scrollbar and caret were left at the browser default, which is
+   the one place a considered site reliably gives itself away — the visitor
+   drags across a heading and Chrome blue appears over the palette. */
+::selection { background: var(--magenta); color: var(--white); text-shadow: none; }
+.pavilion ::selection { background: var(--pine); color: var(--paper); }
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--pine) var(--latex);
+}
+::-webkit-scrollbar { width: 11px; height: 11px; }
+::-webkit-scrollbar-track { background: var(--latex); }
+::-webkit-scrollbar-thumb {
+  background: var(--pine);
+  border-radius: 99px;
+  border: 3px solid var(--latex);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--crown); }
+
+input, textarea { caret-color: var(--magenta); }

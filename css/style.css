@@ -3105,3 +3105,14 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .komme-cue-from { opacity: 0; }
 
 .komme-body { padding-top: clamp(3rem, 7vw, 5rem); }
+
+/* ScrollTrigger measures by jumping the scroll position during a refresh and
+   putting it back. With scroll-behavior: smooth on the root those jumps become
+   animations, so a refresh that lands mid-scroll — a resize, a phone turning,
+   a font arriving, or the hero button carrying you down to #ich-komme — reads
+   positions that are still in flight and pins the stage at the wrong offset.
+   Measured here: the pin's start collapsed from 2739 to -41, so the moment
+   reported itself already over before anyone reached it. Once GSAP owns the
+   page, the root scrolls instantly; without GSAP the smooth anchor jump
+   remains. */
+html.gsap { scroll-behavior: auto; }

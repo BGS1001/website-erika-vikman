@@ -3046,3 +3046,62 @@ input, textarea { caret-color: var(--magenta); }
    Arial. html gets the family too, so nothing resolves to a serif default. */
 html { font-family: var(--font-body); }
 button, input, select, textarea { font: inherit; color: inherit; }
+
+/* ==========================================================================
+   ICH KOMME — the stage where the lights go out
+   ==========================================================================
+   Every colour on the stage runs through a custom property so one timeline
+   can move them together. The values written here are the arrived state —
+   the club — which is what anyone sees when the moment does not run. */
+.komme {
+  padding: 0 0 clamp(4rem, 12vw, 9rem);
+  background: var(--latex);
+}
+.komme-stage {
+  --k-bg: #0e0912;
+  --k-ink: #f2e9da;
+  --k-stroke: #ff5aa8;
+  --k-art: 0.3;
+  --k-glow: 0.5;
+
+  position: relative;
+  height: 100svh;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: var(--s-6);
+  overflow: hidden;
+  background: var(--k-bg);
+}
+.komme-stage .komme-art { opacity: var(--k-art); }
+.komme-stage .komme-type {
+  position: relative;
+  z-index: 1;
+  color: var(--k-ink);
+}
+.komme-stage .komme-type .fill {
+  color: transparent;
+  -webkit-text-stroke: clamp(1.5px, 0.22vw, 3px) var(--k-stroke);
+  filter: drop-shadow(0 0 22px rgba(224, 51, 140, var(--k-glow)));
+}
+
+/* Two captions share one slot and trade places at the cut. Stacked in a
+   single grid cell so the swap cannot shift the headline by a pixel. */
+.komme-cues {
+  position: relative;
+  z-index: 1;
+  display: grid;
+}
+.komme-cue {
+  grid-area: 1 / 1;
+  justify-self: center;
+  font-family: var(--font-body);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--k-ink);
+}
+.komme-cue-from { opacity: 0; }
+
+.komme-body { padding-top: clamp(3rem, 7vw, 5rem); }

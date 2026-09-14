@@ -17,7 +17,6 @@
   var progressBar = document.querySelector('.scroll-progress');
   var nav = document.querySelector('.nav');
   var navLinks = document.querySelector('.nav-links');
-  var revealEls = Array.prototype.slice.call(document.querySelectorAll('[data-reveal]'));
 
   /* ================= shared scroll pass (progress bar + nav) ============= */
   var lastY = 0;
@@ -40,7 +39,6 @@
         else if (y < lastY - 6 || y <= 320) nav.classList.remove('nav-hidden');
       }
     }
-    if (!useGsap) sweepSkipped();
     lastY = y;
   }
 
@@ -52,45 +50,13 @@
   document.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll, { passive: true });
 
-  /* ================= fallback reveal (no GSAP) =========================== */
-  var pending = new Set();
-  var io = null;
-
-  function ioShow(el) {
-    el.style.opacity = '1';
-    el.style.transform = 'none';
-    el.style.filter = 'none';
-    pending.delete(el);
-    if (io) io.unobserve(el);
-  }
-
-  // A fast jump (scroll restoration, anchor, End key) can carry a section
-  // from below the viewport to above it with the intersection ratio never
-  // leaving 0 — no callback fires, the section stays hidden. Sweep them.
-  function sweepSkipped() {
-    if (!pending.size) return;
-    pending.forEach(function (el) {
-      if (el.getBoundingClientRect().bottom < 0) ioShow(el);
-    });
-  }
-
-  if (!useGsap && !reduceMotion && revealEls.length && 'IntersectionObserver' in window) {
-    revealEls.forEach(function (el) { pending.add(el); });
-    io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) ioShow(entry.target);
-      });
-    }, { threshold: 0, rootMargin: '0px 0px -8% 0px' });
-    revealEls.forEach(function (el) {
-      el.style.opacity = '0';
-      el.style.transform = 'translateY(20px)';
-      el.style.filter = 'blur(6px)';
-      /* same curve and tail as the GSAP tier, so the two paths feel alike */
-      el.style.transition = 'opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out), filter 0.9s var(--ease-out)';
-      io.observe(el);
-    });
-  }
-
+  /* ================= no entrance animations ============================
+     There used to be a float-in for every block on the page, in two tiers —
+     GSAP when it loaded, an IntersectionObserver copy when it did not. Both
+     are gone: content is simply there. Motion on this site is spent on things
+     that do work (the opening, the archive rail, the microphone) and on one
+     authored moment, and a page where every paragraph drifts up to meet you
+     has spent it on nothing. */
 
   /* ================= background video slot ==============================
      A section marked data-video="path/without/extension" upgrades its still
@@ -441,18 +407,19 @@
       l.setAttribute('aria-hidden', 'true');
     });
 
-    var heroBg = hero.querySelector('.hero-bg img');
-    var intro = gsap.timeline();
-    if (heroBg) {
-      intro.fromTo(heroBg, { scale: 1.16 }, { scale: 1, duration: 2.2, ease: 'power2.out' }, 0);
-    }
+    /* The opening, in tango. It used to begin with a 2.2-second zoom settling
+       out of the photograph and letters rolling up with a tilt on a long
+       ease-out — the drift-to-rest that every hero on the web performs. Now
+       the name crosses fast and stops, and the rest is set down after it
+       without travelling at all. */
+    var intro = gsap.timeline({ defaults: { ease: 'expo.out' } });
     intro.fromTo('.hero-title .ht-char',
-      { yPercent: 118, rotate: 5 },
-      { yPercent: 0, rotate: 0, duration: 1.1, ease: 'power4.out', stagger: 0.04 }, 0.25);
-    intro.fromTo('.hero-meta', { y: 26, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.8 }, 0.7);
-    intro.fromTo('.hero-sub', { y: 26, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.8 }, 0.85);
-    intro.fromTo('.hero-actions', { y: 26, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.8 }, 1.0);
-    intro.fromTo('.hero-scroll', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.8 }, 1.3);
+      { yPercent: 112 },
+      { yPercent: 0, duration: 0.62, stagger: 0.035 }, 0.15);
+    intro.fromTo(['.hero-meta', '.hero-sub', '.hero-actions'],
+      { autoAlpha: 0 },
+      { autoAlpha: 1, duration: 0.35, stagger: 0.12 }, 0.72);
+    intro.fromTo('.hero-scroll', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 1.1);
 
     // The intro hides this copy before revealing it, so any failure to finish
     // would leave the hero blank. If the page has been visible long enough
@@ -467,54 +434,9 @@
       }
     }, 6000);
     intro.eventCallback('onComplete', function () { clearTimeout(heroSafety); });
-    /* ---- hero: the photograph turns into the arena as you scroll ----
-       The first frame is the LCP image and is left alone. A second frame is
-       dissolved over it on scrub, so the studio portrait becomes the Basel
-       arena in the same red — a cross-dissolve only reads as deliberate when
-       the two frames share a palette, otherwise it reads as a slideshow.
-       The frame carries no src in the markup. It is armed when the browser
-       goes idle, or on the first scroll, whichever lands first, and the
-       dissolve is only wired up once the file has actually decoded: fading in
-       an undecoded image would punch a dark hole through the hero. */
-    var frame = hero.querySelector('.hero-frame');
-    var conn = navigator.connection || {};
-    var thrifty = conn.saveData === true || /2g/.test(conn.effectiveType || '');
-    if (frame && !thrifty) {
-      var armed = false;
-      var arm = function () {
-        if (armed) return;
-        armed = true;
-        frame.addEventListener('load', function () {
-          gsap.to(frame, {
-            opacity: 1,
-            ease: 'none',
-            scrollTrigger: { trigger: hero, start: 'top top', end: '68% top', scrub: true }
-          });
-          ScrollTrigger.refresh();
-        }, { once: true });
-        frame.src = frame.getAttribute('data-frame');
-      };
-      window.addEventListener('scroll', arm, { once: true, passive: true });
-      if (window.requestIdleCallback) requestIdleCallback(arm, { timeout: 2500 });
-      else setTimeout(arm, 1800);
-    }
-
-
-    /* hero parallax on the way out. Both frames drift together — parallaxing
-       only the lower one would let the two slide apart mid-dissolve. */
-    if (heroBg) {
-      gsap.to(hero.querySelectorAll(".hero-bg img"), {
-        yPercent: 14,
-        ease: 'none',
-        scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true }
-      });
-    }
-    gsap.to('.hero-content', {
-      yPercent: -10,
-      autoAlpha: 0.15,
-      ease: 'none',
-      scrollTrigger: { trigger: hero, start: 'top top', end: '75% top', scrub: true }
-    });
+    /* The scroll dissolve to a second frame and the fade-out on the way down
+       are retired. They were a second transformation competing with the one
+       moment the page is built around, further down at Ich Komme. */
   }
 
   /* ---- marquee reacts to scroll velocity ---- */
@@ -530,212 +452,59 @@
     gsap.ticker.add(function () { skewTo(0); });
   }
 
-  /* ---- section reveals: a soft float, row by row ----
-     A whole section arriving as one slab reads as a slide advancing. Blocks
-     are decomposed into their content rows so each floats on its own beat:
-     short travel, a long ease-out tail, and a little blur burning off. The
-     blur is what makes it read as soft rather than as a slide — the row
-     resolves into focus instead of sliding into place.
-     A classless wrapper, or one holding a section title, is scaffolding: it
-     should not move as a unit, so we float what it holds instead. */
-  var DRIFT_SEL = '.split-media, .tl-media, .release-hero .cover, .store-card .shot';
-  var SELF_STAGGERED = '.release-grid, .next-row, .awards-row, .merch-grid,' +
-                       '.platform-row, .social-list, .tour-list';
+  /* ---- THE MOMENT: the lights go out in the pavilion ----
+     One authored moment, and it is the thesis rather than an effect. The Ich
+     Komme stage pins in pavilion colours — cream ground, pine type, captioned
+     with the tango festival and the year she won it. Then, across a sliver of
+     scroll, the pavilion cuts to the club: lacquer floods in, KOMME ignites
+     magenta, and the caption becomes Basel. Then it holds.
 
-  if (revealEls.length) {
-    var items = [];
-    revealEls.forEach(function (block) {
-      var kids = [];
-      Array.prototype.slice.call(block.children).forEach(function (child) {
-        var scaffold = child.children.length > 1 &&
-          (!child.className || !!child.querySelector('.section-title'));
-        if (scaffold) {
-          kids.push.apply(kids, Array.prototype.slice.call(child.children));
-        } else {
-          kids.push(child);
-        }
-      });
-      items.push.apply(items, kids.length ? kids : [block]);
+     That shape is the tango: attack, arrest, and a pause long enough to be
+     felt. The cut is deliberately a few percent of the pin — near-instant
+     under a wheel or a thumb — and the hold after it is most of the pin,
+     with nothing moving at all. A slow cross-fade here would have been the
+     generic version of this idea.
+
+     The stylesheet's resting state is the club, so a visitor with reduced
+     motion, or without GSAP, sees the arrived frame and never a stuck
+     pavilion. This block only ever sets the pavilion in order to leave it. */
+  var stage = document.querySelector('.komme-stage');
+  if (stage) {
+    gsap.set(stage, {
+      '--k-bg': '#f2e9da',
+      '--k-ink': '#3f2916',
+      '--k-stroke': '#3f2916',
+      '--k-art': 0,
+      '--k-glow': 0
     });
+    gsap.set(stage.querySelector('.komme-cue-from'), { autoAlpha: 1 });
+    gsap.set(stage.querySelector('.komme-cue-to'), { autoAlpha: 0 });
 
-    var vh = window.innerHeight || 800;
-    items = items.filter(function (el) { return !el.matches(SELF_STAGGERED); });
-    items.forEach(function (el) {
-      /* Anything that already owns a scroll-driven transform gets opacity
-         only — a second y tween would fight the drift, and clearing the
-         transform afterwards would wipe it. */
-      /* Section titles already rise word by word behind their masks; adding a
-         float on top of that smears two movements into one mush. */
-      var titled = el.matches('.section-title');
-      var owned = titled || el.matches(DRIFT_SEL) || !!el.closest('.banner-par');
-      /* Blur is a full repaint of the element each frame, so it is worth it
-         on a paragraph and not on a photo or a half-screen headline. */
-      var big = el.getBoundingClientRect().height > vh * 0.45;
-      var media = el.tagName === 'IMG' || !!el.querySelector('img, iframe, video, canvas');
-      el.__rv = { y: owned ? 0 : (touch ? 26 : 20), blur: (media || big || titled) ? 0 : (touch ? 4 : 6) };
-    });
-
-    gsap.set(items, { autoAlpha: 0 });
-    var moved = items.filter(function (el) { return el.__rv.y; });
-    var blurred = items.filter(function (el) { return el.__rv.blur; });
-    if (moved.length) gsap.set(moved, { y: function (i, el) { return el.__rv.y; } });
-    if (blurred.length) {
-      gsap.set(blurred, { filter: function (i, el) { return 'blur(' + el.__rv.blur + 'px)'; } });
-    }
-
-    ScrollTrigger.batch(items, {
-      start: touch ? 'top 94%' : 'top 90%',
-      once: true,
-      onEnter: function (batch) {
-        batch.forEach(function (el, i) {
-          var clear = ['willChange'];
-          var vars = {
-            autoAlpha: 1,
-            duration: 0.9,
-            /* power4.out is the GSAP twin of cubic-bezier(0.23, 1, 0.32, 1):
-               most of the distance is covered at once, then a long quiet
-               settle. That tail is the "soft" in soft float. */
-            ease: 'power4.out',
-            delay: i * 0.075,
-            overwrite: 'auto'
-          };
-          if (el.__rv.y) { vars.y = 0; clear.push('transform'); }
-          if (el.__rv.blur) { vars.filter = 'blur(0px)'; clear.push('filter'); }
-          vars.clearProps = clear.join(',');
-          gsap.to(el, vars);
-        });
+    var lights = gsap.timeline({
+      defaults: { ease: 'none' },
+      scrollTrigger: {
+        trigger: stage,
+        start: 'top top',
+        end: '+=85%',
+        pin: true,
+        pinType: touch ? 'transform' : 'fixed',
+        anticipatePin: 1,
+        scrub: true
       }
     });
-    // rows above the fold on load (or after scroll restoration) must not wait
-    // for a scroll event
-    ScrollTrigger.refresh();
-  }
-
-  /* ---- section titles: per-word rise ---- */
-  document.querySelectorAll('.section-title').forEach(function (title) {
-    var frag = document.createDocumentFragment();
-    function wrapWords(node, target) {
-      Array.prototype.slice.call(node.childNodes).forEach(function (child) {
-        if (child.nodeType === 3) {
-          child.textContent.split(/(\s+)/).forEach(function (part) {
-            if (!part) return;
-            if (/^\s+$/.test(part)) {
-              target.appendChild(document.createTextNode(' '));
-            } else {
-              var m = document.createElement('span');
-              m.className = 'wm';
-              var i = document.createElement('span');
-              i.className = 'wi';
-              i.textContent = part;
-              m.appendChild(i);
-              target.appendChild(m);
-            }
-          });
-        } else if (child.nodeName === 'BR') {
-          target.appendChild(document.createElement('br'));
-        } else {
-          var clone = child.cloneNode(false);
-          clone.innerHTML = '';
-          wrapWords(child, clone);
-          target.appendChild(clone);
-        }
-      });
-    }
-    wrapWords(title, frag);
-    title.innerHTML = '';
-    title.appendChild(frag);
-
-    var words = title.querySelectorAll('.wi');
-    gsap.set(words, { yPercent: 115 });
-    gsap.to(words, {
-      yPercent: 0,
-      duration: 0.9,
-      ease: 'power4.out',
-      stagger: 0.07,
-      scrollTrigger: { trigger: title, start: 'top 88%', once: true }
-    });
-  });
-
-  /* ---- imagery: settle-in scale + frame drift ---- */
-  gsap.utils.toArray('.split-media img').filter(function (img) {
-    return !img.closest('.banner-par'); // the banner has its own parallax
-  }).forEach(function (img) {
-    gsap.fromTo(img, { scale: 1.12 }, {
-      scale: 1, duration: 1.4, ease: 'power2.out',
-      scrollTrigger: { trigger: img, start: 'top 88%', once: true }
-    });
-  });
-
-  /* Frames drift against the scroll, which on a phone is most of what stops a
-     stack of images reading as a static list. The whole frame moves, not the
-     photo inside it: the hairline border belongs to the image and .split-media
-     hangs its stat badge past the corner on negative offsets, so clipping the
-     frame would eat the badge and scaling the photo would push the border out
-     of view. Moving the unit keeps both attached. */
-  var DRIFT = touch ? 10 : 14;
-  gsap.utils.toArray(DRIFT_SEL)
-    .filter(function (f) { return !f.closest('.banner-par') && f.querySelector('img'); })
-    .forEach(function (frame) {
-      gsap.fromTo(frame, { y: -DRIFT }, {
-        y: DRIFT,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: frame,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: touch ? 0.6 : true
-        }
-      });
-    });
-
-  /* Grid cards climb in one after another rather than all at once. */
-  [['.release-grid', '.release-card'], ['.next-row', '.next-card'],
-   ['.awards-row', '.award-cell'], ['.merch-grid', '.merch-cell'],
-   ['.platform-row', '.platform-link'], ['.social-list', '.social-row'],
-   ['.tour-list', '.tour-row']].forEach(function (pair) {
-    gsap.utils.toArray(pair[0]).forEach(function (group) {
-      var items = group.querySelectorAll(pair[1]);
-      if (!items.length) return;
-      gsap.from(items, {
-        y: touch ? 34 : 24,
-        autoAlpha: 0,
-        duration: 0.7,
-        ease: 'power3.out',
-        stagger: touch ? 0.08 : 0.06,
-        scrollTrigger: { trigger: group, start: 'top 90%', once: true }
-      });
-    });
-  });
-  var banner = document.querySelector('.banner-par');
-  if (banner) {
-    var bImg = banner.querySelector('img');
-    gsap.fromTo(bImg, { yPercent: -10 }, {
-      yPercent: 10, ease: 'none',
-      scrollTrigger: { trigger: banner, start: 'top bottom', end: 'bottom top', scrub: true }
-    });
-    gsap.set(bImg, { scale: 1.22 });
-  }
-
-  /* ---- the big 25 drifts against scroll ---- */
-  var bigNum = document.querySelector('.big-num');
-  if (bigNum) {
-    gsap.fromTo(bigNum, { yPercent: 16 }, {
-      yPercent: -16, ease: 'none',
-      scrollTrigger: { trigger: '.big-feature', start: 'top bottom', end: 'bottom top', scrub: 1 }
-    });
-  }
-
-  /* ---- gallery tiles cascade in ---- */
-  var tiles = gsap.utils.toArray('.gallery-grid .gallery-item');
-  if (tiles.length) {
-    gsap.set(tiles, { y: 32, autoAlpha: 0 });
-    ScrollTrigger.batch(tiles, {
-      start: 'top 92%',
-      once: true,
-      onEnter: function (batch) {
-        gsap.to(batch, { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.07, overwrite: true });
-      }
-    });
+    lights
+      .to({}, { duration: 0.2 })                                   // the pavilion, held
+      .to(stage, {
+        '--k-bg': '#0e0912',
+        '--k-ink': '#f2e9da',
+        '--k-stroke': '#ff5aa8',
+        '--k-art': 0.3,
+        duration: 0.05
+      })                                                           // the cut
+      .to(stage.querySelector('.komme-cue-from'), { autoAlpha: 0, duration: 0.02 }, '<')
+      .to(stage.querySelector('.komme-cue-to'), { autoAlpha: 1, duration: 0.02 }, '<0.02')
+      .to(stage, { '--k-glow': 0.5, duration: 0.06 })              // the bloom
+      .to({}, { duration: 0.67 });                                 // the hold
   }
 
   /* ---- pinned horizontal rail ----

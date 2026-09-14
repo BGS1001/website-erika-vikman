@@ -81,9 +81,6 @@
 <header class="hero pavilion">
   <div class="hero-bg">
     <img src="assets/img/portrait-gloves.jpg" alt="Erika Vikman in printed mesh gloves and gold jewellery, looking straight to camera" fetchpriority="high" width="1024" height="1280">
-    <!-- Second frame. No src until the visitor is idle or scrolls, so a hero
-         that is only glanced at costs nothing extra. -->
-    <img class="hero-frame" data-frame="assets/img/erika-crowd-screen.jpg" alt="" aria-hidden="true" width="1024" height="1277">
   </div>
   <div class="hero-content wrap">
     <p class="hero-meta">
@@ -153,11 +150,17 @@
 
 <!-- ICH KOMME — the song itself, on the landing page -->
 <section class="komme" id="ich-komme">
-  <div class="komme-art" aria-hidden="true">
-    <img src="assets/img/artwork-ich-komme.jpg" alt="" loading="lazy" width="1118" height="1280">
-  </div>
-  <div class="wrap" data-reveal>
+  <div class="komme-stage">
+    <div class="komme-art" aria-hidden="true">
+      <img src="assets/img/artwork-ich-komme.jpg" alt="" loading="lazy" width="1118" height="1280">
+    </div>
+    <div class="komme-cues" aria-hidden="true">
+      <span class="komme-cue komme-cue-from">Tangomarkkinat · 2016</span>
+      <span class="komme-cue komme-cue-to">Basel · 2025</span>
+    </div>
     <h2 class="komme-type">Ich<br><span class="fill">Komme</span></h2>
+  </div>
+  <div class="wrap komme-body">
     <p class="komme-sub">Finland's Eurovision 2025 entry, written and produced by Christel and Jori Roosberg. Press play for the official video — nothing loads from YouTube until you do.</p>
     <div class="embed-frame is-video mt-lg">
       <button class="embed-facade"

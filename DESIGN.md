@@ -91,7 +91,13 @@ Crown      --crown #C8A03C   --crown-lit #EBC86A
 ```
 
 **The crown is an accent, not a theme.** Gold appears on the microphone, the
-crown, and the record button — and nowhere else. The previous site used gold
+crown, and the record button — and nowhere else. In type, that means one year:
+2016, Tangomarkkinat.
+
+**The two lights have jobs.** Cyan carries labels and metadata; magenta carries
+actions and emphasis. On the pavilion both roles re-declare in deep magenta,
+because cyan on cream falls to about 2:1. `--gold`/`--gold-bright` remain only
+as legacy aliases for those roles — they are not gold. The previous site used gold
 as a surface treatment across everything, which is how an award becomes
 wallpaper.
 
@@ -106,8 +112,10 @@ Black is gone as a ground. `--ink` is warm, because the pavilion is wood.
 - **Anton is banned.** It is *the* free condensed display of loud pop sites,
   and using it was the single clearest tell that the old direction came from
   the genre rather than from her. Inter goes with it.
-- One scale, seven steps. The old site used 23 distinct sizes — that is not a
-  scale, it is a decision made again in every component.
+- One type scale, eight steps (`--t-2xs` … `--t-3xl`), and a ten-step spacing
+  scale (`--s-1` … `--s-10`) beside it. The old site used 23 sizes and 30
+  spacing values — not scales, just decisions retaken in every component.
+  Section rhythm and the hero gutter stay fluid in `clamp()`/`calc()` by design.
 
 ### Motion
 
@@ -115,7 +123,14 @@ Tango, not easing-out. Tango is attack and arrest: a phrase crosses fast,
 stops hard, and **holds**. Entrances cover their distance quickly and then
 settle almost not at all, and pauses are allowed to be long.
 
-One authored moment per page, not scattered reveals.
+No entrance animations. Motion is spent on work (the opening, the pinned
+archive rail, the marquee answering scroll velocity, the microphone) and on
+**one authored moment: the lights go out in the pavilion.** The Ich Komme stage
+pins in pavilion colours captioned *Tangomarkkinat · 2016*, cuts to the club
+across ~5% of the pin — *Basel · 2025* — and then holds, still, for two thirds of
+it. Attack, arrest, pause. Resting CSS is the arrived club state, so reduced
+motion or no GSAP never shows a stuck pavilion. The root does not smooth-scroll
+under GSAP, because that corrupts ScrollTrigger refreshes.
 
 ### Photography
 
@@ -136,6 +151,9 @@ No illustrated or stock substitutes, ever: on an artist site the photography
 
 - The red curtain hero, black ground, Anton, Inter, gold-as-surface, and the
   red accent as the site's voice.
+- Scattered scroll reveals, and counterfeit gradient covers. Releases are
+  jukebox title strips banded by era — pine tango, magenta pop, cyan Eurovision.
+- The dot-and-glowing-line timeline; the biography is a printed programme.
 
 ## STANDING CHECK
 

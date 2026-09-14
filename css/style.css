@@ -3116,3 +3116,12 @@ button, input, select, textarea { font: inherit; color: inherit; }
    page, the root scrolls instantly; without GSAP the smooth anchor jump
    remains. */
 html.gsap { scroll-behavior: auto; }
+
+/* On a phone the stage headline sat at little more than half the width in a
+   field of cream, which is undersized for the one moment the page is built
+   around. The set measures about 3.7 times its own size across, so 21vw puts
+   it at roughly 78% of any narrow screen — large enough to own the frame when
+   the lights go out, with a margin either side. */
+@media (max-width: 860px) {
+  .komme-stage .komme-type { font-size: 21vw; }
+}

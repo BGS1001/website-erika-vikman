@@ -3287,3 +3287,74 @@ html.gsap { scroll-behavior: auto; }
 }
 .fact-list li.is-crown { border-top-color: var(--crown); }
 .fact-list li.is-crown b { color: var(--crown-lit); }
+
+/* ==========================================================================
+   GOLD, RETIRED FROM EVERYTHING BUT THE CROWN
+   ==========================================================================
+   An audit after the timeline found gold in roughly forty selectors: every
+   eyebrow and kicker, tour dates, links, the progress bar, the focus ring,
+   a gold-metal plaque for a chart position, and five gold buttons. That is the
+   award-as-wallpaper the contract retired, still running underneath the new
+   palette, because the old gold tokens had only been aliased, not reassigned.
+
+   Gold was doing two jobs, and each goes to a colour that has a reason to be
+   there. The club has two lights: cyan takes labels and metadata, magenta
+   takes actions and emphasis. Cyan finally has work to do.
+
+   --gold and --gold-bright survive only as legacy aliases so forty component
+   rules keep resolving; they are not gold any more. The crown, the record and
+   the microphone use --crown, --crown-lit and literal values, so none of the
+   three is touched by this. */
+:root {
+  --label:       var(--cyan);
+  --label-lit:   #5fd5de;
+  --gold:        var(--label);
+  --gold-bright: var(--label-lit);
+  --glow-gold:   0 0 26px rgba(23, 182, 196, 0.28);
+}
+
+/* On cream, cyan text falls to about 2:1. The pavilion re-declares the same
+   roles in deep magenta, near 6:1. Custom properties inherit their computed
+   value, so the aliases themselves have to be overridden here, not --label. */
+.pavilion {
+  --gold:        var(--magenta-dp);
+  --gold-bright: var(--magenta-dp);
+  --glow-gold:   none;
+}
+
+/* The five gold buttons become paper: the pavilion's material carried into
+   the club, which is the direction in a single control. On the pavilion they
+   invert to painted pine. */
+.btn-gold {
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3), var(--edge);
+}
+.btn-gold:hover {
+  background: var(--white);
+  color: var(--ink);
+  box-shadow: 0 0 0 2px var(--magenta-lit), 0 8px 22px rgba(0, 0, 0, 0.32);
+  filter: none;
+}
+.pavilion .btn-gold { background: var(--pine-deep); color: var(--paper); }
+.pavilion .btn-gold:hover { background: var(--ink); color: var(--paper); box-shadow: 0 0 0 2px var(--magenta); }
+
+/* The #1 chart plaque was a gold-metal award slab. A chart position is not
+   the crown, so it becomes a printed ticket — paper, a pine border, the figure
+   in wide type — pinned to the corner of the photograph like a bill. */
+.stat-badge {
+  background: var(--paper);
+  color: var(--ink);
+  border: 3px solid var(--pine-deep);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.42);
+}
+.stat-badge .num {
+  color: var(--pine-deep);
+  font-variation-settings: 'wdth' 125, 'wght' 800;
+}
+.stat-badge .label { color: var(--ink-soft); }
+
+/* The focus ring must hold on both grounds without depending on the alias. */
+a:focus-visible, button:focus-visible { outline-color: var(--magenta-lit); }
+.pavilion a:focus-visible, .pavilion button:focus-visible { outline-color: var(--magenta-dp); }
+::-webkit-scrollbar-thumb:hover { background: var(--magenta); }

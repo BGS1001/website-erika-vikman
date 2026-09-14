@@ -3125,3 +3125,99 @@ html.gsap { scroll-behavior: auto; }
 @media (max-width: 860px) {
   .komme-stage .komme-type { font-size: 21vw; }
 }
+
+/* ==========================================================================
+   RELEASES — jukebox title strips
+   ==========================================================================
+   The grid was ten squares of blurred red-and-gold gradient with a year
+   stroked through the middle, standing in for cover art the site does not
+   hold. That is worse than the rounded album square every streaming platform
+   already renders: it is a counterfeit cover, generated from a gradient, and
+   it reads as a placeholder the moment anyone looks at it.
+
+   The replacement is an object the pavilion actually had. Dance halls ran a
+   jukebox, and a jukebox is labelled with printed paper title strips, banded
+   in colour top and bottom, one per record. No pretend artwork — paper, type
+   and a colour — and legible to anyone, Finnish or not, as "a list of
+   records you can put on". Cream strips on the lacquer ground read as cards
+   lit inside the machine, which is the whole direction inside one component.
+
+   The band colour is the era, derived rather than decorative: pine for the
+   tango years, magenta for the pop records, cyan for the Eurovision run. The
+   one release with real cover art keeps it, small, in the selector slot where
+   a label sticker would sit. */
+.release-grid {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 21rem), 1fr));
+  gap: var(--s-3) var(--s-5);
+}
+
+.release-grid .release-card {
+  --era: var(--crown);
+  display: grid;
+  grid-template-columns: 4.75rem minmax(0, 1fr);
+  align-items: stretch;
+  gap: 0;
+  background: var(--paper);
+  color: var(--ink);
+  border-top: 5px solid var(--era);
+  border-bottom: 5px solid var(--era);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.34);
+}
+.release-grid .release-card:has(.era-tango) { --era: var(--pine); }
+.release-grid .release-card:has(.era-pop)   { --era: var(--magenta); }
+.release-grid .release-card:has(.era-euro)  { --era: var(--cyan); }
+
+/* on the pavilion ground a cream strip needs its own edge to separate */
+.pavilion .release-grid .release-card {
+  background: #fbf7ef;
+  box-shadow: 0 0 0 1px rgba(63, 41, 22, 0.16), 0 8px 18px rgba(63, 41, 22, 0.12);
+}
+
+/* the selector slot */
+.release-grid .release-cover {
+  aspect-ratio: auto;
+  min-height: 4.75rem;
+  border: 0;
+  border-right: 2px solid var(--era);
+  background: var(--paper-warm);
+}
+.release-grid .release-cover.is-type::after { display: none; }
+.release-grid .release-cover.is-type span {
+  font-family: var(--font-display);
+  font-variation-settings: 'wdth' 100, 'wght' 800;
+  font-size: var(--t-md);
+  color: var(--ink);
+  -webkit-text-stroke: 0;
+  letter-spacing: 0.02em;
+}
+.release-grid .release-cover img { box-shadow: none; }
+
+/* the strip itself */
+.release-grid .release-meta {
+  justify-content: center;
+  gap: var(--s-1);
+  padding: var(--s-3) var(--s-4);
+}
+.release-grid .rel-title {
+  font-family: var(--font-display);
+  font-variation-settings: 'wdth' 108, 'wght' 800;
+  font-size: var(--t-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  padding-bottom: var(--s-1);
+  border-bottom: 1px solid rgba(28, 21, 16, 0.18);
+}
+.release-grid .rel-feat {
+  font-family: var(--font-body);
+  font-variation-settings: normal;
+  font-weight: 600;
+  text-transform: none;
+  color: var(--ink-soft);
+}
+.release-grid .rel-sub { color: var(--ink-soft); }
+.release-grid .release-links a {
+  color: var(--magenta-dp);
+  border-color: rgba(168, 30, 102, 0.35);
+}
+.release-grid .release-links a:hover { color: var(--ink); border-color: var(--ink); }

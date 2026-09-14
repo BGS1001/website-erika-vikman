@@ -3358,3 +3358,9 @@ html.gsap { scroll-behavior: auto; }
 a:focus-visible, button:focus-visible { outline-color: var(--magenta-lit); }
 .pavilion a:focus-visible, .pavilion button:focus-visible { outline-color: var(--magenta-dp); }
 ::-webkit-scrollbar-thumb:hover { background: var(--magenta); }
+
+/* Two of my own earlier choices failed the same rule: the active nav link and
+   the marquee stars were set in crown gold, and neither is the crown. */
+.nav-links a:hover, .nav-links a.active { color: var(--paper); opacity: 1; }
+.nav-links a.active::after, .nav-links a::after { background: var(--magenta-lit); }
+.marquee i { color: var(--magenta-lit); }

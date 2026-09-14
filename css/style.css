@@ -3221,3 +3221,69 @@ html.gsap { scroll-behavior: auto; }
   border-color: rgba(168, 30, 102, 0.35);
 }
 .release-grid .release-links a:hover { color: var(--ink); border-color: var(--ink); }
+
+/* ==========================================================================
+   TIMELINE — a printed programme, not a glowing rail
+   ==========================================================================
+   A vertical gradient line with a glowing dot at every year is the default
+   timeline of the web; it was here only because a timeline usually looks like
+   that. The pavilion's version of a sequence is printed: a festival programme,
+   a results sheet pinned by the door. Each year opens with a full-width rule
+   and is set large in wide figures, and the rule does the work the dot and the
+   line were doing between them.
+
+   Gold lands on one year only. The contract allows gold on the crown and on
+   nothing else, so 2016 — the year she won Tangomarkkinat — is the single gold
+   figure in the biography, and the colour means what it says. */
+.tl::before,
+.tl-item::before { display: none; }
+
+.tl-item {
+  border-top: 2px solid rgba(242, 233, 218, 0.2);
+  padding: var(--s-6) 0 var(--s-9);
+}
+.tl-item:last-child { padding-bottom: 0; }
+
+.tl-year {
+  font-variation-settings: 'wdth' 125, 'wght' 800;
+  font-size: clamp(2.4rem, 4.8vw, 3.8rem);
+  line-height: 0.9;
+  color: var(--paper);
+  text-align: left;
+  padding-right: 0;
+}
+@media (min-width: 901px) {
+  .tl-item {
+    grid-template-columns: 13rem minmax(0, 1fr);
+    padding-left: 0;
+  }
+  .tl-year { text-align: left; padding-right: 0; }
+}
+.tl-body h3 { color: var(--paper); }
+.tl-media img { border: 0; }
+
+.tl-item.is-crown { border-top-color: var(--crown); }
+.tl-item.is-crown .tl-year { color: var(--crown-lit); }
+
+.pavilion .tl-item { border-top-color: rgba(63, 41, 22, 0.28); }
+.pavilion .tl-year,
+.pavilion .tl-body h3 { color: var(--pine-deep); }
+.pavilion .tl-item.is-crown { border-top-color: var(--crown); }
+.pavilion .tl-item.is-crown .tl-year { color: var(--pine-deep); text-decoration: underline 4px var(--crown); text-underline-offset: 0.12em; }
+
+/* The three homepage milestones are the same sequence at small scale, so
+   they take the same treatment: ruled rows, wide figures, gold on the crown. */
+.fact-list { gap: 0; }
+.fact-list li {
+  border-top: 1px solid rgba(242, 233, 218, 0.18);
+  padding: var(--s-4) 0;
+  border-bottom: 0;
+}
+.fact-list li:last-child { border-bottom: 1px solid rgba(242, 233, 218, 0.18); }
+.fact-list b {
+  font-family: var(--font-display);
+  font-variation-settings: 'wdth' 125, 'wght' 800;
+  color: var(--paper);
+}
+.fact-list li.is-crown { border-top-color: var(--crown); }
+.fact-list li.is-crown b { color: var(--crown-lit); }

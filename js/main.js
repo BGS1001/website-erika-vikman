@@ -371,73 +371,8 @@
      instead of fading up. */
   var touch = window.matchMedia('(pointer: coarse)').matches;
 
-  /* ---- hero: split the title into lines/chars and run the opening ---- */
-  var heroTitle = document.querySelector('.hero-title');
-  var hero = document.querySelector('.hero');
-  if (hero && heroTitle) {
-    var lines = [];
-    var currentLine = document.createElement('span');
-    currentLine.className = 'ht-line';
-    Array.prototype.slice.call(heroTitle.childNodes).forEach(function (node) {
-      if (node.nodeName === 'BR') {
-        lines.push(currentLine);
-        currentLine = document.createElement('span');
-        currentLine.className = 'ht-line';
-      } else if (node.nodeType === 3) {
-        node.textContent.split('').forEach(function (ch) {
-          if (ch.trim() === '') {
-            currentLine.appendChild(document.createTextNode(' '));
-          } else {
-            var s = document.createElement('span');
-            s.className = 'ht-char';
-            s.textContent = ch;
-            currentLine.appendChild(s);
-          }
-        });
-      }
-    });
-    lines.push(currentLine);
-    // textContent drops the <br>, which ran the two lines together into
-    // "ERIKAVIKMAN" for screen readers. Rebuild the label from the lines.
-    heroTitle.setAttribute('aria-label',
-      lines.map(function (l) { return l.textContent.trim(); }).filter(Boolean).join(' '));
-    heroTitle.innerHTML = '';
-    lines.forEach(function (l) { heroTitle.appendChild(l); });
-    heroTitle.querySelectorAll('.ht-line').forEach(function (l) {
-      l.setAttribute('aria-hidden', 'true');
-    });
-
-    /* The opening, in tango. It used to begin with a 2.2-second zoom settling
-       out of the photograph and letters rolling up with a tilt on a long
-       ease-out — the drift-to-rest that every hero on the web performs. Now
-       the name crosses fast and stops, and the rest is set down after it
-       without travelling at all. */
-    var intro = gsap.timeline({ defaults: { ease: 'expo.out' } });
-    intro.fromTo('.hero-title .ht-char',
-      { yPercent: 112 },
-      { yPercent: 0, duration: 0.62, stagger: 0.035 }, 0.15);
-    intro.fromTo(['.hero-meta', '.hero-sub', '.hero-actions'],
-      { autoAlpha: 0 },
-      { autoAlpha: 1, duration: 0.35, stagger: 0.12 }, 0.72);
-    intro.fromTo('.hero-scroll', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3 }, 1.1);
-
-    // The intro hides this copy before revealing it, so any failure to finish
-    // would leave the hero blank. If the page has been visible long enough
-    // for the timeline to have run and it hasn't, show the copy outright.
-    // (A backgrounded tab pauses rAF, which is why visibility is checked
-    // rather than time alone.)
-    var heroSafety = setTimeout(function () {
-      if (document.visibilityState === 'visible' && intro.progress() < 0.9) {
-        gsap.set(['.hero-meta', '.hero-sub', '.hero-actions', '.hero-scroll'],
-          { clearProps: 'opacity,visibility' });
-        gsap.set('.hero-title .ht-char', { clearProps: 'transform' });
-      }
-    }, 6000);
-    intro.eventCallback('onComplete', function () { clearTimeout(heroSafety); });
-    /* The scroll dissolve to a second frame and the fade-out on the way down
-       are retired. They were a second transformation competing with the one
-       moment the page is built around, further down at Ich Komme. */
-  }
+  /* The homepage opening lives in js/portal.js: the dive through the O of
+     KOMME. It is the site's one authored moment, so nothing here competes. */
 
   /* ---- marquee reacts to scroll velocity ---- */
   var marqueeTrack = document.querySelector('.marquee-track');
@@ -452,60 +387,9 @@
     gsap.ticker.add(function () { skewTo(0); });
   }
 
-  /* ---- THE MOMENT: the lights go out in the pavilion ----
-     One authored moment, and it is the thesis rather than an effect. The Ich
-     Komme stage pins in pavilion colours — cream ground, pine type, captioned
-     with the tango festival and the year she won it. Then, across a sliver of
-     scroll, the pavilion cuts to the club: lacquer floods in, KOMME ignites
-     magenta, and the caption becomes Basel. Then it holds.
-
-     That shape is the tango: attack, arrest, and a pause long enough to be
-     felt. The cut is deliberately a few percent of the pin — near-instant
-     under a wheel or a thumb — and the hold after it is most of the pin,
-     with nothing moving at all. A slow cross-fade here would have been the
-     generic version of this idea.
-
-     The stylesheet's resting state is the club, so a visitor with reduced
-     motion, or without GSAP, sees the arrived frame and never a stuck
-     pavilion. This block only ever sets the pavilion in order to leave it. */
-  var stage = document.querySelector('.komme-stage');
-  if (stage) {
-    gsap.set(stage, {
-      '--k-bg': '#f2e9da',
-      '--k-ink': '#3f2916',
-      '--k-stroke': '#3f2916',
-      '--k-art': 0,
-      '--k-glow': 0
-    });
-    gsap.set(stage.querySelector('.komme-cue-from'), { autoAlpha: 1 });
-    gsap.set(stage.querySelector('.komme-cue-to'), { autoAlpha: 0 });
-
-    var lights = gsap.timeline({
-      defaults: { ease: 'none' },
-      scrollTrigger: {
-        trigger: stage,
-        start: 'top top',
-        end: '+=85%',
-        pin: true,
-        pinType: touch ? 'transform' : 'fixed',
-        anticipatePin: 1,
-        scrub: true
-      }
-    });
-    lights
-      .to({}, { duration: 0.2 })                                   // the pavilion, held
-      .to(stage, {
-        '--k-bg': '#0e0912',
-        '--k-ink': '#f2e9da',
-        '--k-stroke': '#ff5aa8',
-        '--k-art': 0.3,
-        duration: 0.05
-      })                                                           // the cut
-      .to(stage.querySelector('.komme-cue-from'), { autoAlpha: 0, duration: 0.02 }, '<')
-      .to(stage.querySelector('.komme-cue-to'), { autoAlpha: 1, duration: 0.02 }, '<0.02')
-      .to(stage, { '--k-glow': 0.5, duration: 0.06 })              // the bloom
-      .to({}, { duration: 0.67 });                                 // the hold
-  }
+  /* The Ich Komme stage used to pin and cut from pavilion to club. That was
+     an authored moment of its own, and the site now has one at the door —
+     the portal — so the stage rests in its arrived, club state. */
 
   /* ---- pinned horizontal rail ----
      The page's one sustained, scroll-controlled moment: the section holds

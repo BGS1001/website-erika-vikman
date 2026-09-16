@@ -3364,3 +3364,194 @@ a:focus-visible, button:focus-visible { outline-color: var(--magenta-lit); }
 .nav-links a:hover, .nav-links a.active { color: var(--paper); opacity: 1; }
 .nav-links a.active::after, .nav-links a::after { background: var(--magenta-lit); }
 .marquee i { color: var(--magenta-lit); }
+
+/* ==========================================================================
+   PORTAL HERO — through the O of KOMME
+   ==========================================================================
+   Layer order, back to front: the painted mark, the window onto Basel cut to
+   the counter of the O, then the words. Old-iOS floor throughout: vh before
+   svh, top/right/bottom/left instead of inset, -webkit-sticky and a prefixed
+   clip-path. The window's clip is written every frame by js/portal.js. */
+.portal { position: relative; height: 180vh; height: 180svh; }
+.portal--auto { height: 100vh; height: 100svh; }
+html.portal-locked, html.portal-locked body { overflow: hidden; overscroll-behavior: none; }
+
+.portal__stage {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  background: linear-gradient(178deg, var(--paper) 0%, var(--paper-warm) 100%);
+}
+.portal__svg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.portal__ink { fill: var(--pine-deep); }
+
+.portal__window {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  overflow: hidden;
+  background: var(--latex);
+  -webkit-clip-path: polygon(50% 50%, 50% 50%, 50% 50%);
+  clip-path: polygon(50% 50%, 50% 50%, 50% 50%);
+}
+.portal__window.is-open { -webkit-clip-path: none; clip-path: none; }
+.portal__media {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  display: grid;
+  will-change: transform;
+}
+.pm { display: block; width: 100%; height: 100%; min-height: 0; object-fit: cover; }
+.pm--main { object-position: 38% 50%; }
+.pm--side { display: none; }
+@media (min-width: 900px) {
+  .portal__media { grid-template-columns: 1fr 1.15fr 1fr; gap: 6px; background: var(--latex); }
+  .pm--side { display: block; }
+}
+
+/* The one sign of life: the club light behind the letter, flickering in the
+   tango's own count — slow, slow, quick, quick — and then the door opens.
+   Step timing, because stage light switches; it does not fade. */
+.portal__glint {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  background: rgba(255, 90, 168, 0.72);
+  opacity: 0;
+  pointer-events: none;
+}
+.portal__stage.is-holding .portal__glint {
+  animation: portal-tango 1.2s step-end 1 both;
+}
+@keyframes portal-tango {
+  0%   { opacity: 0; }
+  12%  { opacity: 0.9; }
+  26%  { opacity: 0; }
+  40%  { opacity: 0.9; }
+  54%  { opacity: 0; }
+  64%  { opacity: 0.9; }
+  70%  { opacity: 0; }
+  76%  { opacity: 0.9; }
+  82%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+.portal__shade {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  background: linear-gradient(to top,
+    rgba(14, 9, 18, 0.92) 0%, rgba(14, 9, 18, 0.55) 38%, rgba(14, 9, 18, 0) 64%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.portal__intro {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  pointer-events: none;
+  text-align: center;
+}
+.portal__kicker {
+  position: absolute;
+  left: 0; right: 0;
+  top: calc(var(--nav-h) + clamp(1.5rem, 6vh, 3.5rem));
+  margin: 0;
+  font-family: var(--font-display);
+  font-variation-settings: 'wdth' 125, 'wght' 800;
+  font-size: var(--t-sm);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--pine-deep);
+}
+.portal__line {
+  position: absolute;
+  left: var(--s-5); right: var(--s-5);
+  bottom: calc(clamp(4.5rem, 12vh, 7rem) + env(safe-area-inset-bottom, 0px));
+  margin: 0;
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--pine);
+}
+.portal__line i { font-style: normal; color: var(--magenta-dp); }
+.portal__cue {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: calc(clamp(1.75rem, 5vh, 3rem) + env(safe-area-inset-bottom, 0px));
+  margin: 0;
+  font-size: var(--t-2xs);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.cue-touch { display: none; }
+.portal--auto .cue-touch { display: inline; }
+.portal--auto .cue-mouse { display: none; }
+
+.portal__copy {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 5vw, 3rem) calc(clamp(2rem, 7vh, 4.5rem) + env(safe-area-inset-bottom, 0px));
+  opacity: 0;
+  pointer-events: none;
+}
+.portal__copy.is-live { pointer-events: auto; }
+.portal__title {
+  margin: 0;
+  font-size: clamp(2.8rem, 11vw, 7.5rem);
+  color: var(--paper);
+}
+.portal__sub {
+  margin: var(--s-4) 0 0;
+  max-width: 34rem;
+  font-size: var(--t-md);
+  color: rgba(242, 233, 218, 0.88);
+}
+.portal__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3);
+  margin-top: var(--s-6);
+}
+.portal__replay {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(242, 233, 218, 0.5);
+  background: transparent;
+  color: var(--paper);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.portal__replay:hover { border-color: var(--paper); }
+
+/* Reduced motion keeps the dive — it is the page's content, not decoration.
+   Only the flicker goes. */
+@media (prefers-reduced-motion: reduce) {
+  .portal__stage.is-holding .portal__glint { animation: none; }
+}
+
+/* the Ich Komme stage no longer pins, so it does not need a full screen */
+.komme-stage { height: auto; padding: clamp(5rem, 14vw, 9rem) 0 clamp(2rem, 6vw, 4rem); }
+
+/* Archivo on its width axis made the compound Finnish words the widest things
+   on the page. "Tangomarkkinat" in the story heading had a min-content width of
+   445px, and a grid track sizes to min-content, so on a 390px phone the whole
+   split column grew past the screen and the mobile browser widened the layout
+   viewport to 465px — pushing the nav's menu button off the right edge. The
+   word now carries a soft hyphen at its real seam, tango + markkinat, so it
+   breaks there only when it must; the tracks also refuse to grow past their
+   container whatever lands in them next. */
+.split > * { min-width: 0; }
+.section-title, .page-title { hyphens: manual; }

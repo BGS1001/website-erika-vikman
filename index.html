@@ -78,25 +78,66 @@
 
 <main id="main">
 <!-- HERO -->
-<header class="hero pavilion">
-  <div class="hero-bg">
-    <img src="assets/img/portrait-gloves.jpg" alt="Erika Vikman in printed mesh gloves and gold jewellery, looking straight to camera" fetchpriority="high" width="1024" height="1280">
-  </div>
-  <div class="hero-content wrap">
-    <p class="hero-meta">
-      <span>Tampere <i>·</i> Finland</span>
-      <span class="sep" aria-hidden="true"></span>
-      <span>Tango Queen <i>·</i> 2016</span>
-    </p>
-    <h1 class="hero-title display">ERIKA<br>VIKMAN</h1>
-    <p class="hero-sub">She won the tango crown at twenty-three, then spent the next decade proving it was never a costume — and took it to the Eurovision final on a firework-spitting golden microphone.</p>
-    <div class="hero-actions">
-      <a href="#ich-komme" class="btn btn-solid">Hear Ich Komme</a>
-      <a href="tour.html" class="btn btn-outline">Tour dates</a>
+<section class="portal" data-hero aria-label="Erika Vikman">
+  <div class="portal__stage" data-hero-stage>
+
+    <!-- 1. The mark: her merch lockup, ICH over KOMME, redrawn as plain
+         vector geometry in its own units (582 x 274). No clipPath, no mask. -->
+    <svg class="portal__svg" data-hero-logo aria-hidden="true" focusable="false">
+      <g data-zoom>
+        <g class="portal__ink">
+          <g transform="scale(1.6)">
+            <rect x="0" y="0" width="40" height="100"/>
+            <path transform="translate(52 0)" d="M150 38Q150 0 104 0H46Q0 0 0 46V54Q0 100 46 100H104Q150 100 150 62H110Q110 72 96 72H56Q40 72 40 58V42Q40 28 56 28H96Q110 28 110 38Z"/>
+            <polygon transform="translate(214 0)" points="0,0 40,0 40,38 110,38 110,0 150,0 150,100 110,100 110,62 40,62 40,100 0,100"/>
+          </g>
+          <g transform="translate(0 174)">
+            <rect x="0" y="0" width="34" height="100"/>
+            <polygon points="60,0 98,0 34,86 34,35"/>
+            <polygon points="58,100 98,100 62,46 22,46"/>
+            <!-- the O: the door is its counter -->
+            <path transform="translate(108 0)" fill-rule="evenodd" d="M40 0H70A40 40 0 0 1 110 40V60A40 40 0 0 1 70 100H40A40 40 0 0 1 0 60V40A40 40 0 0 1 40 0ZM50 26H60A16 16 0 0 1 76 42V58A16 16 0 0 1 60 74H50A16 16 0 0 1 34 58V42A16 16 0 0 1 50 26Z"/>
+            <polygon transform="translate(228 0)" points="0,0 36,0 62,58 88,0 124,0 124,100 92,100 92,40 72,88 52,88 32,40 32,100 0,100"/>
+            <polygon transform="translate(362 0)" points="0,0 36,0 62,58 88,0 124,0 124,100 92,100 92,40 72,88 52,88 32,40 32,100 0,100"/>
+            <polygon transform="translate(496 0)" points="0,0 86,0 86,26 34,26 34,38 80,38 80,62 34,62 34,74 86,74 86,100 0,100"/>
+          </g>
+        </g>
+      </g>
+    </svg>
+
+    <!-- 2. The window onto Basel, cut to the counter of the O. Real photographs
+         from the stage until a licensed clip exists: to switch to footage,
+         replace .pm--main with
+         <video class="pm pm--main" muted playsinline loop autoplay preload="auto"
+                poster="assets/img/erika-wordmark-stage.jpg">
+           <source src="assets/video/basel.mp4" type="video/mp4"></video> -->
+    <div class="portal__window" data-hero-window>
+      <div class="portal__media" data-hero-media>
+        <img class="pm pm--side" data-side data-src="assets/img/flying-mic-2.jpg" alt="" width="1025" height="1280">
+        <img class="pm pm--main" src="assets/img/erika-wordmark-stage.jpg" alt="Erika Vikman on the golden flying microphone in front of her name in giant red letters, Basel 2025" width="1024" height="1280" fetchpriority="high">
+        <img class="pm pm--side" data-side data-src="assets/img/erika-crowd-screen.jpg" alt="" width="1024" height="1277">
+      </div>
+      <div class="portal__glint" aria-hidden="true"></div>
+      <div class="portal__shade" data-hero-shade></div>
+    </div>
+
+    <div class="portal__intro" data-hero-intro aria-hidden="true">
+      <p class="portal__kicker">Erika Vikman</p>
+      <p class="portal__line">Tango Queen of Finland · 2016 <i>→</i> Eurovision · 2025</p>
+      <p class="portal__cue"><span class="cue-touch">Tap to enter</span><span class="cue-mouse">Scroll to enter</span></p>
+    </div>
+
+    <div class="portal__copy" data-hero-copy>
+      <h1 class="portal__title">Erika Vikman</h1>
+      <p class="portal__sub">She won the tango crown at twenty-three, then took it to the Eurovision final on a firework-spitting golden microphone.</p>
+      <div class="portal__actions">
+        <a href="#ich-komme" class="btn btn-solid">Hear Ich Komme</a>
+        <a href="tour.html" class="btn btn-outline">Tour dates</a>
+        <button class="portal__replay" type="button" data-replay aria-label="Replay the intro">↺</button>
+      </div>
     </div>
   </div>
-  <div class="hero-scroll" aria-hidden="true">SCROLL</div>
-</header>
+</section>
 
 <!-- MARQUEE — decorative ticker; the same titles are listed in Releases -->
 <div class="marquee" aria-hidden="true">
@@ -118,7 +159,7 @@
     </div>
     <div>
       <span class="eyebrow">The story</span>
-      <h2 class="section-title">From Tangomarkkinat<br>to <em>Basel</em>.</h2>
+      <h2 class="section-title">From Tango&shy;markkinat<br>to <em>Basel</em>.</h2>
       <p class="section-lede">Born in Tampere in 1993, raised between Lempäälä and Pori, Erika Vikman won Finland's tango crown at 23 — then spent the next decade proving it was never a costume. "Cicciolina" carried the tango hall onto the pop charts. "Ich Komme" carried it to Basel.</p>
       <ul class="fact-list">
         <li class="is-crown"><b>2016</b> Wins Tangomarkkinat and is crowned Tango Queen of Finland</li>
@@ -316,6 +357,7 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
 <script src="js/mic-cursor.js" defer></script>
+<script src="js/portal.js" defer></script>
 <script src="js/main.js" defer></script>
 <script>
   window.addEventListener("DOMContentLoaded", function () {

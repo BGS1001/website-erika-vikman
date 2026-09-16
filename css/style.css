@@ -3555,3 +3555,274 @@ html.portal-locked, html.portal-locked body { overflow: hidden; overscroll-behav
    container whatever lands in them next. */
 .split > * { min-width: 0; }
 .section-title, .page-title { hyphens: manual; }
+
+/* ==========================================================================
+   THE JUKEBOX — every song played here
+   ==========================================================================
+   The pavilion's own machine rather than a borrowed streaming widget: a paper
+   panel of title strips, a painted now-playing board with a magenta running
+   light, and a dock at the foot of the screen once something is on. Preview
+   buttons are pine and quiet; Full song is magenta, because it is the better
+   thing to press and the palette gives magenta to actions. */
+.jb {
+  position: fixed;
+  top: 0; right: 0; bottom: 0; left: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--s-4);
+  background: rgba(14, 9, 18, 0.78);
+  opacity: 0;
+  transition: opacity 0.2s var(--ease-tango);
+}
+.jb.is-open, .vd.is-open { opacity: 1; }
+.jb-panel {
+  width: min(100%, 40rem);
+  max-height: min(88vh, 52rem);
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  color: var(--ink);
+  border-top: 6px solid var(--magenta);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+}
+.jb-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding: var(--s-5) var(--s-5) var(--s-3);
+}
+.jb-kicker {
+  margin: 0;
+  font-size: var(--t-2xs);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--magenta-dp);
+}
+.jb-title { margin: var(--s-1) 0 0; font-size: var(--t-xl); color: var(--pine-deep); }
+.jb-close {
+  flex: 0 0 auto;
+  width: 44px; height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.jb-close:hover { background: rgba(28, 21, 16, 0.08); }
+
+/* the painted board */
+.jb-now {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  padding: var(--s-3) var(--s-5);
+  background: var(--pine-deep);
+  color: var(--paper);
+}
+.jb-ctrls { display: flex; align-items: center; gap: var(--s-1); flex: 0 0 auto; }
+.jb-ctrl {
+  width: 44px; height: 44px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.jb-ctrl svg { width: 20px; height: 20px; fill: currentColor; }
+.jb-ctrl.is-main { background: var(--magenta); color: var(--white); }
+.jb-ctrl.is-main:hover { background: var(--magenta-lit); }
+.jb-ctrl:not(.is-main):hover { background: rgba(242, 233, 218, 0.12); }
+.jb-meta { display: flex; flex-direction: column; min-width: 0; }
+.jb-now-song {
+  font-family: var(--font-display);
+  font-variation-settings: 'wdth' 110, 'wght' 800;
+  font-size: var(--t-sm);
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.jb-now-sub { font-size: var(--t-2xs); letter-spacing: 0.06em; opacity: 0.75; }
+.jb-bar {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 3px;
+  background: rgba(242, 233, 218, 0.14);
+}
+.jb-bar span {
+  display: block;
+  height: 100%;
+  background: var(--magenta-lit);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+
+/* the strips */
+.jb-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 var(--s-5);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+.jb-row, .vl-row {
+  display: grid;
+  grid-template-columns: 3.2rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-3) 0;
+  border-bottom: 1px solid rgba(28, 21, 16, 0.14);
+}
+.jb-yr {
+  font-family: var(--font-display);
+  font-variation-settings: 'wdth' 110, 'wght' 800;
+  font-size: var(--t-xs);
+  color: var(--pine);
+  font-variant-numeric: tabular-nums;
+}
+.jb-name { display: flex; flex-direction: column; min-width: 0; }
+.jb-song {
+  font-weight: 700;
+  font-size: var(--t-sm);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+.jb-name small { font-size: var(--t-2xs); color: var(--ink-soft); }
+.jb-btns { display: flex; gap: var(--s-2); flex-wrap: wrap; justify-content: flex-end; }
+.jb-btn {
+  min-height: 36px;
+  padding: 0 var(--s-3);
+  border: 1.5px solid var(--pine-deep);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--pine-deep);
+  font-size: var(--t-2xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.jb-btn:hover { background: var(--pine-deep); color: var(--paper); }
+.jb-btn.is-full { border-color: var(--magenta); background: var(--magenta); color: var(--white); }
+.jb-btn.is-full:hover { background: var(--magenta-dp); border-color: var(--magenta-dp); }
+.jb-row.is-current { background: linear-gradient(90deg, rgba(224, 51, 140, 0.1), transparent 70%); }
+.jb-row.is-current .jb-song { color: var(--magenta-dp); }
+.jb-row.is-playing .jb-yr::after { content: " \266A"; color: var(--magenta); }
+.jb-row.is-gone { opacity: 0.45; }
+.jb-row.is-gone .jb-btn:not(.is-full) { display: none; }
+
+.jb-credit {
+  margin: 0;
+  padding: var(--s-3) var(--s-5) var(--s-4);
+  font-size: var(--t-2xs);
+  color: var(--ink-soft);
+}
+.jb-credit a { color: var(--magenta-dp); text-decoration: underline; }
+
+/* the jukebox laid into the music page */
+.jb-inline {
+  margin-top: var(--s-7);
+  background: #fbf7ef;
+  border-top: 6px solid var(--magenta);
+  box-shadow: 0 0 0 1px rgba(63, 41, 22, 0.16), 0 12px 28px rgba(63, 41, 22, 0.14);
+}
+.jb-list.is-inline { max-height: 34rem; }
+
+/* the dock */
+.jb-dock {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-2) var(--s-4) calc(var(--s-2) + env(safe-area-inset-bottom, 0px));
+  background: var(--pine-deep);
+  color: var(--paper);
+  border-top: 3px solid var(--ink);
+}
+.jb-dock-meta {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  padding: var(--s-1) var(--s-2);
+}
+.jb-dock .jb-bar { top: 0; bottom: auto; }
+html.has-dock body { padding-bottom: 4.5rem; }
+
+/* the video player */
+.vd {
+  position: fixed;
+  top: 0; right: 0; bottom: 0; left: 0;
+  z-index: 210;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--s-4);
+  background: rgba(14, 9, 18, 0.9);
+  opacity: 0;
+  transition: opacity 0.2s var(--ease-tango);
+}
+.vd-panel { width: min(100%, 60rem); color: var(--paper); }
+.vd-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); margin-bottom: var(--s-3); }
+.vd-title { margin: 0; font-size: var(--t-lg); color: var(--paper); }
+.vd-head .jb-close { color: var(--paper); }
+.vd-head .jb-close:hover { background: rgba(242, 233, 218, 0.12); }
+.vd-frame {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  background: var(--latex);
+}
+.vd-frame iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+.vd-sub { margin: var(--s-3) 0 0; font-size: var(--t-2xs); letter-spacing: 0.08em; text-transform: uppercase; color: var(--label-lit); }
+
+/* every video, as strips */
+.vl-head { margin-top: var(--s-8); font-size: var(--t-lg); }
+.vl-list { padding: 0; margin-top: var(--s-4); }
+
+/* release strips now play instead of searching elsewhere */
+.release-links button {
+  padding: 0 0 2px;
+  border: 0;
+  border-bottom: 1px solid rgba(168, 30, 102, 0.35);
+  background: none;
+  color: var(--magenta-dp);
+  font-size: var(--t-2xs);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-right: var(--s-3);
+}
+.release-links button:hover { color: var(--ink); border-color: var(--ink); }
+.rel-none { font-size: var(--t-2xs); color: var(--ink-faint); letter-spacing: 0.04em; }
+
+@media (max-width: 520px) {
+  .jb { padding: 0; align-items: flex-end; }
+  .jb-panel { max-height: 92vh; width: 100%; }
+  .jb-row, .vl-row { grid-template-columns: 2.6rem minmax(0, 1fr); }
+  .jb-btns { grid-column: 2; justify-content: flex-start; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jb, .vd { transition: none; }
+}

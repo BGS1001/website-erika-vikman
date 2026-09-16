@@ -58,7 +58,7 @@
       <li><a href="contact.html">Contact</a></li>
     </ul>
     <div class="nav-cta">
-      <a href="https://open.spotify.com/artist/6JVB6uiYxpF2K1PGsPRpWR" target="_blank" rel="noopener" class="disc-cta" aria-haspopup="dialog" aria-label="Listen on Spotify" title="Listen on Spotify"><span class="disc-hub" aria-hidden="true"></span></a>
+      <a href="music.html#listen" class="disc-cta" data-open-jukebox aria-haspopup="dialog" aria-label="Open the jukebox" title="Open the jukebox"><span class="disc-hub" aria-hidden="true"></span></a>
       <button class="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
   </div>
@@ -74,35 +74,13 @@
   </div>
 </header>
 
-<!-- PLATFORM ROW -->
-<section class="pad">
-  <div class="wrap" data-reveal>
-    <span class="eyebrow">Stream now</span>
-    <h2 class="section-title">Pick your <em>platform.</em></h2>
-    <p class="section-lede">Everything she has released, on whichever service you already pay for.</p>
-    <div class="platform-row">
-      <a class="platform-link" href="https://open.spotify.com/artist/6JVB6uiYxpF2K1PGsPRpWR" target="_blank" rel="noopener">Spotify <span aria-hidden="true">↗</span></a>
-      <a class="platform-link" href="https://music.apple.com/search?term=Erika%20Vikman" target="_blank" rel="noopener">Apple Music <span aria-hidden="true">↗</span></a>
-      <a class="platform-link" href="https://www.youtube.com/@EurovisionSongContest/search?query=Erika%20Vikman" target="_blank" rel="noopener">YouTube <span aria-hidden="true">↗</span></a>
-      <a class="platform-link" href="https://www.deezer.com/search/Erika%20Vikman" target="_blank" rel="noopener">Deezer <span aria-hidden="true">↗</span></a>
-    </div>
-  </div>
-</section>
-
-<!-- SPOTIFY (facade) -->
-<section class="pad sec-panel pavilion">
-  <div class="wrap" data-reveal>
-    <span class="eyebrow">Top tracks</span>
-    <h2 class="section-title">Play the <em>hits.</em></h2>
-    <div class="embed-frame is-audio mt-lg">
-      <button class="embed-facade"
-              data-embed="https://open.spotify.com/embed/artist/6JVB6uiYxpF2K1PGsPRpWR?utm_source=generator&amp;theme=0"
-              data-embed-title="Erika Vikman on Spotify">
-        <img src="assets/img/artwork-ich-komme.jpg" alt="" width="1118" height="1280" loading="lazy">
-        <span class="embed-play" aria-hidden="true"></span>
-        <span class="embed-label">Load Spotify player<small>Ich Komme and the top tracks</small></span>
-      </button>
-    </div>
+<!-- LISTEN — the jukebox, on this page -->
+<section class="pad sec-panel pavilion" id="listen">
+  <div class="wrap">
+    <span class="eyebrow">Listen here</span>
+    <h2 class="section-title">The <em>jukebox.</em></h2>
+    <p class="section-lede">Every song we can play for you without sending you anywhere: a 30-second preview of the whole catalogue, and the full song wherever she has put out an official video.</p>
+    <div class="jb-inline" data-jukebox-inline></div>
   </div>
 </section>
 
@@ -128,8 +106,8 @@
           <span><b>3rd</b> in semi-final 2, on 115</span>
         </div>
         <div class="btn-row mt-0">
-          <a class="btn btn-gold" href="https://open.spotify.com/search/Erika%20Vikman%20Ich%20Komme" target="_blank" rel="noopener">Find it on Spotify ↗</a>
-          <a class="btn btn-outline" href="https://www.youtube.com/watch?v=Kg3QoTpnqyw" target="_blank" rel="noopener">Official video ↗</a>
+          <button type="button" class="btn btn-gold" data-play-track="ICH KOMME">Play a preview</button>
+          <button type="button" class="btn btn-outline" data-play-video="cz2pnFf8eHg">Watch the video</button>
         </div>
       </div>
     </div>
@@ -141,7 +119,7 @@
           <span class="rel-title">Erikavision</span>
           <span class="rel-sub">EP · May 2025</span>
           <div class="release-links">
-            <a href="https://open.spotify.com/search/Erika%20Vikman%20Erikavision" target="_blank" rel="noopener">Search Spotify</a>
+            <span class="rel-none">Not available to play here</span>
           </div>
         </div>
       </article>
@@ -152,7 +130,7 @@
           <span class="rel-title">Ruoska <span class="rel-feat">with Käärijä</span></span>
           <span class="rel-sub">Single · 2024 · #1 in Finland</span>
           <div class="release-links">
-            <a href="https://open.spotify.com/search/Erika%20Vikman%20Ruoska" target="_blank" rel="noopener">Search Spotify</a>
+            <button type="button" data-play-track="Ruoska">Preview</button>
           </div>
         </div>
       </article>
@@ -163,7 +141,7 @@
           <span class="rel-title">Elizabeth Taylor</span>
           <span class="rel-sub">Single · 2023</span>
           <div class="release-links">
-            <a href="https://open.spotify.com/search/Erika%20Vikman%20Elizabeth%20Taylor" target="_blank" rel="noopener">Search Spotify</a>
+            <button type="button" data-play-video="2Lndjru6SEw">Full song</button>
           </div>
         </div>
       </article>
@@ -174,7 +152,7 @@
           <span class="rel-title">Erika Vikman</span>
           <span class="rel-sub">Album · 2021 · #1 in Finland</span>
           <div class="release-links">
-            <a href="https://open.spotify.com/search/Erika%20Vikman%20Erika%20Vikman%20album" target="_blank" rel="noopener">Search Spotify</a>
+            <button type="button" data-play-track="Aikuisten rannekkeet">Preview</button><button type="button" data-play-video="gd2o96JjCF0">Full song</button>
           </div>
         </div>
       </article>
@@ -185,7 +163,7 @@
           <span class="rel-title">Häpeä</span>
           <span class="rel-sub">Single · 2021</span>
           <div class="release-links">
-            <a href="https://open.spotify.com/search/Erika%20Vikman%20H%C3%A4pe%C3%A4" target="_blank" rel="noopener">Search Spotify</a>
+            <button type="button" data-play-track="Häpeä">Preview</button><button type="button" data-play-video="SPDpUaa3qmw">Full song</button>
           </div>
         </div>
       </article>
@@ -196,7 +174,7 @@
           <span class="rel-title">Syntisten pöytä</span>
           <span class="rel-sub">Single · 2020 · First #1 radio hit</span>
           <div class="release-links">
-            <a href="https://open.spotify.com/search/Erika%20Vikman%20Syntisten%20p%C3%B6yt%C3%A4" target="_blank" rel="noopener">Search Spotify</a>
+            <button type="button" data-play-track="Syntisten pöytä">Preview</button><button type="button" data-play-video="6aLb6vJ_TkI">Full song</button>
           </div>
         </div>
       </article>
@@ -207,7 +185,7 @@
           <span class="rel-title">Cicciolina</span>
           <span class="rel-sub">Single · 2020 · Breakthrough</span>
           <div class="release-links">
-            <a href="https://open.spotify.com/search/Erika%20Vikman%20Cicciolina" target="_blank" rel="noopener">Search Spotify</a>
+            <button type="button" data-play-track="Cicciolina">Preview</button>
           </div>
         </div>
       </article>
@@ -246,6 +224,8 @@
         </div>
       </div>
     </div>
+    <h3 class="vl-head">Every video</h3>
+    <ol class="jb-list vl-list" data-video-list></ol>
     <p class="section-note">Videos load only when you press play — nothing is requested from YouTube before that.</p>
   </div>
 </section>
@@ -299,7 +279,7 @@
       <div class="footer-social">
         <a href="https://www.instagram.com/erikavikman/" target="_blank" rel="noopener" aria-label="Instagram">IG</a>
         <a href="https://www.tiktok.com/@erikavikmanofficial" target="_blank" rel="noopener" aria-label="TikTok">TT</a>
-        <a href="https://open.spotify.com/artist/6JVB6uiYxpF2K1PGsPRpWR" target="_blank" rel="noopener" aria-label="Spotify">SP</a>
+        <a href="music.html#listen" data-open-jukebox aria-label="Open the jukebox">&#9835;</a>
       </div>
     </div>
     <div class="footer-bottom">
@@ -312,6 +292,8 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
 <script src="js/mic-cursor.js" defer></script>
+<script src="js/media-catalog.js" defer></script>
+<script src="js/media.js" defer></script>
 <script src="js/main.js" defer></script>
 <script>
   window.addEventListener("DOMContentLoaded", function () {

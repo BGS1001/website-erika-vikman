@@ -68,9 +68,22 @@ laid in at full depth underneath, as reward rather than as gatekeeping.
 
 ## FIRST VIEWPORT
 
-Warm cream ground, not black. Painted-signage type at pavilion scale. One real
-photograph. The crown named in words, not drawn as a trophy graphic. A single
-line that states the contradiction outright.
+**A door.** Her merch lockup, ICH over KOMME, painted in pine on the pavilion
+cream. The Basel stage is already lit behind the counter of the O.
+
+> We enter through the O in KOMME because *Ich komme* — “I'm coming” — is the
+> song that carried her from the tango pavilion to the Eurovision final.
+
+The camera goes through the letter and lands on the stage: her name, one line
+stating the contradiction, *Hear Ich Komme* and *Tour dates*, and a replay
+button. The pavilion-to-club alternation that runs through the whole site is
+performed once, literally, at the door.
+
+Behind the door: real photographs from the Basel stage — never stock, never
+generated. The site has no licensed footage; a fan site cannot republish EBU
+broadcast or official clips. A licensed mp4 replaces the photograph with a
+one-element change documented in index.html. Wide screens show a triptych of
+three stage moments; phones load one.
 
 Nothing glass. No floating pill over footage. No red curtain.
 
@@ -123,14 +136,23 @@ Tango, not easing-out. Tango is attack and arrest: a phrase crosses fast,
 stops hard, and **holds**. Entrances cover their distance quickly and then
 settle almost not at all, and pauses are allowed to be long.
 
-No entrance animations. Motion is spent on work (the opening, the pinned
-archive rail, the marquee answering scroll velocity, the microphone) and on
-**one authored moment: the lights go out in the pavilion.** The Ich Komme stage
-pins in pavilion colours captioned *Tangomarkkinat · 2016*, cuts to the club
-across ~5% of the pin — *Basel · 2025* — and then holds, still, for two thirds of
-it. Attack, arrest, pause. Resting CSS is the arrived club state, so reduced
-motion or no GSAP never shows a stuck pavilion. The root does not smooth-scroll
-under GSAP, because that corrupts ScrollTrigger refreshes.
+No entrance animations. Motion is spent on work (the pinned archive rail,
+the marquee answering scroll velocity, the microphone) and on **one authored
+moment: the portal through the O** (js/portal.js).
+
+- Hold 1.2 s. One sign of life: the club light flickering through the counter
+  in the tango count — slow, slow, quick, quick — with step timing, because
+  stage light switches rather than fades.
+- Dive 2.2 s, shaped as tango: half the time creeps a sixth of the way in, a
+  third attacks the rest on an accelerating curve and stops dead at full
+  speed, the last sixth holds open while the stage settles from 1.4x.
+- Touch plays it by time and holds the page still only during the dive; mice
+  scrub a sticky stage. Anchors and restored scroll skip to the landed state.
+- Reduced motion keeps the dive and removes only the flicker.
+
+The Ich Komme stage no longer pins; it rests in its club state, because a
+second authored moment would compete with the door. The root does not
+smooth-scroll under GSAP, because that corrupts ScrollTrigger refreshes.
 
 ### Photography
 

@@ -775,10 +775,16 @@
     }
 
     var inst = new MicCursor(opts);
+    /* The rig builds an offscreen sprite and starts a rAF loop. None of that
+       belongs in front of the first paint, so it waits for an idle moment. */
+    var begin = function () {
+      if ('requestIdleCallback' in global) global.requestIdleCallback(function () { inst.start(); }, { timeout: 1200 });
+      else setTimeout(function () { inst.start(); }, 200);
+    };
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', function () { inst.start(); });
+      document.addEventListener('DOMContentLoaded', begin);
     } else {
-      inst.start();
+      begin();
     }
 
     /* honour a change of heart mid-session */

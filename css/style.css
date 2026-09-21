@@ -430,101 +430,6 @@ section { position: relative; }
 }
 
 /* ==========================================================================
-   HERO
-   ========================================================================== */
-.hero {
-  position: relative;
-  min-height: 100svh;
-  display: flex;
-  align-items: flex-end;
-  overflow: hidden;
-  /* The nav is fixed, so it occupies no space in flow. Bottom-aligned hero
-     copy therefore had nothing stopping it sliding under the bar once the
-     window got short — at 1280x600 the meta line overlapped it by 37px.
-     Reserving the nav height inside the box keeps them apart, and because
-     this is min-height the hero grows when the copy needs more room instead
-     of tucking it underneath. */
-  padding-top: calc(var(--nav-h) + clamp(0.5rem, 2vh, 1.25rem));
-}
-
-.hero-bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-.hero-bg img {
-  position: absolute;
-  inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  object-position: center 18%;
-  filter: saturate(1.05) contrast(1.05);
-}
-/* The second frame sits on top of the first and is dissolved in by scroll.
-   It stays at zero until its file has actually decoded — fading in a frame
-   that has not loaded yet would punch a dark hole in the hero. */
-.hero-frame {
-  opacity: 0;
-  object-position: center 46%;
-}
-.hero-bg::after {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    linear-gradient(to top, rgba(14,9,18,0.97) 5%, rgba(14,9,18,0.35) 45%, rgba(14,9,18,0.15) 70%),
-    linear-gradient(to right, rgba(14,9,18,0.6) 0%, transparent 40%);
-}
-
-.hero-content {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  padding-bottom: clamp(3rem, 8vw, 5.5rem);
-}
-
-.hero-title {
-  font-size: clamp(3.2rem, 12vw, 8.5rem);
-  color: var(--white);
-  text-shadow: 0 10px 40px rgba(0,0,0,0.5);
-}
-
-.hero-sub {
-  margin-top: var(--s-4);
-  max-width: 46ch;
-  color: var(--cream);
-  font-size: clamp(1rem, 1.6vw, 1.2rem);
-  opacity: 0.88;
-}
-
-.hero-actions {
-  margin-top: var(--s-6);
-  display: flex;
-  gap: var(--s-4);
-  flex-wrap: wrap;
-}
-
-.hero-scroll {
-  position: absolute;
-  right: clamp(1.25rem, 4vw, 3rem);
-  bottom: 2.4rem;
-  z-index: 2;
-  writing-mode: vertical-rl;
-  font-size: var(--t-2xs);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--gray);
-  display: flex;
-  align-items: center;
-  gap: var(--s-3);
-}
-.hero-scroll::after {
-  content: '';
-  width: 1px;
-  height: 50px;
-  background: linear-gradient(var(--gold-bright), transparent);
-}
-
-/* ==========================================================================
    MARQUEE
    ========================================================================== */
 .marquee {
@@ -1134,11 +1039,6 @@ section { position: relative; }
   from { opacity: 0; transform: translateY(28px); }
   to   { opacity: 1; transform: none; }
 }
-.hero-bg img  { animation: hero-zoom 14s ease-out both; }
-.hero-meta   { animation: hero-rise 0.7s 0.15s cubic-bezier(.2,.7,.2,1) both; }
-.hero-title   { animation: hero-rise 0.8s 0.30s cubic-bezier(.2,.7,.2,1) both; }
-.hero-sub     { animation: hero-rise 0.8s 0.45s cubic-bezier(.2,.7,.2,1) both; }
-.hero-actions { animation: hero-rise 0.8s 0.60s cubic-bezier(.2,.7,.2,1) both; }
 
 .marquee:hover .marquee-track { animation-play-state: paused; }
 
@@ -1166,7 +1066,6 @@ a:focus-visible, button:focus-visible {
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .hero-bg img, .hero-meta, .hero-title, .hero-sub, .hero-actions { animation: none; }
   .marquee-track { animation: none; }
   [data-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
 }
@@ -1441,33 +1340,6 @@ img { height: auto; }
 .release-links a:hover { color: var(--white); border-color: var(--white); }
 
 /* ==========================================================================
-   PLATFORM ROW — lighter and higher-converting than stacked players
-   ========================================================================== */
-.platform-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: var(--s-3);
-  margin-top: var(--s-6);
-}
-.platform-link {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--s-3);
-  padding: var(--s-4) var(--s-5);
-  border: 1px solid rgba(243, 237, 226, 0.14);
-  font-weight: 800;
-  font-size: var(--t-sm);
-  transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
-}
-.platform-link:hover {
-  border-color: var(--gold);
-  background: rgba(216, 174, 87, 0.06);
-  transform: translateY(-2px);
-}
-.platform-link span { color: var(--gold-bright); }
-
-/* ==========================================================================
    BIOGRAPHY — long-form reading
    This is the one page people actually read, so body copy steps up from
    the site's caption-grade grey to something built for paragraphs.
@@ -1679,12 +1551,8 @@ img { height: auto; }
 /* Section scale. Not every heading is a headline — the quiet ones step down
    so the loud ones read as loud. */
 .section-title.is-major { font-size: clamp(2.8rem, 8vw, 6rem); }
-.section-title.is-minor { font-size: clamp(1.7rem, 3.4vw, 2.4rem); }
-
-/* ==========================================================================
-   HERO — editorial meta line, no emoji
-   ========================================================================== */
-.hero-meta {
+.section-title.is-minor { font-size: clamp(1.7rem, 3.4vw, 2.4rem); }/* ==========================================================================
+   HERO — editorial meta line{
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -1696,19 +1564,6 @@ img { height: auto; }
   text-transform: uppercase;
   color: var(--cream);
 }
-.hero-meta i {
-  font-style: normal;
-  color: var(--gold-bright);
-}
-.hero-meta .sep {
-  width: 30px; height: 1px;
-  background: rgba(243, 237, 226, 0.35);
-}
-.hero-title {
-  letter-spacing: -0.018em;   /* Anton is tight by design; display sizes need
-                                 it tighter still or the name reads loose */
-}
-.hero-actions .btn { min-width: 0; }
 
 /* ==========================================================================
    SIGNATURE — pinned horizontal photo rail
@@ -1925,23 +1780,6 @@ html:not(.gsap) .rail-prog { display: none; }
 @keyframes vt-out { to { opacity: 0; transform: translateY(-12px); } }
 @keyframes vt-in  { from { opacity: 0; transform: translateY(14px); } }
 
-
-/* ==========================================================================
-   GSAP TAKEOVER
-   When GSAP boots it adds .gsap on <html> and choreographs everything
-   itself — the CSS entrance animations stand down so nothing runs twice.
-   ========================================================================== */
-html.gsap .hero-bg img,
-html.gsap .hero-meta,
-html.gsap .hero-title,
-html.gsap .hero-sub,
-html.gsap .hero-actions { animation: none; }
-
-html.gsap .hero-meta,
-html.gsap .hero-sub,
-html.gsap .hero-actions,
-html.gsap .hero-scroll { opacity: 0; }
-
 /* hero title split into per-line masks / per-char spans */
 .ht-line { display: block; overflow: hidden; padding-bottom: 0.06em; margin-bottom: -0.06em; }
 .ht-char { display: inline-block; will-change: transform; }
@@ -2105,10 +1943,10 @@ html.gsap .wi { display: inline-block; will-change: transform; }
 }
 .disclosure p { color: var(--gray); font-size: var(--t-sm); max-width: 58ch; }
 .disclosure p + p { margin-top: var(--s-3); }
-.mt-0 { margin-top: 0; }
-
-/* ==========================================================================
-   GLOSS PASS — surfaces, accents, imagery
+.mt-0 { margin-top: 0; }/* ==========================================================================
+   GLOSS PASS — surfaces,
+accents,
+imagery
    Applied as one system so the shine reads as art direction rather than a
    pile of effects. Light always comes from the top left.
    ========================================================================== */
@@ -2121,8 +1959,7 @@ html.gsap .wi { display: inline-block; will-change: transform; }
 .release-hero,
 .tour-flag,
 .embed-frame,
-.platform-link,
-.social-row {
+.social-row{
   position: relative;
   box-shadow: var(--edge);
 }
@@ -2147,12 +1984,6 @@ html.gsap .wi { display: inline-block; will-change: transform; }
 }
 .eyebrow { text-shadow: 0 0 20px rgba(255, 223, 148, 0.35); }
 .eyebrow::before { box-shadow: 0 0 12px rgba(255, 223, 148, 0.6); }
-
-.hero-title {
-  text-shadow:
-    0 0 60px rgba(224, 51, 140, 0.22),
-    0 12px 44px rgba(0, 0, 0, 0.6);
-}
 
 .stat-badge {
   background: var(--gold-metal);
@@ -2561,16 +2392,13 @@ html.gsap .wi { display: inline-block; will-change: transform; }
 
 @media (max-width: 860px) {
   .disc-cta { --disc: 52px; }
-}
-
-/* ==========================================================================
+}/* ==========================================================================
    The Spotify panel the record opens
    ========================================================================== */
 /* The embed is built only when the panel is first opened and torn down when
-   it closes, so the page makes no request to Spotify unless someone asks for
-   one, and closing actually stops the audio rather than leaving it playing
-   behind a hidden overlay. */
-.sp-modal {
+   it closes,
+so the page makes no request to Spotify unless someone asks for
+   one{
   position: fixed;
   inset: 0;
   z-index: 200;
@@ -2583,127 +2411,42 @@ html.gsap .wi { display: inline-block; will-change: transform; }
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.28s var(--ease-out), visibility 0.28s;
-}
-.sp-modal.open { opacity: 1; visibility: visible; }
-
-.sp-panel {
-  position: relative;
-  width: min(94vw, 560px);
-  border-radius: 14px;
-  padding: var(--s-8) var(--s-4) var(--s-4);
-  background: linear-gradient(#17141c, #100e15);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), inset 0 0 0 1px rgba(226, 185, 95, 0.28);
-  transform: translateY(12px) scale(0.98);
-  transition: transform 0.32s var(--ease-out);
-}
-.sp-modal.open .sp-panel { transform: none; }
-
-.sp-title {
-  position: absolute;
-  top: 1.05rem;
-  left: 1.35rem;
-  margin: 0;
-  font-size: var(--t-2xs);
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--gold);
-}
-
-.sp-close {
-  position: absolute;
-  top: 0.6rem;
-  right: 0.7rem;
-  width: 40px;
-  height: 40px;
-  display: grid;
-  place-items: center;
-  border: 0;
-  border-radius: 50%;
-  background: none;
-  color: var(--white);
-  font-size: var(--t-lg);
-  line-height: 1;
-  cursor: pointer;
-  transition: background 0.2s var(--ease-out);
-}
-.sp-close:hover { background: rgba(255, 255, 255, 0.08); }
-
-/* The embed stays as the preview — it carries the real artwork and the real
+}/* The embed stays as the preview — it carries the real artwork and the real
    track list — but it no longer pretends to be a player. Spotify serves the
-   preview audio publicly, so the tracks are not the problem; what hangs is
-   the player inside the frame, which cannot reach its own storage once the
-   browser partitions it as a third party. That is inside their origin, so
+   preview audio publicly,
+so the tracks are not the problem; what hangs is
+   the player inside the frame,
+which cannot reach its own storage once the
+   browser partitions it as a third party. That is inside their origin,
+so
    the page has no way to repair it.
 
-   A click cannot be caught inside a cross-origin frame either, and a popup
+   A click cannot be caught inside a cross-origin frame either,
+and a popup
    opened without a gesture in this document would be blocked. So the gesture
-   is moved here: a real link is laid over the frame, which keeps
-   middle-click, ctrl-click and the keyboard behaving the way links do. */
-.sp-frame { position: relative; border-radius: 12px; overflow: hidden; background: #000; }
-.sp-frame iframe { pointer-events: none; }
-
-.sp-cover {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  display: grid;
-  place-items: center;
-  text-decoration: none;
-  background: transparent;
-  transition: background 0.25s var(--ease-out);
-}
-.sp-cover span {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--s-2);
-  padding: var(--s-3) var(--s-4);
-  border-radius: 999px;
-  background: rgba(9, 7, 13, 0.86);
-  box-shadow: inset 0 0 0 1px rgba(226, 185, 95, 0.5);
-  color: var(--white);
-  font-size: var(--t-2xs);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 0.25s var(--ease-out), transform 0.25s var(--ease-out);
-}
-.sp-cover:hover, .sp-cover:focus-visible { background: rgba(6, 5, 9, 0.5); }
-.sp-cover:hover span, .sp-cover:focus-visible span { opacity: 1; transform: none; }
-
-.sp-note {
-  margin: var(--s-4) 0 0;
-  text-align: center;
-  font-size: var(--t-2xs);
-  letter-spacing: 0.04em;
-  color: rgba(255, 255, 255, 0.45);
-}
-
-.sp-frame iframe { display: block; width: 100%; height: 420px; border: 0; }
-
-@media (max-width: 520px) {
-  .sp-frame iframe { height: 380px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .sp-modal, .sp-panel { transition: none; }
-  .sp-panel { transform: none; }
-  .sp-cover, .sp-cover span { transition: none; }
-}
-
-/* ==========================================================================
+   is moved here: a real link is laid over the frame,
+which keeps
+   middle-click{ position: relative; border-radius: 12px; overflow: hidden; background: #000; }/* ==========================================================================
    FOUNDATION — the pavilion / club system
    ==========================================================================
    See DESIGN.md. The site alternates between two grounds and the alternation
-   is the argument, so this layer sits last and settles which ground a section
+   is the argument,
+so this layer sits last and settles which ground a section
    stands on before any component styling is read. */
 
-/* ---- display type: width carries the voice, not weight ----
-   Archivo has a width axis, and painted pavilion signage is wide. Setting
+/* ---- display type: width carries the voice,
+not weight ----
+   Archivo has a width axis,
+and painted pavilion signage is wide. Setting
    weight alone would have produced the same heavy-condensed register the old
-   direction used, which is the register every loud pop site already occupies. */
-h1, h2, h3, .display, .hero-title, .section-title, .page-title {
+   direction used,
+which is the register every loud pop site already occupies. */
+h1,
+h2,
+h3,
+.display,
+.section-title,
+.page-title{
   font-family: var(--font-display);
   font-variation-settings: 'wdth' 116, 'wght' 800;
   font-weight: 800;
@@ -2775,88 +2518,41 @@ html {
 }
 ::-webkit-scrollbar-thumb:hover { background: var(--crown); }
 
-input, textarea { caret-color: var(--magenta); }
-
-/* ==========================================================================
+input, textarea { caret-color: var(--magenta); }/* ==========================================================================
    HERO — rebuilt on the pavilion ground
    ==========================================================================
-   The red curtain is retired: it is Eurovision's world, issued to every act
-   in the contest, and it was the largest single reason the old first viewport
+   The red curtain is retired: it is Eurovision's world,
+issued to every act
+   in the contest,
+and it was the largest single reason the old first viewport
    could have belonged to any maximalist pop singer.
 
    What replaces it is a printed poster. The photograph sits in its own panel
-   on warm cream rather than bleeding behind a dark scrim, because a picture
+   on warm cream rather than bleeding behind a dark scrim,
+because a picture
    printed onto a page is the pavilion's own visual language — painted board,
-   pressed sleeve, pinned bill — and because a scrim exists to rescue text
-   thrown on top of an image, which is a problem worth not having.
-
-   The DOM is untouched: the GSAP intro and the scroll dissolve both address
-   .hero-bg img and .hero-frame, so the panel keeps its parallax and still
-   dissolves to the stage frame further down. That dissolve now carries the
-   argument as well — the pavilion gives way to the club. */
-.hero {
+pressed sleeve,
+pinned bill — and because a scrim exists to rescue text
+   thrown on top of an image{
   align-items: center;
   background: linear-gradient(178deg, var(--paper) 0%, var(--paper-warm) 100%);
   border-bottom: 3px solid var(--pine-deep);
-}
-
-.hero-bg {
-  inset: 0 0 0 auto;
-  width: clamp(320px, 46vw, 660px);
-}
-.hero-bg img {
-  object-position: center 20%;
-  filter: saturate(1.02);
-}
-/* Feathered on the inboard edge only, so the panel reads as printed onto the
-   page rather than cut out and pasted onto it. */
-.hero-bg::after {
+}/* Feathered on the inboard edge only{
   background: linear-gradient(to right,
     var(--paper) 0%,
     rgba(242, 233, 218, 0.55) 9%,
     rgba(242, 233, 218, 0) 24%);
-}
-
-.hero-content {
-  padding-bottom: 0;
-  padding-right: clamp(0rem, 44vw, 40rem);
-}
-
-.hero-title {
-  font-size: var(--t-3xl);
-  color: var(--pine-deep);
-  text-shadow: none;
-}
-
-.hero-sub {
-  color: var(--ink-soft);
-  font-size: var(--t-md);
-  max-width: 34rem;
-}
-.hero-sub em { color: var(--magenta-dp); font-style: normal; font-weight: 600; }
-
-.hero-meta { color: var(--pine); }
-.hero-meta .sep { background: var(--pine); opacity: 0.5; }
-.hero-scroll { color: var(--pine); }
-
-/* ---- buttons, re-grounded ---- */
-.pavilion .btn-solid,
-.hero .btn-solid {
+}/* ---- buttons,
+re-grounded ---- */
+.pavilion .btn-solid{
   background: var(--magenta);
   color: var(--white);
   box-shadow: 0 6px 20px rgba(224, 51, 140, 0.28), var(--edge);
-}
-.pavilion .btn-solid:hover,
-.hero .btn-solid:hover { background: var(--magenta-dp); box-shadow: var(--glow-red); }
-
-.pavilion .btn-outline,
-.hero .btn-outline {
+}.pavilion .btn-solid:hover{ background: var(--magenta-dp); box-shadow: var(--glow-red); }.pavilion .btn-outline{
   color: var(--pine-deep);
   border-color: var(--pine-deep);
   background: transparent;
-}
-.pavilion .btn-outline:hover,
-.hero .btn-outline:hover { background: var(--pine-deep); color: var(--paper); }
+}.pavilion .btn-outline:hover{ background: var(--pine-deep); color: var(--paper); }
 
 /* ---- narrow screens: the panel goes behind, and the ground comes with it ----
    A cream veil rather than a dark one, so the hero does not quietly revert to
@@ -2870,29 +2566,19 @@ input, textarea { caret-color: var(--magenta); }
   }
   .hero { align-items: flex-end; }
   .hero-content { padding-right: 0; padding-bottom: clamp(2.5rem, 8vw, 4rem); }
-}
-
-/* ==========================================================================
+}/* ==========================================================================
    HERO — corrections after looking at it
    ========================================================================== */
 
 /* The title was sized against the viewport while sitting in a column a little
-   under half that wide, so VIKMAN overran its line and the N was cut off by
+   under half that wide,
+so VIKMAN overran its line and the N was cut off by
    the overflow clip the reveal animation needs. Display type in a split
-   layout has to be sized against its own column, not the window. */
-.hero-content { padding-right: clamp(0rem, 40vw, 34rem); }
-.hero-title { font-size: clamp(2.6rem, 6.6vw, 6.8rem); }
-
-/* The feathered edge was trying to dissolve our cream into the photograph's
-   own pale pink ground, and two near-but-unequal creams meeting in a soft
+   layout has to be sized against its own column{ padding-right: clamp(0rem, 40vw, 34rem); }/* The feathered edge was trying to dissolve our cream into the photograph's
+   own pale pink ground,
+and two near-but-unequal creams meeting in a soft
    ramp just look like a mistake. A hard painted edge instead: the pavilion
-   language is printed bills and painted board, where an edge is a decision. */
-.hero-bg { border-left: 3px solid var(--pine-deep); }
-.hero-bg::after { background: none; }
-
-@media (max-width: 860px) {
-  .hero-bg { border-left: 0; }
-}
+   language is printed bills and painted board{ border-left: 3px solid var(--pine-deep); }
 
 /* ==========================================================================
    NAV — a painted signboard
@@ -2913,26 +2599,14 @@ input, textarea { caret-color: var(--magenta); }
 .nav-toggle span { background: var(--paper); }
 
 /* it no longer needs to change on scroll — it was already solid */
-.nav.scrolled { background: var(--pine-deep); }
-
-/* ==========================================================================
+.nav.scrolled { background: var(--pine-deep); }/* ==========================================================================
    HERO — the column has to know how wide the panel is
    ==========================================================================
    The copy ran under the photograph because the column reserved 40vw while
    the panel occupied 46vw. Two independent numbers describing one edge will
-   always drift apart, so the reservation is now the panel's own expression
-   plus a gutter — change the panel and the column follows. */
-.hero-content {
+   always drift apart{
   padding-right: calc(clamp(320px, 46vw, 660px) + clamp(1.5rem, 4vw, 3.5rem));
-}
-.hero-sub { max-width: 100%; }
-
-/* With the column honest, the title can carry the weight a hero needs. */
-.hero-title { font-size: clamp(2.7rem, 7.4vw, 7.6rem); }
-
-@media (max-width: 860px) {
-  .hero-content { padding-right: 0; }
-}
+}/* With the column honest{ font-size: clamp(2.7rem, 7.4vw, 7.6rem); }
 
 /* ==========================================================================
    PAGE HEADER on the pavilion
@@ -2983,15 +2657,12 @@ input, textarea { caret-color: var(--magenta); }
       var(--paper-warm) 92%);
   }
   .page-header.pavilion .wrap { padding-right: 0; }
-}
-
-/* ==========================================================================
-   HERO on a narrow screen — stack it, do not veil it
+}/* ==========================================================================
+   HERO on a narrow screen — stack it,
+do not veil it
    ==========================================================================
-   Two problems, one fix.
-
-   The bug: an earlier rule here set .hero-bg::after to none so the desktop
-   panel could have a hard painted edge, and being later in the file it also
+   Two problems,
+and being later in the file it also
    cancelled the cream veil the narrow layout depended on. The copy ended up
    sitting directly on the photograph at a contrast that was frankly unusable.
 
@@ -2999,9 +2670,11 @@ input, textarea { caret-color: var(--magenta); }
    fighting to keep it legible is a problem worth not having — the same reason
    the dark scrim went in the first place. So the photograph becomes a band
    across the top and the copy sits beneath it on solid cream: a printed bill,
-   picture above, words below, which is what the pavilion would actually put
+picture above,
+words below,
+which is what the pavilion would actually put
    on a wall. Contrast stops being something to manage. */
-@media (max-width: 860px) {
+@media (max-width: 860px){
   .hero {
     align-items: flex-start;
     padding-top: calc(46svh + clamp(1.5rem, 6vw, 2.5rem));
@@ -3826,3 +3499,57 @@ html.has-dock body { padding-bottom: 4.5rem; }
 @media (prefers-reduced-motion: reduce) {
   .jb, .vd { transition: none; }
 }
+
+/* The mark at rest, as an image. The vector version is what the dive moves,
+   but paths are not something a browser counts as content arriving, so the
+   first screen measured as empty until the copy faded in after the dive —
+   3.7s on a phone. This is the same artwork, painted immediately, on exactly
+   the geometry portal.js computes for progress 0: width min(86vw, .42vh x
+   582/274, 620px), centred. portal.js removes it as the dive begins. */
+.portal__still {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(86vw, 89.2vh, 620px);
+  height: auto;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   Touch targets
+   ==========================================================================
+   Measured on a 390px phone: nav links stood 15px tall, the wordmark 22px,
+   and the play buttons on the release strips 21px. A finger pad is about
+   9mm; everything here now answers across at least 44px, mostly by growing
+   the hit area rather than the mark, so nothing moves visually. */
+.nav-links a { padding: 0.85rem 0; }
+.logo { display: inline-flex; align-items: center; min-height: 44px; }
+.footer-social a, .footer-social a, .f-social a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+}
+.release-links button, .release-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+.jb-btn { min-height: 44px; }
+.jb-row, .vl-row { padding: var(--s-2) 0; }
+
+/* The footer's page list and badges, the menu button and the skip link are
+   standalone controls rather than links inside a sentence, so they take the
+   full 44px. Links running inside prose are left alone: the standard exempts
+   them, and padding them would break the line. */
+.footer-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 0.7rem;
+}
+.footer-social a { min-width: 44px; min-height: 44px; }
+.nav-toggle { min-width: 44px; min-height: 44px; justify-content: center; }
+.skip-link { min-height: 44px; display: inline-flex; align-items: center; }

@@ -242,8 +242,16 @@
      own jukebox and video player, so nothing sends a visitor elsewhere to
      listen or watch. */
 
-  /* ================= GSAP choreography ================================== */
+  /* ================= GSAP choreography ==================================
+     Everything below lays out pins and forces a full-document ScrollTrigger
+     refresh. Measured on a phone, that work held the first paint at 1.5s —
+     and none of it is visible in the first screen: the rail is thousands of
+     pixels down and the marquee sits under the fold. So it is scheduled after
+     the browser has painted, with a timeout so a busy main thread cannot
+     postpone it indefinitely. */
   if (!useGsap) return;
+
+  var choreograph = function () {
 
   document.documentElement.classList.add('gsap');
   gsap.registerPlugin(ScrollTrigger);
@@ -334,6 +342,14 @@
         }
       });
     });
+  }
+
+  };
+
+  if ('requestIdleCallback' in window) {
+    requestAnimationFrame(function () { requestIdleCallback(choreograph, { timeout: 900 }); });
+  } else {
+    requestAnimationFrame(function () { setTimeout(choreograph, 60); });
   }
 
 })();

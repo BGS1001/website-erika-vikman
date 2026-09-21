@@ -12,11 +12,17 @@
 <meta property="og:title" content="Erika Vikman — Ich Komme">
 <meta property="og:description" content="Tango Queen turned pop provocateur. Eurovision 2025 Style Icon. Fan tribute site.">
 <meta property="og:url" content="https://website-erika-vikman.vercel.app/">
-<meta property="og:image" content="https://website-erika-vikman.vercel.app/assets/img/hero-portrait.jpg">
+<meta property="og:image" content="https://website-erika-vikman.vercel.app/assets/img/erika-wordmark-stage.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="image" href="assets/img/hero-portrait.jpg" fetchpriority="high">
+<!-- The door: the stage behind the O of KOMME is the first thing anyone sees.
+     Preloaded as a set so a phone fetches the 480px file, not the full one. -->
+<link rel="preload" as="image" href="assets/img/mark-ich-komme.png" fetchpriority="high">
+<link rel="preload" as="image" fetchpriority="high"
+      imagesrcset="assets/img/erika-wordmark-stage-480.jpg 480w, assets/img/erika-wordmark-stage-800.jpg 800w, assets/img/erika-wordmark-stage.jpg 1024w"
+      imagesizes="(max-width: 860px) 100vw, 46vw"
+      href="assets/img/erika-wordmark-stage-800.jpg">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Instrument+Sans:wght@400..700&display=swap">
 <link rel="stylesheet" href="css/style.css">
 <script type="speculationrules">
@@ -29,7 +35,7 @@
   "name": "Erika Vikman",
   "alternateName": "Erika Susanna Vikman",
   "url": "https://website-erika-vikman.vercel.app/",
-  "image": "https://website-erika-vikman.vercel.app/assets/img/hero-portrait.jpg",
+  "image": "https://website-erika-vikman.vercel.app/assets/img/erika-wordmark-stage.jpg",
   "genre": ["Electropop", "Pop", "Tango"],
   "foundingLocation": {
     "@type": "Place",
@@ -49,6 +55,9 @@
   ]
 }
 </script>
+<link rel="manifest" href="/site.webmanifest">
+<link rel="apple-touch-icon" href="/assets/img/icon-192.png">
+<meta name="theme-color" content="#3F2916">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -83,6 +92,11 @@
 
     <!-- 1. The mark: her merch lockup, ICH over KOMME, redrawn as plain
          vector geometry in its own units (582 x 274). No clipPath, no mask. -->
+    <!-- The mark, as a picture, painted before anything else runs. The vector
+         below is what the dive animates; this is the same artwork at rest, so
+         the browser has something real on screen at once. portal.js drops it
+         the moment the dive starts. -->
+    <img class="portal__still" src="assets/img/mark-ich-komme.png" alt="Ich Komme" width="1164" height="548" fetchpriority="high" decoding="async">
     <svg class="portal__svg" data-hero-logo aria-hidden="true" focusable="false">
       <g data-zoom>
         <g class="portal__ink">
@@ -113,9 +127,9 @@
            <source src="assets/video/basel.mp4" type="video/mp4"></video> -->
     <div class="portal__window" data-hero-window>
       <div class="portal__media" data-hero-media>
-        <img class="pm pm--side" data-side data-src="assets/img/flying-mic-2.jpg" alt="" width="1025" height="1280">
-        <img class="pm pm--main" src="assets/img/erika-wordmark-stage.jpg" alt="Erika Vikman on the golden flying microphone in front of her name in giant red letters, Basel 2025" width="1024" height="1280" fetchpriority="high">
-        <img class="pm pm--side" data-side data-src="assets/img/erika-crowd-screen.jpg" alt="" width="1024" height="1277">
+        <img srcset="assets/img/flying-mic-2-480.jpg 480w, assets/img/flying-mic-2-800.jpg 800w, assets/img/flying-mic-2.jpg 1024w" sizes="(max-width: 860px) 100vw, 46vw" class="pm pm--side" data-side data-src="assets/img/flying-mic-2.jpg" alt="" width="1025" height="1280">
+        <img srcset="assets/img/erika-wordmark-stage-480.jpg 480w, assets/img/erika-wordmark-stage-800.jpg 800w, assets/img/erika-wordmark-stage.jpg 1024w" sizes="(max-width: 860px) 100vw, 46vw" class="pm pm--main" src="assets/img/erika-wordmark-stage.jpg" alt="Erika Vikman on the golden flying microphone in front of her name in giant red letters, Basel 2025" width="1024" height="1280" fetchpriority="high">
+        <img srcset="assets/img/erika-crowd-screen-480.jpg 480w, assets/img/erika-crowd-screen-800.jpg 800w, assets/img/erika-crowd-screen.jpg 1024w" sizes="(max-width: 860px) 100vw, 46vw" class="pm pm--side" data-side data-src="assets/img/erika-crowd-screen.jpg" alt="" width="1024" height="1277">
       </div>
       <div class="portal__glint" aria-hidden="true"></div>
       <div class="portal__shade" data-hero-shade></div>
@@ -151,7 +165,7 @@
 <section class="pad">
   <div class="wrap split" data-reveal>
     <div class="split-media">
-      <img src="assets/img/portrait-gloves.jpg" alt="Erika Vikman studio portrait" loading="lazy" width="1024" height="1280">
+      <img srcset="assets/img/portrait-gloves-480.jpg 480w, assets/img/portrait-gloves-800.jpg 800w, assets/img/portrait-gloves.jpg 1024w" sizes="auto" src="assets/img/portrait-gloves.jpg" alt="Erika Vikman studio portrait" loading="lazy" width="1024" height="1280">
       <div class="stat-badge">
         <span class="num">#1</span>
         <span class="label">Finland Albums<br>Chart, 2021</span>
@@ -186,14 +200,14 @@
 
 <!-- FULL BLEED BANNER -->
 <section class="banner-par" data-reveal>
-  <img class="pos-band" src="assets/img/erika-wordmark-stage.jpg" alt="ERIKA lit up in giant red letters on stage in Basel"  loading="lazy" width="1024" height="1280">
+  <img srcset="assets/img/erika-wordmark-stage-480.jpg 480w, assets/img/erika-wordmark-stage-800.jpg 800w, assets/img/erika-wordmark-stage.jpg 1024w" sizes="auto" class="pos-band" src="assets/img/erika-wordmark-stage.jpg" alt="ERIKA lit up in giant red letters on stage in Basel"  loading="lazy" width="1024" height="1280">
 </section>
 
 <!-- ICH KOMME — the song itself, on the landing page -->
 <section class="komme" id="ich-komme">
   <div class="komme-stage">
     <div class="komme-art" aria-hidden="true">
-      <img src="assets/img/artwork-ich-komme.jpg" alt="" loading="lazy" width="1118" height="1280">
+      <img srcset="assets/img/artwork-ich-komme-480.jpg 480w, assets/img/artwork-ich-komme-800.jpg 800w, assets/img/artwork-ich-komme.jpg 1024w" sizes="auto" src="assets/img/artwork-ich-komme.jpg" alt="" loading="lazy" width="1118" height="1280">
     </div>
     <div class="komme-cues" aria-hidden="true">
       <span class="komme-cue komme-cue-from">Tangomarkkinat · 2016</span>
@@ -207,7 +221,7 @@
       <button class="embed-facade"
               data-embed="https://www.youtube-nocookie.com/embed/Kg3QoTpnqyw?autoplay=1"
               data-embed-title="Erika Vikman — ICH KOMME, official music video">
-        <img src="assets/img/artwork-ich-komme.jpg" alt="" width="1118" height="1280" loading="lazy">
+        <img srcset="assets/img/artwork-ich-komme-480.jpg 480w, assets/img/artwork-ich-komme-800.jpg 800w, assets/img/artwork-ich-komme.jpg 1024w" sizes="auto" src="assets/img/artwork-ich-komme.jpg" alt="" width="1118" height="1280" loading="lazy">
         <span class="embed-play" aria-hidden="true"></span>
         <span class="embed-label">Play the official video<small>Ich Komme · 2025</small></span>
       </button>
@@ -229,7 +243,7 @@
     <div class="release-grid">
       <article class="release-card">
         <div class="release-cover">
-          <img src="assets/img/artwork-ich-komme.jpg" alt="Ich Komme single artwork" width="1118" height="1280" loading="lazy">
+          <img srcset="assets/img/artwork-ich-komme-480.jpg 480w, assets/img/artwork-ich-komme-800.jpg 800w, assets/img/artwork-ich-komme.jpg 1024w" sizes="auto" src="assets/img/artwork-ich-komme.jpg" alt="Ich Komme single artwork" width="1118" height="1280" loading="lazy">
         </div>
         <div class="release-meta">
           <span class="rel-title">Ich Komme</span>
@@ -292,14 +306,14 @@
   </div>
   <div class="rail-viewport">
     <div class="rail-track">
-      <figure class="rail-item"><img src="assets/img/flying-mic-2.jpg" alt="Erika Vikman on the golden flying microphone at Eurovision 2025" loading="lazy" width="1025" height="1280"><figcaption class="rail-cap">Basel · 2025</figcaption></figure>
-      <figure class="rail-item is-wide"><img src="assets/img/silhouette-raise.jpg" alt="Erika Vikman raising the microphone stand in silhouette" loading="lazy" width="599" height="399"><figcaption class="rail-cap">Golden hour</figcaption></figure>
-      <figure class="rail-item"><img src="assets/img/award-trophy.jpg" alt="Erika Vikman holding the UMK winner's trophy" loading="lazy" width="1024" height="1280"><figcaption class="rail-cap">UMK winner</figcaption></figure>
-      <figure class="rail-item"><img src="assets/img/backstage-corset.jpg" alt="Erika Vikman backstage in a studded corset" loading="lazy" width="1024" height="1280"><figcaption class="rail-cap">Backstage</figcaption></figure>
-      <figure class="rail-item is-wide"><img src="assets/img/confetti-crowd.jpg" alt="Confetti falling over the crowd at an Erika Vikman show" loading="lazy" width="600" height="400"><figcaption class="rail-cap">Confetti finale</figcaption></figure>
-      <figure class="rail-item"><img src="assets/img/erika-crowd-screen.jpg" alt="Erika Vikman on the arena screen above the crowd" loading="lazy" width="1024" height="1277"><figcaption class="rail-cap">Arena screen</figcaption></figure>
-      <figure class="rail-item"><img src="assets/img/portrait-gloves.jpg" alt="Erika Vikman studio portrait with printed gloves" loading="lazy" width="1024" height="1280"><figcaption class="rail-cap">Studio</figcaption></figure>
-      <figure class="rail-item is-wide"><img src="assets/img/orange-crowd.jpg" alt="Erika Vikman lifted over the crowd under fireworks" loading="lazy" width="599" height="399"><figcaption class="rail-cap">Fireworks</figcaption></figure>
+      <figure class="rail-item"><img srcset="assets/img/flying-mic-2-480.jpg 480w, assets/img/flying-mic-2-800.jpg 800w, assets/img/flying-mic-2.jpg 1024w" sizes="auto" src="assets/img/flying-mic-2.jpg" alt="Erika Vikman on the golden flying microphone at Eurovision 2025" loading="lazy" width="1025" height="1280"><figcaption class="rail-cap">Basel · 2025</figcaption></figure>
+      <figure class="rail-item is-wide"><img srcset="assets/img/silhouette-raise-480.jpg 480w, assets/img/silhouette-raise-800.jpg 800w, assets/img/silhouette-raise.jpg 1024w" sizes="auto" src="assets/img/silhouette-raise.jpg" alt="Erika Vikman raising the microphone stand in silhouette" loading="lazy" width="599" height="399"><figcaption class="rail-cap">Golden hour</figcaption></figure>
+      <figure class="rail-item"><img srcset="assets/img/award-trophy-480.jpg 480w, assets/img/award-trophy-800.jpg 800w, assets/img/award-trophy.jpg 1024w" sizes="auto" src="assets/img/award-trophy.jpg" alt="Erika Vikman holding the UMK winner's trophy" loading="lazy" width="1024" height="1280"><figcaption class="rail-cap">UMK winner</figcaption></figure>
+      <figure class="rail-item"><img srcset="assets/img/backstage-corset-480.jpg 480w, assets/img/backstage-corset-800.jpg 800w, assets/img/backstage-corset.jpg 1024w" sizes="auto" src="assets/img/backstage-corset.jpg" alt="Erika Vikman backstage in a studded corset" loading="lazy" width="1024" height="1280"><figcaption class="rail-cap">Backstage</figcaption></figure>
+      <figure class="rail-item is-wide"><img srcset="assets/img/confetti-crowd-480.jpg 480w, assets/img/confetti-crowd-800.jpg 800w, assets/img/confetti-crowd.jpg 1024w" sizes="auto" src="assets/img/confetti-crowd.jpg" alt="Confetti falling over the crowd at an Erika Vikman show" loading="lazy" width="600" height="400"><figcaption class="rail-cap">Confetti finale</figcaption></figure>
+      <figure class="rail-item"><img srcset="assets/img/erika-crowd-screen-480.jpg 480w, assets/img/erika-crowd-screen-800.jpg 800w, assets/img/erika-crowd-screen.jpg 1024w" sizes="auto" src="assets/img/erika-crowd-screen.jpg" alt="Erika Vikman on the arena screen above the crowd" loading="lazy" width="1024" height="1277"><figcaption class="rail-cap">Arena screen</figcaption></figure>
+      <figure class="rail-item"><img srcset="assets/img/portrait-gloves-480.jpg 480w, assets/img/portrait-gloves-800.jpg 800w, assets/img/portrait-gloves.jpg 1024w" sizes="auto" src="assets/img/portrait-gloves.jpg" alt="Erika Vikman studio portrait with printed gloves" loading="lazy" width="1024" height="1280"><figcaption class="rail-cap">Studio</figcaption></figure>
+      <figure class="rail-item is-wide"><img srcset="assets/img/orange-crowd-480.jpg 480w, assets/img/orange-crowd-800.jpg 800w, assets/img/orange-crowd.jpg 1024w" sizes="auto" src="assets/img/orange-crowd.jpg" alt="Erika Vikman lifted over the crowd under fireworks" loading="lazy" width="599" height="399"><figcaption class="rail-cap">Fireworks</figcaption></figure>
       <figure class="rail-item rail-end">
         <a href="gallery.html" class="btn btn-gold">View full gallery →</a>
       </figure>

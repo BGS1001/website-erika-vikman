@@ -1,0 +1,5 @@
+# Erika Vikman — independent fan tribute
+User-agent: *
+Allow: /
+
+Sitemap: https://website-erika-vikman.vercel.app/sitemap.xml

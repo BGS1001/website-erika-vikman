@@ -1,0 +1,22 @@
+{
+  "name": "Erika Vikman — Ich Komme",
+  "short_name": "Erika Vikman",
+  "description": "Fan tribute site: the jukebox, the archive and the tour dates.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F2E9DA",
+  "theme_color": "#3F2916",
+  "icons": [
+    {
+      "src": "/assets/img/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

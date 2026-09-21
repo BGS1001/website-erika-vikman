@@ -132,6 +132,11 @@
   }
   function arrivedMidPage() { return window.scrollY > g.vh * 0.6; }
 
+  /* The still mark hands over to the vector the instant anything moves. Both
+     are the same artwork on the same geometry, so the swap is invisible. */
+  var still = $('.portal__still', hero);
+  function dropStill() { if (still) { still.remove(); still = null; } }
+
   function render() {
     var scrollP = touchMode ? 0 : clamp((window.scrollY - g.top) / g.range);
     var p = Math.max(autoP(), scrollP);
@@ -159,6 +164,7 @@
       win.style.clipPath = clip;
     }
 
+    if (p > 0.001) dropStill();
     intro.style.opacity = String(1 - smooth(0, 0.1, p));
     /* stepping inside: the stage pulls back as the door opens */
     media.style.transform = 'scale(' + (1.4 - 0.4 * zf).toFixed(4) + ')';

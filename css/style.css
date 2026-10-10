@@ -2532,7 +2532,7 @@ pinned bill — and because a scrim exists to rescue text
 }/* ---- buttons,
 re-grounded ---- */
 .pavilion .btn-solid{
-  background: var(--magenta);
+  background: var(--magenta-dp);
   color: var(--white);
   box-shadow: 0 6px 20px rgba(224, 51, 140, 0.28), var(--edge);
 }.pavilion .btn-solid:hover{ background: var(--magenta-dp); box-shadow: var(--glow-red); }.pavilion .btn-outline{
@@ -3583,9 +3583,10 @@ html.has-dock body { padding-bottom: 4.5rem; }
    pavilion section inherited the pavilion's label colour, deep magenta, and
    put it on its own near-black ground — 2.69:1. The grounds carry the tokens,
    so a component that brings its own ground has to restate them. */
-.next-card, .store-card, .merch-cell, .tag-next {
+.next-card, .store-card, .merch-cell, .award-cell, .embed-facade, .tag-next {
   --gold: var(--label-lit);
   --gold-bright: var(--label-lit);
+  --gray: var(--night-soft);
 }
 
 /* White on the lit magenta measured 4.18:1 and the tag's own text 1.98:1.
@@ -3601,3 +3602,41 @@ html.has-dock body { padding-bottom: 4.5rem; }
 /* The tag is a span inside .tour-info, whose own span rule outranked it and
    painted it grey on magenta at 1.98:1. Named where it lives, it wins. */
 .tour-info .tag-next { color: var(--white); }
+
+/* ==========================================================================
+   The next-show tag printed itself over its own heading
+   ==========================================================================
+   Found on a real iPhone, and reproduced at 390px and 430px on the tour page
+   too. Headings carry line-height .94 — tighter than the line itself, which
+   is right for big painted type and wrong for a padded tag living inside one.
+   The tag wrapped to two lines, stood 41px tall inside a 15.8px line box and
+   overlapped the venue and the city beneath it.
+
+   Two causes, two fixes: the tag keeps to one line, and the heading becomes a
+   row that lets the tag drop below the name instead of on top of it when the
+   width runs out. */
+.tour-info h3,
+.tour-info h4 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25em 0.6em;
+  line-height: 1.25;
+}
+.tag-next {
+  white-space: nowrap;
+  margin-left: 0;
+  align-self: center;
+}
+
+/* Secondary text was a club token used on both grounds: on cream it measured
+   1.76:1. The pavilion restates it, the same way it restates the label roles. */
+.pavilion { --gray: var(--ink-soft); }
+
+/* White on the lit magenta is 4.18:1 — under the floor for anything that is
+   not large text. Everywhere magenta is a ground under white, it is the
+   deeper stop, which carries white at 6.8:1. Magenta stays the lit colour
+   for type, rules and glows, where it sits on dark and measures fine. */
+.sec-loud { background: var(--magenta-dp); }
+.jb-btn.is-full { background: var(--magenta-dp); border-color: var(--magenta-dp); }
+.jb-btn.is-full:hover { background: #8e1856; border-color: #8e1856; }

@@ -3640,3 +3640,82 @@ html.has-dock body { padding-bottom: 4.5rem; }
 .sec-loud { background: var(--magenta-dp); }
 .jb-btn.is-full { background: var(--magenta-dp); border-color: var(--magenta-dp); }
 .jb-btn.is-full:hover { background: #8e1856; border-color: #8e1856; }
+
+/* ==========================================================================
+   FOOTER — the board on the way out
+   ==========================================================================
+   The site opens on a painted signboard and used to end on a grey slab: a
+   sparse grid of links and three empty bordered squares holding two sets of
+   initials and one icon — three different ways of saying the same thing. It
+   closes on the same board the nav is painted on, so the pavilion has a front
+   and a back rather than a front and a default.
+
+   The platform links are words now, each with the icon its action already has
+   elsewhere on the site: the outward arrow for somewhere else, the play
+   triangle for something that sounds. */
+.site-footer {
+  background: var(--pine-deep);
+  color: var(--paper);
+  border-top: 3px solid var(--ink);
+}
+.site-footer .logo {
+  font-family: var(--font-display);
+  font-variation-settings: 'wdth' 118, 'wght' 800;
+  font-size: var(--t-lg);
+  letter-spacing: 0.01em;
+  color: var(--paper);
+}
+.site-footer .logo span { color: var(--magenta-lit); }
+.footer-blurb { color: rgba(242, 233, 218, 0.72); }
+
+.footer-nav { gap: 0 var(--s-4); }
+.footer-nav a {
+  position: relative;
+  color: rgba(242, 233, 218, 0.82);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0 0.2rem;
+}
+.footer-nav a::after {
+  content: '';
+  position: absolute;
+  left: 0.2rem;
+  right: 0.2rem;
+  bottom: 0.7rem;
+  height: 2px;
+  background: var(--magenta-lit);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.18s var(--ease-tango);
+}
+.footer-nav a:hover { color: var(--paper); }
+.footer-nav a:hover::after { transform: scaleX(1); }
+
+.footer-social { gap: var(--s-2) var(--s-5); flex-wrap: wrap; }
+.footer-social a {
+  width: auto;
+  min-width: 0;
+  border: 0;
+  gap: 0.45em;
+  padding: 0 0.2rem;
+  color: rgba(242, 233, 218, 0.82);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.footer-social a:hover { color: var(--paper); border-color: transparent; }
+.footer-social a .i { opacity: 0.75; }
+.footer-social a:hover .i { opacity: 1; color: var(--magenta-lit); }
+
+.footer-bottom {
+  border-top: 1px solid rgba(242, 233, 218, 0.16);
+  color: rgba(242, 233, 218, 0.66);
+}
+.footer-bottom strong { color: var(--paper); }
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-nav a::after { transition: none; }
+}

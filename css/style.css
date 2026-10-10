@@ -152,19 +152,6 @@ ul { list-style: none; }
   padding: 0 clamp(1.25rem, 4vw, 3rem);
 }
 
-/* ---- texture overlays ----
-   The grain used to sit at 0.035 in overlay blend, which laid a dusty film
-   across the whole site. Dropped to a whisper in soft-light so it adds
-   depth to the blacks without matting the image on top of it. */
-.grain {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 999;
-  opacity: 0.016;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  mix-blend-mode: soft-light;
-}
 
 /* Stage bloom — a cool wash from the top of the page, like light spill off
    a rig. Sits under everything and gives the black some dimension. */
@@ -1995,12 +1982,12 @@ imagery
 .tag-next {
   box-shadow: var(--edge), 0 0 20px rgba(168, 30, 102, 0.5);
 }
-.tour-status { box-shadow: 0 0 16px rgba(255, 223, 148, 0.18); }
+.tour-status { box-shadow: 0 0 16px rgba(23, 182, 196, 0.2); }
 
 /* the "25" and the outlined type read as neon now */
 .big-num { filter: drop-shadow(0 0 26px rgba(224, 51, 140, 0.32)); }
 .komme-type .fill { filter: drop-shadow(0 0 22px rgba(224, 51, 140, 0.45)); }
-.award-cell .yr { filter: drop-shadow(0 0 18px rgba(255, 223, 148, 0.3)); }
+.award-cell .yr { filter: drop-shadow(0 0 18px rgba(23, 182, 196, 0.3)); }
 
 /* --- imagery sits in a lit frame --- */
 .split-media img,
@@ -2843,7 +2830,7 @@ html.gsap { scroll-behavior: auto; }
 /* on the pavilion ground a cream strip needs its own edge to separate */
 .pavilion .release-grid .release-card {
   background: #fbf7ef;
-  box-shadow: 0 0 0 1px rgba(63, 41, 22, 0.16), 0 8px 18px rgba(63, 41, 22, 0.12);
+  box-shadow: 0 0 0 1px rgba(63, 41, 22, 0.22);
 }
 
 /* the selector slot */
@@ -3391,7 +3378,7 @@ html.portal-locked, html.portal-locked body { overflow: hidden; overscroll-behav
 .jb-btn.is-full:hover { background: var(--magenta-dp); border-color: var(--magenta-dp); }
 .jb-row.is-current { background: linear-gradient(90deg, rgba(224, 51, 140, 0.1), transparent 70%); }
 .jb-row.is-current .jb-song { color: var(--magenta-dp); }
-.jb-row.is-playing .jb-yr::after { content: " \266A"; color: var(--magenta); }
+
 .jb-row.is-gone { opacity: 0.45; }
 .jb-row.is-gone .jb-btn:not(.is-full) { display: none; }
 
@@ -3408,7 +3395,7 @@ html.portal-locked, html.portal-locked body { overflow: hidden; overscroll-behav
   margin-top: var(--s-7);
   background: #fbf7ef;
   border-top: 6px solid var(--magenta);
-  box-shadow: 0 0 0 1px rgba(63, 41, 22, 0.16), 0 12px 28px rgba(63, 41, 22, 0.14);
+  box-shadow: 0 0 0 1px rgba(63, 41, 22, 0.22);
 }
 .jb-list.is-inline { max-height: 34rem; }
 
@@ -3553,3 +3540,64 @@ html.has-dock body { padding-bottom: 4.5rem; }
 .footer-social a { min-width: 44px; min-height: 44px; }
 .nav-toggle { min-width: 44px; min-height: 44px; justify-content: center; }
 .skip-link { min-height: 44px; display: inline-flex; align-items: center; }
+
+/* ==========================================================================
+   After the craft floor
+   ==========================================================================
+   Three things went: the label above every heading, the grain film, and the
+   glyphs doing an icon set's job.
+
+   The labels — "The story", "Listen here", "Releases" — each repeated the
+   heading underneath in smaller type. A heading that needs announcing is not
+   carrying itself. The two that held a fact rather than a repetition, the
+   Basel date and the tour years, moved below their heading where a caption
+   belongs. The artist's name over the mark in the first screen stays: it is
+   the only place she is named there, and the mark says the song, not her. */
+.meta-line {
+  margin: var(--s-3) 0 0;
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* Icons are drawn now, at one stroke weight, taking the colour of their text. */
+.i {
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  vertical-align: -0.125em;
+  flex: 0 0 auto;
+}
+.footer-social a .i { width: 1.15em; height: 1.15em; }
+.jb-close .i { width: 1.1em; height: 1.1em; }
+
+/* A heading with nothing above it needs the air the label used to take. */
+.section-title { margin-top: var(--s-2); }
+
+/* ==========================================================================
+   Contrast, measured
+   ==========================================================================
+   Four real failures, one of them systemic: a dark component sitting inside a
+   pavilion section inherited the pavilion's label colour, deep magenta, and
+   put it on its own near-black ground — 2.69:1. The grounds carry the tokens,
+   so a component that brings its own ground has to restate them. */
+.next-card, .store-card, .merch-cell, .tag-next {
+  --gold: var(--label-lit);
+  --gold-bright: var(--label-lit);
+}
+
+/* White on the lit magenta measured 4.18:1 and the tag's own text 1.98:1.
+   Magenta stays the colour of an action; the resting fill is simply its deeper
+   stop, which carries white at 6.8:1. */
+.btn-solid, .tag-next { background: var(--magenta-dp); color: var(--white); }
+.btn-solid:hover, .pavilion .btn-solid:hover, .hero .btn-solid:hover { background: #8e1856; }
+.tag-next { box-shadow: var(--edge), 0 0 20px rgba(168, 30, 102, 0.45); }
+
+/* 2.74:1 on paper. This line has to be read, not merely noticed. */
+.rel-none { color: var(--ink-soft); }
+
+/* The tag is a span inside .tour-info, whose own span rule outranked it and
+   painted it grey on magenta at 1.98:1. Named where it lives, it wins. */
+.tour-info .tag-next { color: var(--white); }

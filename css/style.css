@@ -296,7 +296,6 @@ section { position: relative; }
   background:
     var(--sheen),
     rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(10px) saturate(1.3);
   border: 1px solid rgba(255, 255, 255, 0.16);
   box-shadow: var(--edge);
   font-weight: 700;
@@ -336,12 +335,11 @@ section { position: relative; }
   display: flex;
   align-items: center;
   background: linear-gradient(to bottom, rgba(14,9,18,0.85), transparent);
-  transition: background 0.3s ease, box-shadow .3s ease, backdrop-filter .3s ease;
+  transition: background 0.3s ease, box-shadow .3s ease;
 }
 
 .nav.is-scrolled {
   background: rgba(14, 9, 18, 0.92);
-  backdrop-filter: blur(10px);
   box-shadow: 0 1px 0 rgba(216, 174, 87, 0.15);
 }
 
@@ -1769,14 +1767,14 @@ html:not(.gsap) .rail-prog { display: none; }
 
 /* hero title split into per-line masks / per-char spans */
 .ht-line { display: block; overflow: hidden; padding-bottom: 0.06em; margin-bottom: -0.06em; }
-.ht-char { display: inline-block; will-change: transform; }
+.ht-char { display: inline-block; }
 
 /* section titles: word masks filled by ScrollTrigger */
 html.gsap .wm { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: 0.08em; margin-bottom: -0.08em; }
-html.gsap .wi { display: inline-block; will-change: transform; }
+html.gsap .wi { display: inline-block; }
 
 /* nav hides on scroll down, returns on scroll up */
-.nav { transition: background 0.3s ease, backdrop-filter 0.3s ease, transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
+.nav { transition: background 0.3s ease, transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
 .nav.nav-hidden { transform: translateY(-100%); }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2047,7 +2045,6 @@ imagery
 /* --- nav gains a glass state once it leaves the hero --- */
 .nav.is-scrolled {
   background: rgba(10, 9, 14, 0.72);
-  backdrop-filter: blur(16px) saturate(1.5);
   box-shadow: 0 1px 0 rgba(255, 223, 148, 0.18), 0 8px 30px rgba(0, 0, 0, 0.4);
 }
 .logo span { text-shadow: 0 0 16px rgba(224, 51, 140, 0.7); }
@@ -2382,43 +2379,11 @@ imagery
 }/* ==========================================================================
    The Spotify panel the record opens
    ========================================================================== */
-/* The embed is built only when the panel is first opened and torn down when
-   it closes,
-so the page makes no request to Spotify unless someone asks for
-   one{
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  display: grid;
-  place-items: center;
-  padding: var(--s-4);
-  background: rgba(6, 5, 9, 0.82);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.28s var(--ease-out), visibility 0.28s;
-}/* The embed stays as the preview — it carries the real artwork and the real
-   track list — but it no longer pretends to be a player. Spotify serves the
-   preview audio publicly,
-so the tracks are not the problem; what hangs is
-   the player inside the frame,
-which cannot reach its own storage once the
-   browser partitions it as a third party. That is inside their origin,
-so
-   the page has no way to repair it.
-
-   A click cannot be caught inside a cross-origin frame either,
-and a popup
-   opened without a gesture in this document would be blocked. So the gesture
-   is moved here: a real link is laid over the frame,
-which keeps
-   middle-click{ position: relative; border-radius: 12px; overflow: hidden; background: #000; }/* ==========================================================================
+/* ==========================================================================
    FOUNDATION — the pavilion / club system
    ==========================================================================
    See DESIGN.md. The site alternates between two grounds and the alternation
-   is the argument,
-so this layer sits last and settles which ground a section
+   is the argument, so this layer sits last and settles which ground a section
    stands on before any component styling is read. */
 
 /* ---- display type: width carries the voice,
@@ -3067,7 +3032,6 @@ html.portal-locked, html.portal-locked body { overflow: hidden; overscroll-behav
   position: absolute;
   top: 0; right: 0; bottom: 0; left: 0;
   display: grid;
-  will-change: transform;
 }
 .pm { display: block; width: 100%; height: 100%; min-height: 0; object-fit: cover; }
 .pm--main { object-position: 38% 50%; }
@@ -3719,3 +3683,68 @@ html.has-dock body { padding-bottom: 4.5rem; }
 @media (prefers-reduced-motion: reduce) {
   .footer-nav a::after { transition: none; }
 }
+
+/* ==========================================================================
+   The site's one glass
+   ==========================================================================
+   Depth on this site is layers, not glass: grounds that alternate, photographs
+   with air behind them, shadows that carry an offset. Blur is spent once, on
+   the scrim behind a player, where the page should stay present and recede
+   rather than disappear. Every other use was on the nav, which is a solid
+   painted board — blur there filtered nothing and cost a composited layer on
+   a bar that is on screen the whole time. */
+.jb, .vd {
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  backdrop-filter: blur(14px) saturate(1.15);
+}
+
+/* ==========================================================================
+   DEPTH — three layers, and the one glass is elsewhere
+   ==========================================================================
+   The club ground was a flat near-black, and flat is what made long dark
+   stretches read as a slab: text sat at 15:1 on nothing. Depth here is layers,
+   not blur. Far: a band from one of her own stage photographs, 900px wide,
+   blurred at source so no device pays for the filter. Middle: a lacquer veil
+   that sets the ground's final luminance — this is the layer that tunes the
+   effect, not the photograph. Near: the content.
+
+   Four backdrops rotate so no two neighbouring sections share a sky, and
+   every one was checked for lettering: her stage carries her name in letters
+   three metres tall, and a blurred word in a backdrop still reads as a word.
+   Smoke, sparks, a silhouette and a crowd — nothing legible in any of them.
+
+   The ground luminance is baked into the four files by binary search, not
+   dialled in CSS: each one renders to a mean of 0.075, which puts paper text
+   at 6.8-7.1:1, and a highlight cap keeps the brightest corner above the
+   accessibility floor. Above 9:1 the ground is flat black again and the depth
+   is decoration; below 6:1 the reading starts to cost something. The gradient
+   that remains is a seam, not a veil: it only joins each band to the section
+   below it. */
+.depth-1, .depth-2, .depth-3, .depth-4 {
+  position: relative;
+  isolation: isolate;
+}
+.depth-1::before, .depth-2::before, .depth-3::before, .depth-4::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  z-index: -1;
+  background-repeat: no-repeat, no-repeat;
+  /* the band keeps its own size instead of being stretched to the section:
+     a tall section stretched 420px of photograph into 2000 and lost every
+     mid-tone it had, measuring 12:1 — flat black again. Fixed width, pinned
+     to the top, and the seam carries the rest down into the lacquer. */
+  background-size: auto, 1600px auto;
+  background-position: center, center top;
+  pointer-events: none;
+}
+.depth-1::before { background-image: linear-gradient(168deg, rgba(14,9,18,0) 0%, rgba(14,9,18,0.18) 62%, rgba(14,9,18,0.55) 100%), url("../assets/img/depth-1.webp"); }
+.depth-2::before { background-image: linear-gradient(192deg, rgba(14,9,18,0) 0%, rgba(14,9,18,0.18) 62%, rgba(14,9,18,0.55) 100%), url("../assets/img/depth-2.webp"); }
+.depth-3::before { background-image: linear-gradient(174deg, rgba(14,9,18,0) 0%, rgba(14,9,18,0.18) 62%, rgba(14,9,18,0.55) 100%), url("../assets/img/depth-3.webp"); }
+.depth-4::before { background-image: linear-gradient(200deg, rgba(14,9,18,0) 0%, rgba(14,9,18,0.18) 62%, rgba(14,9,18,0.55) 100%), url("../assets/img/depth-4.webp"); }
+
+/* A pavilion section that happens to carry a depth class keeps its paper:
+   on cream the contrast headroom is half what it is on lacquer, and there is
+   nothing left to spend on a photograph behind the type. */
+.pavilion.depth-1::before, .pavilion.depth-2::before,
+.pavilion.depth-3::before, .pavilion.depth-4::before { display: none; }

@@ -170,7 +170,9 @@
     lastFocus.push(from || document.activeElement);
     if (!open.length) { savedOverflow = document.body.style.overflow; document.body.style.overflow = 'hidden'; }
     open.push(dlg);
+    clearTimeout(dlg.evHideTimer);
     dlg.hidden = false;
+    dlg.inert = false;
     // next frame, so the transition has a start state
     requestAnimationFrame(function () { dlg.classList.add('is-open'); });
     var f = focusables(dlg);
@@ -181,7 +183,18 @@
     if (at < 0) return;
     open.splice(at, 1);
     dlg.classList.remove('is-open');
-    dlg.hidden = true;
+    /* The panel used to be removed in the same frame as the class, so the
+       opening had a transition and the closing was a cut. It leaves now.
+       A timer rather than transitionend: a browser that skipped the
+       transition, or a visitor who asked for reduced motion, never fires
+       one, and the dialog would stay on screen for good. */
+    /* It is on screen for the length of the exit, so take it out of the tab
+       order now rather than when it finally goes. */
+    dlg.inert = true;
+    clearTimeout(dlg.evHideTimer);
+    dlg.evHideTimer = setTimeout(function () {
+      if (!dlg.classList.contains('is-open')) dlg.hidden = true;
+    }, 320);
     if (!open.length) document.body.style.overflow = savedOverflow;
     var back = lastFocus.splice(at, 1)[0];
     if (back && back.focus) back.focus();

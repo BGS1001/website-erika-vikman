@@ -87,6 +87,20 @@
   --ease-tango: cubic-bezier(0.16, 1, 0.16, 1);
   --ease-snap:  cubic-bezier(0.7, 0, 0.2, 1);
   --ease-out:   cubic-bezier(0.23, 1, 0.32, 1);
+  /* The sheet curve: a drawer leaves the edge immediately and arrives without
+     a bounce. Ionic's, which is the one iOS trained everybody to expect. */
+  --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+
+  /* ---- duration ----
+     Four steps, because a site needs four: the answer to a finger, a hover,
+     a state change, and a surface arriving. Everything timed on this site
+     should name one of these rather than pick a number again. The hold and
+     the dive at the door are not here on purpose — they are the authored
+     moment and they are timed in js/portal.js, in beats, not in UI steps. */
+  --d-press: 110ms;
+  --d-fast:  160ms;
+  --d-base:  220ms;
+  --d-sheet: 280ms;
 
   /* ---- type ----
      Archivo carries a width axis, which is the point: painted pavilion
@@ -234,7 +248,7 @@ section { position: relative; }
   text-transform: uppercase;
   border: 1.5px solid transparent;
   cursor: pointer;
-  transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease, border-color .25s ease;
+  transition: transform var(--d-fast) var(--ease-snap), background var(--d-fast) ease, color var(--d-fast) ease, border-color var(--d-fast) ease;
 }
 
 /* Lacquered, not flat: a specular pass across the top-left of every filled
@@ -251,16 +265,24 @@ section { position: relative; }
   pointer-events: none;
   z-index: -1;
 }
-.btn:hover { transform: translateY(-2px); }
+@media (hover: hover) and (pointer: fine) {
+
+  .btn:hover { transform: translateY(-2px); }
+
+}
 
 .btn-solid {
   background: var(--red);
   color: var(--white);
   box-shadow: var(--edge), 0 6px 20px rgba(168, 30, 102, 0.28);
 }
-.btn-solid:hover {
+@media (hover: hover) and (pointer: fine) {
+
+  .btn-solid:hover {
   background: var(--red-glow);
   box-shadow: var(--edge), var(--glow-red);
+}
+
 }
 
 .btn-gold {
@@ -268,9 +290,13 @@ section { position: relative; }
   color: #241a05;
   box-shadow: var(--edge), 0 6px 20px rgba(226, 185, 95, 0.25);
 }
-.btn-gold:hover {
+@media (hover: hover) and (pointer: fine) {
+
+  .btn-gold:hover {
   box-shadow: var(--edge), var(--glow-gold);
   filter: brightness(1.07);
+}
+
 }
 
 .btn-outline {
@@ -278,11 +304,15 @@ section { position: relative; }
   color: var(--cream);
   background: rgba(255, 255, 255, 0.02);
 }
-.btn-outline:hover {
+@media (hover: hover) and (pointer: fine) {
+
+  .btn-outline:hover {
   border-color: var(--gold-bright);
   color: var(--gold-bright);
   background: rgba(255, 223, 148, 0.06);
   box-shadow: 0 0 24px rgba(255, 223, 148, 0.14);
+}
+
 }
 
 /* Wet glass rather than a flat pill. */
@@ -374,7 +404,13 @@ section { position: relative; }
   position: relative;
   padding: 0.4em 0;
 }
-.nav-links a:hover, .nav-links a.active { color: var(--white); }
+.nav-links a.active { color: var(--white); }
+
+@media (hover: hover) and (pointer: fine) {
+
+  .nav-links a:hover { color: var(--white); }
+
+}
 .nav-links a.active::after {
   content: '';
   position: absolute;
@@ -401,8 +437,14 @@ section { position: relative; }
   .nav-toggle { display: flex; }
   .nav-cta .btn-gold { display: none; }
 
+  /* The menu used to appear between two frames. @starting-style gives it an
+     arrival without taking the display toggle apart, and where it is not
+     supported the menu simply appears, exactly as before. */
   .nav-links.open {
     display: flex;
+    transition: opacity var(--d-fast) var(--ease-out), transform var(--d-fast) var(--ease-out);
+    opacity: 1;
+    transform: none;
     flex-direction: column;
     position: absolute;
     top: var(--nav-h);
@@ -411,6 +453,9 @@ section { position: relative; }
     padding: 1.5rem clamp(1.25rem, 4vw, 3rem) 2rem;
     gap: var(--s-4);
     border-top: 1px solid rgba(216,174,87,0.2);
+  }
+  @starting-style {
+    .nav-links.open { opacity: 0; transform: translateY(-8px); }
   }
 }
 
@@ -576,7 +621,11 @@ section { position: relative; }
   transition: border-color 0.25s ease, transform 0.25s ease;
   position: relative;
 }
-.track-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+@media (hover: hover) and (pointer: fine) {
+
+  .track-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+
+}
 
 .track-year {
   font-family: var(--font-display);
@@ -638,12 +687,16 @@ section { position: relative; }
 .gallery-item img {
   width: 100%; height: 100%;
   object-fit: cover;
-  transition: transform 0.6s ease, filter 0.6s ease;
+  /* 600ms on something hovered constantly reads as lag, and filter is a
+     paint pass on a full-bleed photograph — it stays, it just stops being
+     animated. The scale alone carries the hover. */
+  transition: transform var(--d-base) var(--ease-out);
   filter: saturate(1.12) contrast(1.06);
 }
-.gallery-item:hover img {
-  transform: scale(1.08);
-  filter: saturate(1.24) contrast(1.1);
+@media (hover: hover) and (pointer: fine) {
+
+  .gallery-item:hover img { transform: scale(1.08); }
+
 }
 .gallery-item::after {
   content: '';
@@ -652,7 +705,11 @@ section { position: relative; }
   opacity: 0;
   transition: opacity 0.3s ease;
 }
-.gallery-item:hover::after { opacity: 1; }
+@media (hover: hover) and (pointer: fine) {
+
+  .gallery-item:hover::after { opacity: 1; }
+
+}
 
 
 .gallery-caption {
@@ -666,9 +723,13 @@ section { position: relative; }
   color: var(--white);
   opacity: 0;
   transform: translateY(6px);
-  transition: all 0.3s ease;
+  transition: opacity var(--d-base) var(--ease-out), transform var(--d-base) var(--ease-out);
 }
-.gallery-item:hover .gallery-caption { opacity: 1; transform: translateY(0); }
+@media (hover: hover) and (pointer: fine) {
+
+  .gallery-item:hover .gallery-caption { opacity: 1; transform: translateY(0); }
+
+}
 
 /* lightbox */
 .lightbox {
@@ -681,12 +742,33 @@ section { position: relative; }
   justify-content: center;
   padding: 4vh 4vw;
 }
-.lightbox.open { display: flex; }
+/* A full-screen overlay arriving between two frames reads as a fault rather
+   than as an action. It fades, and the photograph settles the last 2% —
+   never from scale(0): the picture was already somewhere, on the tile you
+   just pressed. allow-discrete is what lets the display toggle stay as it
+   is and still have an exit; without support the overlay cuts, which is the
+   old behaviour, so a photograph can never be left stranded behind it. */
+.lightbox {
+  opacity: 0;
+  transition: opacity var(--d-fast) var(--ease-out),
+              display var(--d-fast) var(--ease-out) allow-discrete;
+}
+.lightbox.open { display: flex; opacity: 1; transition-duration: var(--d-base); }
 .lightbox img {
   max-width: 100%;
   max-height: 78vh;
   width: auto;
   box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+  transform: scale(0.98);
+  transition: transform var(--d-base) var(--ease-out);
+}
+.lightbox.open img { transform: none; }
+@starting-style {
+  .lightbox.open { opacity: 0; }
+  .lightbox.open img { transform: scale(0.98); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lightbox img, .lightbox.open img { transform: none; transition: none; }
 }
 
 /* A viewer you can move through — opening one photo and having to close it
@@ -736,7 +818,11 @@ section { position: relative; }
   z-index: 2;
   transition: background 0.2s ease, border-color 0.2s ease;
 }
-.lightbox-nav:hover { background: var(--red); border-color: var(--red); }
+@media (hover: hover) and (pointer: fine) {
+
+  .lightbox-nav:hover { background: var(--red); border-color: var(--red); }
+
+}
 .lightbox-prev { left: -1.4rem; }
 .lightbox-next { right: -1.4rem; }
 @media (max-width: 800px) {
@@ -784,7 +870,11 @@ section { position: relative; }
   width: 44px; height: 44px;
   cursor: pointer;
 }
-.lightbox-close:hover { border-color: var(--gold-bright); color: var(--gold-bright); }
+@media (hover: hover) and (pointer: fine) {
+
+  .lightbox-close:hover { border-color: var(--gold-bright); color: var(--gold-bright); }
+
+}
 
 /* ==========================================================================
    TOUR
@@ -799,7 +889,11 @@ section { position: relative; }
   border-bottom: 1px solid rgba(243,237,226,0.12);
   transition: background 0.25s ease;
 }
-.tour-row:hover { background: rgba(216,174,87,0.04); }
+@media (hover: hover) and (pointer: fine) {
+
+  .tour-row:hover { background: rgba(216,174,87,0.04); }
+
+}
 .tour-row.next { border-color: var(--red-glow); }
 
 .tour-date {
@@ -881,11 +975,19 @@ section { position: relative; }
   border: 1px solid rgba(243,237,226,0.14);
   transition: border-color 0.25s ease, background 0.25s ease;
 }
-.social-row:hover { border-color: var(--gold); background: rgba(216,174,87,0.05); }
+@media (hover: hover) and (pointer: fine) {
+
+  .social-row:hover { border-color: var(--gold); background: rgba(216,174,87,0.05); }
+
+}
 .social-row .name { font-weight: 800; font-size: var(--t-md); }
 .social-row .handle { color: var(--gray); font-size: var(--t-xs); }
 .social-row .arrow { color: var(--gold-bright); font-size: var(--t-lg); transition: transform .25s ease; }
-.social-row:hover .arrow { transform: translateX(4px); }
+@media (hover: hover) and (pointer: fine) {
+
+  .social-row:hover .arrow { transform: translateX(4px); }
+
+}
 
 .field { margin-bottom: var(--s-5); }
 .field label {
@@ -930,7 +1032,11 @@ section { position: relative; }
 }
 .footer-nav { display: flex; gap: var(--s-6); flex-wrap: wrap; }
 .footer-nav a { color: var(--gray); font-size: var(--t-xs); font-weight: 600; }
-.footer-nav a:hover { color: var(--gold-bright); }
+@media (hover: hover) and (pointer: fine) {
+
+  .footer-nav a:hover { color: var(--gold-bright); }
+
+}
 .footer-social { display: flex; gap: var(--s-4); }
 .footer-social a {
   width: 40px; height: 40px;
@@ -939,7 +1045,11 @@ section { position: relative; }
   font-size: var(--t-xs);
   font-weight: 800;
 }
-.footer-social a:hover { border-color: var(--gold-bright); color: var(--gold-bright); }
+@media (hover: hover) and (pointer: fine) {
+
+  .footer-social a:hover { border-color: var(--gold-bright); color: var(--gold-bright); }
+
+}
 .footer-bottom {
   padding-top: var(--s-6);
   border-top: 1px solid rgba(243,237,226,0.08);
@@ -1016,16 +1126,13 @@ section { position: relative; }
   will-change: transform;
 }
 
-@keyframes hero-zoom {
-  from { transform: scale(1.08); }
-  to   { transform: scale(1); }
-}
-@keyframes hero-rise {
-  from { opacity: 0; transform: translateY(28px); }
-  to   { opacity: 1; transform: none; }
-}
+@media (hover: hover) and (pointer: fine) {
 
-.marquee:hover .marquee-track { animation-play-state: paused; }
+
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+
+
+}
 
 /* ==========================================================================
    ACCESSIBILITY
@@ -1130,9 +1237,13 @@ img { height: auto; }
   object-fit: cover;
   opacity: 0.4;
   filter: saturate(1.15);
-  transition: opacity 0.35s ease, transform 0.6s ease;
+  transition: opacity var(--d-base) ease, transform var(--d-base) var(--ease-out);
 }
-.embed-facade:hover img { opacity: 0.55; transform: scale(1.04); }
+@media (hover: hover) and (pointer: fine) {
+
+  .embed-facade:hover img { opacity: 0.55; transform: scale(1.04); }
+
+}
 
 .embed-play {
   position: relative;
@@ -1148,7 +1259,11 @@ img { height: auto; }
   place-items: center;
   transition: transform 0.25s ease, background 0.25s ease;
 }
-.embed-facade:hover .embed-play { transform: scale(1.08); background: var(--red-glow); }
+@media (hover: hover) and (pointer: fine) {
+
+  .embed-facade:hover .embed-play { transform: scale(1.08); background: var(--red-glow); }
+
+}
 .embed-play::after {
   content: '';
   width: 0; height: 0;
@@ -1205,9 +1320,13 @@ img { height: auto; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s ease;
+  transition: transform var(--d-base) var(--ease-out);
 }
-.release-card:hover .release-cover img { transform: scale(1.05); }
+@media (hover: hover) and (pointer: fine) {
+
+  .release-card:hover .release-cover img { transform: scale(1.05); }
+
+}
 
 /* Releases without official cover art get a typographic tile rather than a
    borrowed image — the year carries it, in the show's own palette. The era
@@ -1322,7 +1441,11 @@ img { height: auto; }
   border-bottom: 1px solid rgba(216, 174, 87, 0.4);
   padding-bottom: 2px;
 }
-.release-links a:hover { color: var(--white); border-color: var(--white); }
+@media (hover: hover) and (pointer: fine) {
+
+  .release-links a:hover { color: var(--white); border-color: var(--white); }
+
+}
 
 /* ==========================================================================
    BIOGRAPHY — long-form reading
@@ -1493,7 +1616,11 @@ img { height: auto; }
   gap: var(--s-2);
   transition: background 0.25s ease;
 }
-.next-card:hover { background: var(--near-black); }
+@media (hover: hover) and (pointer: fine) {
+
+  .next-card:hover { background: var(--near-black); }
+
+}
 .next-card .k {
   font-size: var(--t-2xs);
   font-weight: 800;
@@ -1509,7 +1636,11 @@ img { height: auto; }
 }
 .next-card .d { color: var(--gray); font-size: var(--t-sm); }
 .next-card .go { color: var(--gold-bright); font-size: var(--t-md); transition: transform 0.25s ease; }
-.next-card:hover .go { transform: translateX(5px); }
+@media (hover: hover) and (pointer: fine) {
+
+  .next-card:hover .go { transform: translateX(5px); }
+
+}
 
 /* ==========================================================================
    HOME — section tone classes
@@ -1587,9 +1718,13 @@ img { height: auto; }
   width: 100%; height: 100%;
   object-fit: cover;
   filter: saturate(1.1) contrast(1.06);
-  transition: filter 0.6s ease;
+  transition: filter var(--d-base) ease;
 }
-.rail-item:hover img { filter: saturate(1.24) contrast(1.1); }
+@media (hover: hover) and (pointer: fine) {
+
+  .rail-item:hover img { filter: saturate(1.2) contrast(1.08); }
+
+}
 /* Closing card — the rail ends in the way out, not a dead stop. */
 .rail-item.rail-end {
   display: grid;
@@ -1756,25 +1891,20 @@ html:not(.gsap) .rail-prog { display: none; }
    Chromium-only; other engines simply ignore it.
    ========================================================================== */
 @view-transition { navigation: auto; }
+/* This runs on every link of a seven-page site, so it is a UI transition and
+   not a piece of film: it was 750ms end to end, on an ease-in that held the
+   old page still through the frames the eye is actually watching. */
 ::view-transition-old(root) {
-  animation: vt-out 0.3s cubic-bezier(0.4, 0, 1, 1) both;
+  animation: vt-out var(--d-fast) var(--ease-out) both;
 }
 ::view-transition-new(root) {
-  animation: vt-in 0.45s cubic-bezier(0, 0, 0.2, 1) both;
+  animation: vt-in var(--d-base) var(--ease-out) both;
 }
 @keyframes vt-out { to { opacity: 0; transform: translateY(-12px); } }
 @keyframes vt-in  { from { opacity: 0; transform: translateY(14px); } }
 
-/* hero title split into per-line masks / per-char spans */
-.ht-line { display: block; overflow: hidden; padding-bottom: 0.06em; margin-bottom: -0.06em; }
-.ht-char { display: inline-block; }
-
-/* section titles: word masks filled by ScrollTrigger */
-html.gsap .wm { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: 0.08em; margin-bottom: -0.08em; }
-html.gsap .wi { display: inline-block; }
-
 /* nav hides on scroll down, returns on scroll up */
-.nav { transition: background 0.3s ease, transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
+.nav { transition: background var(--d-base) ease, transform var(--d-base) var(--ease-snap); }
 .nav.nav-hidden { transform: translateY(-100%); }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1782,7 +1912,6 @@ html.gsap .wi { display: inline-block; }
   ::view-transition-old(*),
   ::view-transition-new(*) { animation: none !important; }
   .nav { transition: none; }
-  html.gsap .wi { transform: none; }
 }
 
 /* utilities used across pages */
@@ -1907,7 +2036,11 @@ html.gsap .wi { display: inline-block; }
   padding-bottom: 2px;
   word-break: break-word;
 }
-.contact-card .mail:hover { color: var(--white); border-color: var(--white); }
+@media (hover: hover) and (pointer: fine) {
+
+  .contact-card .mail:hover { color: var(--white); border-color: var(--white); }
+
+}
 .contact-card .note { color: var(--gray); font-size: var(--t-sm); margin-top: var(--s-3); }
 
 /* Honest framing — this is a fan project, and the contact page is where a
@@ -2009,8 +2142,11 @@ imagery
   opacity: 0;
   transition: opacity 0.4s ease;
 }
-.gallery-item:hover::before,
-.rail-item:hover::before { opacity: 1; }
+@media (hover: hover) and (pointer: fine) {
+
+  .gallery-item:hover::before, .rail-item:hover::before { opacity: 1; }
+
+}
 
 /* --- the loud panel gets depth instead of a flat fill ---
    The ramp never goes lighter than --red, and the sheen here is halved:
@@ -2180,7 +2316,11 @@ imagery
    video facades keep it. Audio facades get the site's gold and a level
    meter, which says "sound" before anyone reads the label. */
 .is-audio .embed-play { background: var(--gold); }
-.is-audio .embed-facade:hover .embed-play { background: var(--gold-bright); }
+@media (hover: hover) and (pointer: fine) {
+
+  .is-audio .embed-facade:hover .embed-play { background: var(--gold-bright); }
+
+}
 .is-audio .embed-play::after {
   border: 0;
   margin-left: 0;
@@ -2468,7 +2608,11 @@ html {
   border-radius: 99px;
   border: 3px solid var(--latex);
 }
-::-webkit-scrollbar-thumb:hover { background: var(--crown); }
+@media (hover: hover) and (pointer: fine) {
+
+  ::-webkit-scrollbar-thumb:hover { background: var(--crown); }
+
+}
 
 input, textarea { caret-color: var(--magenta); }/* ==========================================================================
    HERO — rebuilt on the pavilion ground
@@ -2500,11 +2644,15 @@ re-grounded ---- */
   background: var(--magenta-dp);
   color: var(--white);
   box-shadow: 0 6px 20px rgba(224, 51, 140, 0.28), var(--edge);
-}.pavilion .btn-solid:hover{ background: var(--magenta-dp); box-shadow: var(--glow-red); }.pavilion .btn-outline{
+}@media (hover: hover) and (pointer: fine) {
+  .pavilion .btn-solid:hover { background: var(--magenta-dp); box-shadow: var(--glow-red); }
+}.pavilion .btn-outline{
   color: var(--pine-deep);
   border-color: var(--pine-deep);
   background: transparent;
-}.pavilion .btn-outline:hover{ background: var(--pine-deep); color: var(--paper); }
+}@media (hover: hover) and (pointer: fine) {
+  .pavilion .btn-outline:hover { background: var(--pine-deep); color: var(--paper); }
+}
 
 /* ---- narrow screens: the panel goes behind, and the ground comes with it ----
    A cream veil rather than a dark one, so the hero does not quietly revert to
@@ -2546,7 +2694,13 @@ and two near-but-unequal creams meeting in a soft
 }
 .nav a, .nav .logo { color: var(--paper); }
 .nav-links a { color: var(--paper); opacity: 0.82; }
-.nav-links a:hover, .nav-links a.active { color: var(--crown-lit); opacity: 1; }
+.nav-links a.active { color: var(--crown-lit); opacity: 1; }
+
+@media (hover: hover) and (pointer: fine) {
+
+  .nav-links a:hover { color: var(--crown-lit); opacity: 1; }
+
+}
 .nav-links a.active::after, .nav-links a::after { background: var(--crown-lit); }
 .nav-toggle span { background: var(--paper); }
 
@@ -2845,7 +2999,11 @@ html.gsap { scroll-behavior: auto; }
   color: var(--magenta-dp);
   border-color: rgba(168, 30, 102, 0.35);
 }
-.release-grid .release-links a:hover { color: var(--ink); border-color: var(--ink); }
+@media (hover: hover) and (pointer: fine) {
+
+  .release-grid .release-links a:hover { color: var(--ink); border-color: var(--ink); }
+
+}
 
 /* ==========================================================================
    TIMELINE — a printed programme, not a glowing rail
@@ -2955,14 +3113,22 @@ html.gsap { scroll-behavior: auto; }
   color: var(--ink);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3), var(--edge);
 }
-.btn-gold:hover {
+@media (hover: hover) and (pointer: fine) {
+
+  .btn-gold:hover {
   background: var(--white);
   color: var(--ink);
   box-shadow: 0 0 0 2px var(--magenta-lit), 0 8px 22px rgba(0, 0, 0, 0.32);
   filter: none;
 }
+
+}
 .pavilion .btn-gold { background: var(--pine-deep); color: var(--paper); }
-.pavilion .btn-gold:hover { background: var(--ink); color: var(--paper); box-shadow: 0 0 0 2px var(--magenta); }
+@media (hover: hover) and (pointer: fine) {
+
+  .pavilion .btn-gold:hover { background: var(--ink); color: var(--paper); box-shadow: 0 0 0 2px var(--magenta); }
+
+}
 
 /* The #1 chart plaque was a gold-metal award slab. A chart position is not
    the crown, so it becomes a printed ticket — paper, a pine border, the figure
@@ -2982,11 +3148,18 @@ html.gsap { scroll-behavior: auto; }
 /* The focus ring must hold on both grounds without depending on the alias. */
 a:focus-visible, button:focus-visible { outline-color: var(--magenta-lit); }
 .pavilion a:focus-visible, .pavilion button:focus-visible { outline-color: var(--magenta-dp); }
-::-webkit-scrollbar-thumb:hover { background: var(--magenta); }
+@media (hover: hover) and (pointer: fine) {
+
+  ::-webkit-scrollbar-thumb:hover { background: var(--magenta); }
+
+}
 
 /* Two of my own earlier choices failed the same rule: the active nav link and
    the marquee stars were set in crown gold, and neither is the crown. */
-.nav-links a:hover, .nav-links a.active { color: var(--paper); opacity: 1; }
+.nav-links a.active { color: var(--paper); opacity: 1; }
+@media (hover: hover) and (pointer: fine) {
+  .nav-links a:hover { color: var(--paper); opacity: 1; }
+}
 .nav-links a.active::after, .nav-links a::after { background: var(--magenta-lit); }
 .marquee i { color: var(--magenta-lit); }
 
@@ -3158,7 +3331,11 @@ html.portal-locked, html.portal-locked body { overflow: hidden; overscroll-behav
   line-height: 1;
   cursor: pointer;
 }
-.portal__replay:hover { border-color: var(--paper); }
+@media (hover: hover) and (pointer: fine) {
+
+  .portal__replay:hover { border-color: var(--paper); }
+
+}
 
 /* Reduced motion keeps the dive — it is the page's content, not decoration.
    Only the flicker goes. */
@@ -3198,9 +3375,20 @@ html.portal-locked, html.portal-locked body { overflow: hidden; overscroll-behav
   padding: var(--s-4);
   background: rgba(14, 9, 18, 0.78);
   opacity: 0;
-  transition: opacity 0.2s var(--ease-tango);
+  transition: opacity var(--d-fast) var(--ease-out);
 }
-.jb.is-open, .vd.is-open { opacity: 1; }
+/* Enter slower than exit. The durations live on the two states rather than in
+   one declaration, because the base state is the one in force while the panel
+   is leaving: slow enough to be an arrival, quick enough to be dismissed. */
+.jb.is-open, .vd.is-open { opacity: 1; transition-duration: var(--d-base); }
+/* display: flex above outweighs the UA rule for [hidden], so a closed dialog
+   stayed laid out over the whole viewport at zero opacity and went on
+   swallowing every tap aimed at the page behind it. Measured: after closing
+   the jukebox, elementFromPoint at the centre of the screen returned a row
+   inside the closed panel. This is the rule that makes hidden mean hidden,
+   and it is why the exit can afford to wait a frame: the attribute is now
+   set after the transition rather than during it. */
+.jb[hidden], .vd[hidden] { display: none; }
 .jb-panel {
   width: min(100%, 40rem);
   max-height: min(88vh, 52rem);
@@ -3210,6 +3398,20 @@ html.portal-locked, html.portal-locked body { overflow: hidden; overscroll-behav
   color: var(--ink);
   border-top: 6px solid var(--magenta);
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+}
+/* The panel arrives; it does not materialise. On a wide screen it is a card
+   dropped on the table, so it settles the last few pixels and is centred —
+   a modal has no trigger to grow out of. Under 520px .jb is a sheet pinned
+   to the bottom edge (see the breakpoint below), and a sheet has to come
+   from the edge it lives on, or dismissing it by swiping down makes no
+   spatial sense. */
+.jb-panel, .vd-panel {
+  transform: translateY(14px) scale(0.985);
+  transition: transform var(--d-fast) var(--ease-out);
+}
+.jb.is-open .jb-panel, .vd.is-open .vd-panel {
+  transform: none;
+  transition: transform var(--d-sheet) var(--ease-sheet);
 }
 .jb-head {
   display: flex;
@@ -3238,7 +3440,11 @@ html.portal-locked, html.portal-locked body { overflow: hidden; overscroll-behav
   line-height: 1;
   cursor: pointer;
 }
-.jb-close:hover { background: rgba(28, 21, 16, 0.08); }
+@media (hover: hover) and (pointer: fine) {
+
+  .jb-close:hover { background: rgba(28, 21, 16, 0.08); }
+
+}
 
 /* the painted board */
 .jb-now {
@@ -3263,8 +3469,16 @@ html.portal-locked, html.portal-locked body { overflow: hidden; overscroll-behav
 }
 .jb-ctrl svg { width: 20px; height: 20px; fill: currentColor; }
 .jb-ctrl.is-main { background: var(--magenta); color: var(--white); }
-.jb-ctrl.is-main:hover { background: var(--magenta-lit); }
-.jb-ctrl:not(.is-main):hover { background: rgba(242, 233, 218, 0.12); }
+@media (hover: hover) and (pointer: fine) {
+
+  .jb-ctrl.is-main:hover { background: var(--magenta-lit); }
+
+}
+@media (hover: hover) and (pointer: fine) {
+
+  .jb-ctrl:not(.is-main):hover { background: rgba(242, 233, 218, 0.12); }
+
+}
 .jb-meta { display: flex; flex-direction: column; min-width: 0; }
 .jb-now-song {
   font-family: var(--font-display);
@@ -3288,6 +3502,10 @@ html.portal-locked, html.portal-locked body { overflow: hidden; overscroll-behav
   background: var(--magenta-lit);
   transform: scaleX(0);
   transform-origin: 0 50%;
+  /* timeupdate fires about four times a second, so without this the light
+     advances in four visible steps per second. linear because it is tracking
+     something that itself moves at a constant rate. */
+  transition: transform var(--d-base) linear;
 }
 
 /* the strips */
@@ -3337,10 +3555,33 @@ html.portal-locked, html.portal-locked body { overflow: hidden; overscroll-behav
   cursor: pointer;
   white-space: nowrap;
 }
-.jb-btn:hover { background: var(--pine-deep); color: var(--paper); }
+@media (hover: hover) and (pointer: fine) {
+
+  .jb-btn:hover { background: var(--pine-deep); color: var(--paper); }
+
+}
 .jb-btn.is-full { border-color: var(--magenta); background: var(--magenta); color: var(--white); }
-.jb-btn.is-full:hover { background: var(--magenta-dp); border-color: var(--magenta-dp); }
-.jb-row.is-current { background: linear-gradient(90deg, rgba(224, 51, 140, 0.1), transparent 70%); }
+@media (hover: hover) and (pointer: fine) {
+
+  .jb-btn.is-full:hover { background: var(--magenta-dp); border-color: var(--magenta-dp); }
+
+}
+/* Which song is playing was a background that swapped in one frame. A
+   gradient has nothing to interpolate from, so the wash rides on a
+   pseudo-element and the strip lights up instead of blinking. */
+.jb-row { position: relative; isolation: isolate; }
+.jb-row::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(90deg, rgba(224, 51, 140, 0.1), transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--d-fast) ease;
+}
+.jb-row.is-current::before { opacity: 1; }
+.jb-row .jb-song { transition: color var(--d-fast) ease; }
 .jb-row.is-current .jb-song { color: var(--magenta-dp); }
 
 .jb-row.is-gone { opacity: 0.45; }
@@ -3389,6 +3630,15 @@ html.portal-locked, html.portal-locked body { overflow: hidden; overscroll-behav
   cursor: pointer;
   padding: var(--s-1) var(--s-2);
 }
+/* The dock comes up from the bottom edge, which is where it lives and the
+   direction a thumb would push it back down. @starting-style rather than a
+   class set on the next frame: if a browser does not support it the dock is
+   simply there, which is the old behaviour — it can never be left parked
+   off-screen by a frame that did not arrive. */
+.jb-dock { transform: none; transition: transform var(--d-sheet) var(--ease-sheet); }
+@starting-style {
+  .jb-dock { transform: translateY(100%); }
+}
 .jb-dock .jb-bar { top: 0; bottom: auto; }
 html.has-dock body { padding-bottom: 4.5rem; }
 
@@ -3403,13 +3653,17 @@ html.has-dock body { padding-bottom: 4.5rem; }
   padding: var(--s-4);
   background: rgba(14, 9, 18, 0.9);
   opacity: 0;
-  transition: opacity 0.2s var(--ease-tango);
+  transition: opacity var(--d-fast) var(--ease-out);
 }
 .vd-panel { width: min(100%, 60rem); color: var(--paper); }
 .vd-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); margin-bottom: var(--s-3); }
 .vd-title { margin: 0; font-size: var(--t-lg); color: var(--paper); }
 .vd-head .jb-close { color: var(--paper); }
-.vd-head .jb-close:hover { background: rgba(242, 233, 218, 0.12); }
+@media (hover: hover) and (pointer: fine) {
+
+  .vd-head .jb-close:hover { background: rgba(242, 233, 218, 0.12); }
+
+}
 .vd-frame {
   position: relative;
   width: 100%;
@@ -3437,18 +3691,25 @@ html.has-dock body { padding-bottom: 4.5rem; }
   cursor: pointer;
   margin-right: var(--s-3);
 }
-.release-links button:hover { color: var(--ink); border-color: var(--ink); }
+@media (hover: hover) and (pointer: fine) {
+
+  .release-links button:hover { color: var(--ink); border-color: var(--ink); }
+
+}
 .rel-none { font-size: var(--t-2xs); color: var(--ink-faint); letter-spacing: 0.04em; }
 
 @media (max-width: 520px) {
   .jb { padding: 0; align-items: flex-end; }
-  .jb-panel { max-height: 92vh; width: 100%; }
+  .jb-panel { max-height: 92vh; width: 100%; transform: translateY(100%); }
   .jb-row, .vl-row { grid-template-columns: 2.6rem minmax(0, 1fr); }
   .jb-btns { grid-column: 2; justify-content: flex-start; }
 }
 
+/* Reduced motion keeps the fade — it is what tells you a surface opened or
+   closed, and opacity is not what makes anybody ill — and drops the travel. */
 @media (prefers-reduced-motion: reduce) {
-  .jb, .vd { transition: none; }
+  .jb-panel, .vd-panel { transform: none; transition: none; }
+  .jb-dock { transition: none; }
 }
 
 /* The mark at rest, as an image. The vector version is what the dive moves,
@@ -3557,7 +3818,11 @@ html.has-dock body { padding-bottom: 4.5rem; }
    Magenta stays the colour of an action; the resting fill is simply its deeper
    stop, which carries white at 6.8:1. */
 .btn-solid, .tag-next { background: var(--magenta-dp); color: var(--white); }
-.btn-solid:hover, .pavilion .btn-solid:hover, .hero .btn-solid:hover { background: #8e1856; }
+@media (hover: hover) and (pointer: fine) {
+
+  .btn-solid:hover, .pavilion .btn-solid:hover, .hero .btn-solid:hover { background: #8e1856; }
+
+}
 .tag-next { box-shadow: var(--edge), 0 0 20px rgba(168, 30, 102, 0.45); }
 
 /* 2.74:1 on paper. This line has to be read, not merely noticed. */
@@ -3603,7 +3868,11 @@ html.has-dock body { padding-bottom: 4.5rem; }
    for type, rules and glows, where it sits on dark and measures fine. */
 .sec-loud { background: var(--magenta-dp); }
 .jb-btn.is-full { background: var(--magenta-dp); border-color: var(--magenta-dp); }
-.jb-btn.is-full:hover { background: #8e1856; border-color: #8e1856; }
+@media (hover: hover) and (pointer: fine) {
+
+  .jb-btn.is-full:hover { background: #8e1856; border-color: #8e1856; }
+
+}
 
 /* ==========================================================================
    FOOTER — the board on the way out
@@ -3654,8 +3923,16 @@ html.has-dock body { padding-bottom: 4.5rem; }
   transform-origin: 0 50%;
   transition: transform 0.18s var(--ease-tango);
 }
-.footer-nav a:hover { color: var(--paper); }
-.footer-nav a:hover::after { transform: scaleX(1); }
+@media (hover: hover) and (pointer: fine) {
+
+  .footer-nav a:hover { color: var(--paper); }
+
+}
+@media (hover: hover) and (pointer: fine) {
+
+  .footer-nav a:hover::after { transform: scaleX(1); }
+
+}
 
 .footer-social { gap: var(--s-2) var(--s-5); flex-wrap: wrap; }
 .footer-social a {
@@ -3670,9 +3947,17 @@ html.has-dock body { padding-bottom: 4.5rem; }
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
-.footer-social a:hover { color: var(--paper); border-color: transparent; }
+@media (hover: hover) and (pointer: fine) {
+
+  .footer-social a:hover { color: var(--paper); border-color: transparent; }
+
+}
 .footer-social a .i { opacity: 0.75; }
-.footer-social a:hover .i { opacity: 1; color: var(--magenta-lit); }
+@media (hover: hover) and (pointer: fine) {
+
+  .footer-social a:hover .i { opacity: 1; color: var(--magenta-lit); }
+
+}
 
 .footer-bottom {
   border-top: 1px solid rgba(242, 233, 218, 0.16);
@@ -3748,3 +4033,60 @@ html.has-dock body { padding-bottom: 4.5rem; }
    nothing left to spend on a photograph behind the type. */
 .pavilion.depth-1::before, .pavilion.depth-2::before,
 .pavilion.depth-3::before, .pavilion.depth-4::before { display: none; }
+
+/* ==========================================================================
+   PRESS
+   ==========================================================================
+   Every hover on this site now sits behind (hover: hover), which is correct
+   and leaves a phone with nothing: the primary surface had no feedback at all
+   between touching a control and the result arriving. So every pressable
+   answers the finger instead.
+
+   The record (.disc-cta, above) worked this out first and keeps its own,
+   heavier version — it is an object being pushed into the page, not a button.
+   This is the flat version of the same idea: sink slightly, fast on the way
+   down and slower coming back, so the press reads as a response to you and
+   the release reads as the control settling. The scale is small on purpose;
+   a button that visibly shrinks is a toy.
+
+   This block sits last in the file deliberately. Press and hover weigh the
+   same, so source order is what lets a press win while a finger is down. */
+.btn, .jb-btn, .jb-ctrl, .jb-close, .jb-dock-meta, .nav-toggle,
+.lightbox-nav, .lightbox-close, .portal__replay, .release-links button,
+.footer-social a, .social-row {
+  transition: transform var(--d-fast) var(--ease-snap),
+              background-color var(--d-fast) ease,
+              border-color var(--d-fast) ease,
+              color var(--d-fast) ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:active, .jb-btn:active, .jb-ctrl:active, .jb-close:active,
+.jb-dock-meta:active, .nav-toggle:active, .lightbox-nav:active,
+.lightbox-close:active, .portal__replay:active, .release-links button:active,
+.footer-social a:active, .social-row:active {
+  transform: scale(0.97);
+  transition-duration: var(--d-press);
+}
+/* A full-width row is not a button: 3% off a 700px row pulls both edges in
+   by 20px, which reads as the layout moving rather than the row answering.
+   Wide surfaces get a press you feel and barely see. */
+.next-card { transition: transform var(--d-fast) var(--ease-snap), background-color var(--d-fast) ease; }
+.social-row:active, .jb-dock-meta:active, .next-card:active {
+  transform: scale(0.99);
+  transition-duration: var(--d-press);
+}
+
+/* A tile is a window, not a control: it takes the press on the photograph. */
+.gallery-item img { transition: transform var(--d-base) var(--ease-out); }
+.gallery-item:active img { transform: scale(1.03); transition-duration: var(--d-press); }
+
+/* Reduced motion keeps the press — it is feedback, not decoration — but
+   takes the travel out of it and answers in colour instead. */
+@media (prefers-reduced-motion: reduce) {
+  .btn:active, .jb-btn:active, .jb-ctrl:active, .jb-close:active,
+  .jb-dock-meta:active, .nav-toggle:active, .lightbox-nav:active,
+  .lightbox-close:active, .portal__replay:active, .release-links button:active,
+  .footer-social a:active, .social-row:active, .next-card:active,
+  .gallery-item:active img { transform: none; }
+  .btn:active, .jb-btn:active, .lightbox-nav:active { filter: brightness(1.18); }
+}

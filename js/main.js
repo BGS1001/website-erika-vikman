@@ -169,14 +169,25 @@
     var countEl = lightbox.querySelector('.lightbox-count');
     var lastFocused = null;
     var index = 0;
+    var clearTimer = 0;
 
     function render(i) {
       index = (i + tiles.length) % tiles.length;
       var tile = tiles[index];
       var img = tile.querySelector('img');
       if (!img) return;
-      lightboxImg.src = img.currentSrc || img.src;
-      lightboxImg.alt = img.alt;
+      /* Assigning src straight away empties the frame while the new file
+         decodes, so every arrow press flashed the backdrop and then popped.
+         Decode first, swap second: a cached photograph is instant and an
+         uncached one holds the picture you were looking at until the next
+         one can actually be drawn. */
+      var src = img.currentSrc || img.src;
+      var alt = img.alt;
+      var swap = function () { lightboxImg.src = src; lightboxImg.alt = alt; };
+      var pre = new Image();
+      pre.src = src;
+      if (pre.decode) pre.decode().then(swap, swap);
+      else swap();
       var cap = tile.querySelector('.gallery-caption');
       if (capEl) capEl.textContent = cap ? cap.textContent : '';
       if (countEl) countEl.textContent = (index + 1) + ' / ' + tiles.length;
@@ -193,7 +204,11 @@
     function closeLb() {
       lightbox.classList.remove('open');
       lightbox.setAttribute('aria-hidden', 'true');
-      lightboxImg.src = '';
+      // emptying it now would fade out an empty frame
+      clearTimeout(clearTimer);
+      clearTimer = setTimeout(function () {
+        if (!lightbox.classList.contains('open')) lightboxImg.src = '';
+      }, 320);
       if (lastFocused) lastFocused.focus();
     }
 
@@ -226,14 +241,21 @@
     });
 
     // swipe on touch
-    var touchX = null;
+    var touchX = null, touchT = 0;
     lightbox.addEventListener('touchstart', function (e) {
       touchX = e.changedTouches[0].clientX;
+      touchT = e.timeStamp;
     }, { passive: true });
     lightbox.addEventListener('touchend', function (e) {
       if (touchX === null) return;
       var dx = e.changedTouches[0].clientX - touchX;
-      if (Math.abs(dx) > 45) render(index + (dx < 0 ? 1 : -1));
+      /* Distance alone meant a quick flick across 40px did nothing while a
+         slow drag across 50px worked, which is the opposite of how a flick
+         feels. Either a deliberate drag or a fast one turns the page. */
+      var v = Math.abs(dx) / Math.max(1, e.timeStamp - touchT);
+      if (Math.abs(dx) > 45 || (v > 0.35 && Math.abs(dx) > 14)) {
+        render(index + (dx < 0 ? 1 : -1));
+      }
       touchX = null;
     }, { passive: true });
   }

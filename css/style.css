@@ -1,11 +1,69 @@
 /* ==========================================================================
    ERIKA VIKMAN — fan tribute site
-   Design language: red velvet curtain + gold stage light + black steel,
-   heavy condensed poster type, referencing her Eurovision "ICH KOMME" show.
+   Design language: the tanssilava under latex light — see DESIGN.md. The
+   pavilion is varnished pine and painted signage in daylight; the club is
+   lacquer, magenta and cyan. The page alternates between them, and that
+   alternation is the argument.
    ========================================================================== */
 
-/* Fonts are loaded via <link rel="preconnect"> + <link rel="stylesheet">
-   in each page's <head> — @import here would block first render. */
+/* ==========================================================================
+   TYPE, SERVED FROM THIS ORIGIN
+   ==========================================================================
+   Both faces used to come from Google: a render-blocking stylesheet on a
+   third party, ahead of everything else in the head. On a throttled phone
+   that chain was what the first paint waited for, not the image — which was
+   already preloaded at high priority. They are variable fonts, so each face
+   is one file covering its whole axis.
+
+   Only the latin subset ships. Nothing on this site — English and Finnish —
+   needs latin-ext: ä, ö and å all live below U+00FF. The unicode-range stays
+   declared so a character outside it falls back rather than drawing from a
+   file that does not contain it. */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+  src: url('../assets/fonts/archivo.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Instrument Sans';
+  font-style: normal;
+  font-weight: 400 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url('../assets/fonts/instrument-sans.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Metric-matched stand-ins, so the swap does not move the page.
+   font-display: swap draws the first paint in a system face and repaints in
+   the real one; with the system face's own metrics that repaint reflowed
+   every line, and CLS on music.html went from 0 to 0.09. These give Arial
+   Archivo's and Instrument Sans's proportions until the real files land, so
+   the text changes shape without changing position.
+
+   Measured against the loaded fonts in Chrome, not guessed: size-adjust is
+   the advance-width ratio over a sample string, and the ascent and descent
+   overrides are the real face's, divided by that same ratio. */
+@font-face {
+  font-family: 'Archivo fallback';
+  src: local('Arial'), local('Helvetica Neue'), local('Roboto');
+  size-adjust: 99.56%;
+  ascent-override: 88.39%;
+  descent-override: 21.09%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Instrument Sans fallback';
+  src: local('Arial'), local('Helvetica Neue'), local('Roboto');
+  size-adjust: 102.8%;
+  ascent-override: 94.36%;
+  descent-override: 24.32%;
+  line-gap-override: 0%;
+}
 
 :root {
   /* ======================================================================
@@ -34,7 +92,11 @@
   --night:       #17101f;
   --night-2:     #241830;
   --latex:       #0e0912;
-  --night-soft:  #b9aec6;
+  /* Lifted from #b9aec6. The depth backdrops are photographs, and the first
+     bake was checked only against --paper, the heading colour, which clears
+     them easily at ~7.9:1. This is the secondary role — ledes, dates, venue
+     lines — and it was sitting at 3.5–4.7:1 on the same ground. */
+  --night-soft:  #c6bcd2;
 
   /* ---- the two lights that fall on her ---- */
   --magenta:     #e0338c;
@@ -108,19 +170,36 @@
      deliberately absent — it is the free condensed display every loud pop
      site reaches for, and it was the clearest sign the old direction came
      from the genre rather than from her. */
-  --font-display: 'Archivo', 'Archivo Expanded', system-ui, sans-serif;
-  --font-body:    'Instrument Sans', system-ui, -apple-system, sans-serif;
+  --font-display: 'Archivo', 'Archivo fallback', system-ui, sans-serif;
+  --font-body:    'Instrument Sans', 'Instrument Sans fallback', system-ui, -apple-system, sans-serif;
 
   /* One scale, seven steps. The previous site used 23 distinct sizes, which
      is not a scale but a decision taken again inside every component. */
-  --t-2xs: 0.72rem;
-  --t-xs:  0.8rem;
+  /* 0.72rem is 11.5px, and on a phone that is the smallest thing on the page
+     carrying real information — years, venues, flags, the jukebox credit.
+     0.78rem is 12.5px: still clearly the bottom of the scale, but legible at
+     arm's length. The step above it moves with it so the two do not collide. */
+  /* 0.78 and 0.84rem rendered as 12.5 and 13.4px — a 7% step, which is not a
+     step, it is the same size twice. Merged into one. --t-xs stays as a name
+     because it reads better at call sites, but it is the same value. */
+  --t-2xs: 0.81rem;
+  --t-xs:  var(--t-2xs);
   --t-sm:  0.92rem;
   --t-md:  1.05rem;
   --t-lg:  1.3rem;
   --t-xl:  clamp(1.9rem, 3.4vw, 2.8rem);
   --t-2xl: clamp(2.8rem, 6vw, 5rem);
   --t-3xl: clamp(4rem, 11vw, 9.5rem);
+
+  /* ---- display, one ladder ----
+     Above --t-lg the site had grown twelve maxima — 1.45, 1.7, 1.9, 2.0, 2.4,
+     2.6, 2.8, 3.2, 3.4, 3.6, 3.8 and 4.2rem — each set by its own clamp on
+     its own component. Most of those steps are under 10% apart, which the eye
+     reads as one size used inconsistently rather than as hierarchy. Three
+     named roles replace them: the title of a card, the heading of a panel,
+     and a large numeral. --t-xl already was the panel step. */
+  --t-card-title: clamp(1.5rem, 2.4vw, 2rem);
+  --t-num:        clamp(2.4rem, 4.4vw, 3.6rem);
 
   /* Spacing, on the same footing as type. The site had thirty distinct rem
      values in its padding, margins and gaps — 1.2, 1.25, 1.3, 1.4, 1.5 and
@@ -138,6 +217,15 @@
   --s-9: 4rem;
   --s-10: 5rem;
 
+  /* ---- interior padding ----
+     Eight different clamps were doing the work of two: 1.4-2, 1.4-2.4,
+     1.5-2.1, 1.6-2.2, 1.6-2.4, 1.6/3.4vw-2.4, 1.8-3 and 2-3.4rem. They read
+     as one value and measured as eight, which is the definition of a system
+     drifting. A card and a feature panel are genuinely two different things;
+     everything else was a decision taken again. */
+  --pad-card:  clamp(1.6rem, 3vw, 2.3rem);
+  --pad-panel: clamp(2rem, 4.5vw, 3.2rem);
+
   --container: 1200px;
   --nav-h: 76px;
 }
@@ -150,6 +238,10 @@ body {
   background: var(--black);
   color: var(--cream);
   font-family: var(--font-body);
+  /* Without this the root stays at the browser's 16px while every classed
+     paragraph sits at --t-md, 16.8 — a 5% difference that is not a step, just
+     two body sizes on one page. */
+  font-size: var(--t-md);
   line-height: 1.6;
   overflow-x: hidden;
 }
@@ -224,8 +316,12 @@ h1, h2, h3, .display {
   color: var(--red-glow);
 }
 
+/* 52ch, not 60. The ch unit is the advance of "0", and digits are wider than
+   the average lowercase letter, so a 60ch box was rendering 83 characters to
+   the line. Measured by counting characters per rendered line, not by trusting
+   the unit. */
 .section-lede {
-  max-width: 60ch;
+  max-width: 52ch;
   color: var(--gray);
   font-size: var(--t-md);
 }
@@ -598,7 +694,7 @@ section { position: relative; }
   position: relative;
 }
 .big-feature-text h3 {
-  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-size: var(--t-xl);
   color: var(--white);
   margin-bottom: var(--s-3);
 }
@@ -842,7 +938,7 @@ section { position: relative; }
 }
 .set-head:first-of-type { margin-top: 0; }
 .set-head h2 {
-  font-size: clamp(1.35rem, 2.4vw, 1.9rem);
+  font-size: var(--t-card-title);
   color: var(--white);
   white-space: nowrap;
 }
@@ -882,7 +978,11 @@ section { position: relative; }
 .tour-list { margin-top: var(--s-7); border-top: 1px solid rgba(243,237,226,0.12); }
 .tour-row {
   display: grid;
-  grid-template-columns: 110px 1fr auto;
+  /* 128px, not 110: a two-night stand prints as "22-23" and at --t-xl that
+     did not fit, so the range broke across two lines in the middle of the
+     dash. The track is fixed rather than auto because each row is its own
+     grid — sizing it to content would stagger the dates down the list. */
+  grid-template-columns: 128px 1fr auto;
   gap: var(--s-5);
   align-items: center;
   padding: var(--s-5) 0;
@@ -901,7 +1001,7 @@ section { position: relative; }
   color: var(--gold-bright);
   line-height: 1;
 }
-.tour-date .day { font-size: var(--t-xl); display: block; }
+.tour-date .day { font-size: var(--t-xl); display: block; white-space: nowrap; }
 .tour-date .mon { font-size: var(--t-xs); letter-spacing: 0.1em; }
 
 .tour-info h4, .tour-info h3 { font-size: var(--t-md); color: var(--white); font-weight: 800; text-transform: none; letter-spacing: 0; }
@@ -919,7 +1019,7 @@ section { position: relative; }
 }
 
 @media (max-width: 700px) {
-  .tour-row { grid-template-columns: 70px 1fr; }
+  .tour-row { grid-template-columns: 88px 1fr; }
   .tour-row .btn { grid-column: 1 / -1; margin-top: var(--s-2); justify-self: start; }
 }
 
@@ -1159,7 +1259,6 @@ a:focus-visible, button:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .marquee-track { animation: none; }
-  [data-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
 }
 
 /* ==========================================================================
@@ -1361,7 +1460,7 @@ img { height: auto; }
   gap: clamp(1.6rem, 4vw, 3.4rem);
   align-items: center;
   margin-top: var(--s-8);
-  padding: clamp(1.4rem, 3vw, 2.4rem);
+  padding: var(--pad-card);
   border: 1px solid rgba(216, 174, 87, 0.28);
   background:
     radial-gradient(80% 120% at 0% 0%, rgba(216, 19, 36, 0.16), transparent 60%),
@@ -1388,7 +1487,7 @@ img { height: auto; }
   margin-bottom: var(--s-4);
 }
 .release-hero h3 {
-  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  font-size: var(--t-num);
   color: var(--white);
   letter-spacing: -0.01em;
   margin-bottom: var(--s-2);
@@ -1407,7 +1506,7 @@ img { height: auto; }
 .rel-feat { color: var(--gray); font-weight: 600; }
 .release-cover.is-type span {
   font-family: var(--font-display);
-  font-size: clamp(2.6rem, 6vw, 3.6rem);
+  font-size: var(--t-num);
   color: transparent;
   -webkit-text-stroke: 1.5px var(--gold);
   letter-spacing: 0.02em;
@@ -1454,9 +1553,11 @@ img { height: auto; }
    ========================================================================== */
 .prose p {
   color: var(--cream);
-  font-size: clamp(1.02rem, 1.15vw, 1.14rem);
+  font-size: var(--t-md);
   line-height: 1.72;
-  max-width: 62ch;
+  /* 54ch by the same correction as .section-lede: a ch is a digit's advance,
+     and these were running 88-90 characters to the line on a wide screen. */
+  max-width: 54ch;
 }
 .prose p + p { margin-top: 1.1em; }
 .prose strong { color: var(--white); }
@@ -1464,7 +1565,7 @@ img { height: auto; }
 
 /* Lead paragraph — the first line of a chapter carries more weight. */
 .prose .lead {
-  font-size: clamp(1.15rem, 1.5vw, 1.35rem);
+  font-size: var(--t-lg);
   line-height: 1.55;
   color: var(--white);
 }
@@ -1504,7 +1605,7 @@ img { height: auto; }
 
 .tl-year {
   font-family: var(--font-display);
-  font-size: clamp(1.6rem, 2.6vw, 2.3rem);
+  font-size: var(--t-card-title);
   line-height: 1;
   color: var(--gold-bright);
   letter-spacing: 0.01em;
@@ -1531,7 +1632,7 @@ img { height: auto; }
 
 .tl-body h3 {
   font-family: var(--font-body);
-  font-size: clamp(1.2rem, 1.7vw, 1.45rem);
+  font-size: var(--t-lg);
   font-weight: 800;
   text-transform: none;
   letter-spacing: 0;
@@ -1577,14 +1678,14 @@ img { height: auto; }
 }
 .award-cell {
   background: var(--near-black);
-  padding: clamp(1.6rem, 3vw, 2.4rem);
+  padding: var(--pad-card);
   display: flex;
   flex-direction: column;
   gap: var(--s-2);
 }
 .award-cell .yr {
   font-family: var(--font-display);
-  font-size: clamp(2.4rem, 4vw, 3.4rem);
+  font-size: var(--t-num);
   line-height: 0.9;
   color: transparent;
   -webkit-text-stroke: 1.5px var(--gold);
@@ -1608,9 +1709,15 @@ img { height: auto; }
   border: 1px solid rgba(243, 237, 226, 0.12);
   margin-top: var(--s-7);
 }
+/* One call to action per page, identical everywhere, pointing at the one
+   thing this site can do that nowhere else can: play her. The cards below it
+   are lateral moves — useful, but none of them is the action. */
+.next-lede { margin-top: var(--s-4); }
+.next-act { margin: var(--s-5) 0 var(--s-7); }
+
 .next-card {
   background: var(--black);
-  padding: clamp(1.6rem, 3vw, 2.2rem);
+  padding: var(--pad-card);
   display: flex;
   flex-direction: column;
   gap: var(--s-2);
@@ -1630,7 +1737,7 @@ img { height: auto; }
 }
 .next-card .t {
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  font-size: var(--t-card-title);
   color: var(--white);
   text-transform: uppercase;
 }
@@ -1667,7 +1774,7 @@ img { height: auto; }
 /* Section scale. Not every heading is a headline — the quiet ones step down
    so the loud ones read as loud. */
 .section-title.is-major { font-size: clamp(2.8rem, 8vw, 6rem); }
-.section-title.is-minor { font-size: clamp(1.7rem, 3.4vw, 2.4rem); }/* ==========================================================================
+.section-title.is-minor { font-size: var(--t-xl); }/* ==========================================================================
    HERO — editorial meta line{
   display: flex;
   align-items: center;
@@ -1964,21 +2071,14 @@ html:not(.gsap) .rail-prog { display: none; }
   position: relative;
   overflow: hidden;
   margin-top: clamp(3rem, 7vw, 5rem);
-  padding: clamp(2rem, 5vw, 3.4rem);
+  padding: var(--pad-panel);
   border: 1px solid rgba(216, 174, 87, 0.3);
   background:
     radial-gradient(90% 140% at 100% 0%, rgba(216, 19, 36, 0.2), transparent 62%),
     var(--near-black);
 }
-.tour-flag .kicker {
-  font-size: var(--t-2xs);
-  font-weight: 800;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--gold-bright);
-}
 .tour-flag h3 {
-  font-size: clamp(1.9rem, 4.4vw, 3.2rem);
+  font-size: var(--t-xl);
   color: var(--white);
   margin: var(--s-2) 0 var(--s-3);
   letter-spacing: -0.01em;
@@ -1989,14 +2089,14 @@ html:not(.gsap) .rail-prog { display: none; }
   gap: var(--s-2) var(--s-4);
   margin-top: var(--s-5);
   font-family: var(--font-display);
-  font-size: clamp(1rem, 1.7vw, 1.35rem);
+  font-size: var(--t-lg);
   text-transform: uppercase;
   color: var(--cream);
 }
 .tour-flag .cities span { color: var(--gold); }
 
 .video-pair { margin-top: var(--s-7); align-items: start; }
-.section-note { margin-top: var(--s-5); font-size: var(--t-sm); color: var(--gray); max-width: 60ch; }
+.section-note { margin-top: var(--s-5); font-size: var(--t-sm); color: var(--gray); max-width: 52ch; }
 .hi { color: var(--gold-bright); }
 
 /* ==========================================================================
@@ -2009,7 +2109,7 @@ html:not(.gsap) .rail-prog { display: none; }
   background:
     radial-gradient(90% 130% at 0% 0%, rgba(216, 19, 36, 0.12), transparent 62%),
     var(--near-black);
-  padding: clamp(1.6rem, 3.4vw, 2.4rem);
+  padding: var(--pad-card);
 }
 .contact-card + .contact-card { margin-top: var(--s-4); }
 .contact-card .role {
@@ -2021,7 +2121,7 @@ html:not(.gsap) .rail-prog { display: none; }
 }
 .contact-card .who {
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  font-size: var(--t-card-title);
   color: var(--white);
   text-transform: uppercase;
   margin: var(--s-2) 0 var(--s-1);
@@ -2047,7 +2147,7 @@ html:not(.gsap) .rail-prog { display: none; }
    visitor most needs to know that before they write to anyone. */
 .disclosure {
   border: 1px dashed rgba(243, 237, 226, 0.22);
-  padding: clamp(1.4rem, 3vw, 2rem);
+  padding: var(--pad-card);
   margin-top: var(--s-7);
 }
 .disclosure h3 {
@@ -2212,7 +2312,7 @@ imagery
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: clamp(1.8rem, 4vw, 3.6rem);
   align-items: center;
-  padding: clamp(1.8rem, 4vw, 3rem);
+  padding: var(--pad-panel);
   border: 1px solid rgba(216, 174, 87, 0.3);
   background:
     radial-gradient(85% 130% at 100% 0%, rgba(168, 30, 102, 0.16), transparent 62%),
@@ -2248,7 +2348,7 @@ imagery
   margin-bottom: var(--s-4);
 }
 .store-card h2 {
-  font-size: clamp(2rem, 4.6vw, 3.2rem);
+  font-size: var(--t-xl);
   color: var(--white);
   letter-spacing: -0.01em;
   margin-bottom: var(--s-3);
@@ -2264,7 +2364,7 @@ imagery
 }
 .merch-cell {
   background: var(--black);
-  padding: clamp(1.5rem, 3vw, 2.1rem);
+  padding: var(--pad-card);
   display: flex;
   flex-direction: column;
   gap: var(--s-2);
@@ -2278,7 +2378,7 @@ imagery
 }
 .merch-cell .t {
   font-family: var(--font-display);
-  font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+  font-size: var(--t-card-title);
   color: var(--white);
   text-transform: uppercase;
 }
@@ -3029,7 +3129,7 @@ html.gsap { scroll-behavior: auto; }
 
 .tl-year {
   font-variation-settings: 'wdth' 125, 'wght' 800;
-  font-size: clamp(2.4rem, 4.8vw, 3.8rem);
+  font-size: var(--t-num);
   line-height: 0.9;
   color: var(--paper);
   text-align: left;
@@ -3420,14 +3520,6 @@ html.portal-locked, html.portal-locked body { overflow: hidden; overscroll-behav
   gap: var(--s-4);
   padding: var(--s-5) var(--s-5) var(--s-3);
 }
-.jb-kicker {
-  margin: 0;
-  font-size: var(--t-2xs);
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--magenta-dp);
-}
 .jb-title { margin: var(--s-1) 0 0; font-size: var(--t-xl); color: var(--pine-deep); }
 .jb-close {
   flex: 0 0 auto;
@@ -3560,10 +3652,15 @@ html.portal-locked, html.portal-locked body { overflow: hidden; overscroll-behav
   .jb-btn:hover { background: var(--pine-deep); color: var(--paper); }
 
 }
-.jb-btn.is-full { border-color: var(--magenta); background: var(--magenta); color: var(--white); }
+/* Full song is still the better thing to press, and it still says so — but
+   as a nuance, not as a second accent. A viewport of the jukebox showed nine
+   filled magenta buttons at once, which is not an accent, it is the surface
+   colour. The fill now belongs to one control per screen; this keeps the
+   hue, the weight and the position in the hierarchy above Preview. */
+.jb-btn.is-full { border-color: var(--magenta-dp); background: transparent; color: var(--magenta-dp); }
 @media (hover: hover) and (pointer: fine) {
 
-  .jb-btn.is-full:hover { background: var(--magenta-dp); border-color: var(--magenta-dp); }
+  .jb-btn.is-full:hover { background: var(--magenta-dp); border-color: var(--magenta-dp); color: var(--white); }
 
 }
 /* Which song is playing was a background that swapped in one frame. A
@@ -3867,10 +3964,10 @@ html.has-dock body { padding-bottom: 4.5rem; }
    deeper stop, which carries white at 6.8:1. Magenta stays the lit colour
    for type, rules and glows, where it sits on dark and measures fine. */
 .sec-loud { background: var(--magenta-dp); }
-.jb-btn.is-full { background: var(--magenta-dp); border-color: var(--magenta-dp); }
+.jb-btn.is-full { background: transparent; border-color: var(--magenta-dp); color: var(--magenta-dp); }
 @media (hover: hover) and (pointer: fine) {
 
-  .jb-btn.is-full:hover { background: #8e1856; border-color: #8e1856; }
+  .jb-btn.is-full:hover { background: #8e1856; border-color: #8e1856; color: var(--white); }
 
 }
 

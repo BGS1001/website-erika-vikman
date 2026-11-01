@@ -14,10 +14,14 @@
 <meta property="og:url" content="https://website-erika-vikman.vercel.app/contact.html">
 <meta property="og:image" content="https://website-erika-vikman.vercel.app/assets/img/backstage-mic-candid.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- The two faces are served from this origin. They used to come from Google,
+     which put a render-blocking stylesheet on a third-party host in front of
+     every page: on a slow phone that chain, not the image, was what held the
+     first paint. Deliberately not preloaded: the largest element here is an
+     image, and measured on a throttled phone a high-priority font preload
+     took bandwidth from it and pushed LCP out by ~700ms. font-display: swap
+     lets the text arrive in the fallback and change under you instead. -->
 <link rel="preload" as="image" href="assets/img/backstage-mic-candid.jpg" fetchpriority="high">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Instrument+Sans:wght@400..700&display=swap">
 <link rel="stylesheet" href="css/style.css">
 <script type="speculationrules">
 {"prerender":[{"where":{"href_matches":"/*.html"},"eagerness":"moderate"}]}
@@ -70,7 +74,7 @@
 </header>
 
 <section class="pad depth-4">
-  <div class="wrap contact-grid" data-reveal>
+  <div class="wrap contact-grid">
     <div>
       <h2 class="section-title">Official <em>channels.</em></h2>
       <p class="section-lede">Every official account, one list, no dead links. Bookings and press go to management — the address is on this page.</p>
@@ -122,8 +126,10 @@
 
 <!-- NEXT -->
 <section class="pad sec-panel pavilion">
-  <div class="wrap" data-reveal>
+  <div class="wrap">
     <h2 class="section-title is-minor">Back to the <em>music.</em></h2>
+    <p class="section-lede next-lede">Everything she has recorded plays on this page — previews and her official videos, without leaving for anywhere else.</p>
+    <p class="next-act"><a class="btn btn-solid" data-open-jukebox href="music.html#listen">Hear Ich Komme</a></p>
     <div class="next-row">
       <a class="next-card" href="music.html">
         <span class="k">Discography</span>

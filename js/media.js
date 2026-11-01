@@ -221,8 +221,7 @@
     var panel = h('div', { class: 'jb-panel' }, [
       h('header', { class: 'jb-head' }, [
         h('div', null, [
-          h('p', { class: 'jb-kicker', text: 'The jukebox' }),
-          h('h2', { class: 'jb-title', id: 'jb-title', text: 'Erika Vikman' })
+          h('h2', { class: 'jb-title', id: 'jb-title', text: 'The jukebox' })
         ]),
         h('button', { type: 'button', class: 'jb-close', 'data-jb-close': '', 'aria-label': 'Close the jukebox', html: '<svg class="i" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>' })
       ]),

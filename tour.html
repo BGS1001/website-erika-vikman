@@ -14,10 +14,14 @@
 <meta property="og:url" content="https://website-erika-vikman.vercel.app/tour.html">
 <meta property="og:image" content="https://website-erika-vikman.vercel.app/assets/img/live-mic-stand.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- The two faces are served from this origin. They used to come from Google,
+     which put a render-blocking stylesheet on a third-party host in front of
+     every page: on a slow phone that chain, not the image, was what held the
+     first paint. Deliberately not preloaded: the largest element here is an
+     image, and measured on a throttled phone a high-priority font preload
+     took bandwidth from it and pushed LCP out by ~700ms. font-display: swap
+     lets the text arrive in the fallback and change under you instead. -->
 <link rel="preload" as="image" href="assets/img/live-mic-stand.jpg" fetchpriority="high">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Instrument+Sans:wght@400..700&display=swap">
 <link rel="stylesheet" href="css/style.css">
 <script type="speculationrules">
 {"prerender":[{"where":{"href_matches":"/*.html"},"eagerness":"moderate"}]}
@@ -80,7 +84,7 @@
 </header>
 
 <section class="pad depth-4">
-  <div class="wrap" data-reveal>
+  <div class="wrap">
     <h2 class="section-title">Finland now.<br><em>Europe next.</em></h2>
     <p class="section-lede">Festival season across Finland this summer, the Ziggo Dome in November — and in March 2027, the <strong class="hi">first European headline tour</strong> through Germany, the Netherlands, and the UK.</p>
 
@@ -112,8 +116,7 @@
     </ol>
 
     <!-- the news on this page -->
-    <div class="tour-flag" data-reveal>
-      <span class="kicker">March 2027 · Her first</span>
+    <div class="tour-flag">
       <h3>Ich Komme Europe Spring 2027</h3>
       <p class="section-lede">Seven nights, three countries, one name on the door — a decade after Tangomarkkinat and two years after Basel.</p>
       <p class="cities">
@@ -182,7 +185,7 @@
 </section>
 
 <section class="pad sec-panel pavilion">
-  <div class="wrap split" data-reveal>
+  <div class="wrap split">
     <div>
       <h2 class="section-title">Not just a <em>concert.</em></h2>
       <p class="section-lede">The setlist swings from tango balladry to full-throttle electropop without treating either as a joke. Expect pyrotechnics, confetti, a room already wearing the shirt — and, on the right night, the golden microphone.</p>
@@ -196,7 +199,7 @@
 
 <!-- NEXT -->
 <section class="pad depth-1">
-  <div class="wrap" data-reveal>
+  <div class="wrap">
     <h2 class="section-title is-minor">Know the <em>songs.</em></h2>
     <div class="next-row">
       <a class="next-card" href="music.html">

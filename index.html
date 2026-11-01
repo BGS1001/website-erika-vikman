@@ -14,8 +14,13 @@
 <meta property="og:url" content="https://website-erika-vikman.vercel.app/">
 <meta property="og:image" content="https://website-erika-vikman.vercel.app/assets/img/erika-wordmark-stage.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- The two faces are served from this origin. They used to come from Google,
+     which put a render-blocking stylesheet on a third-party host in front of
+     every page: on a slow phone that chain, not the image, was what held the
+     first paint. Deliberately not preloaded: the largest element here is an
+     image, and measured on a throttled phone a high-priority font preload
+     took bandwidth from it and pushed LCP out by ~700ms. font-display: swap
+     lets the text arrive in the fallback and change under you instead. -->
 <!-- The door: the stage behind the O of KOMME is the first thing anyone sees.
      Preloaded as a set so a phone fetches the 480px file, not the full one. -->
 <link rel="preload" as="image" href="assets/img/mark-ich-komme.png" fetchpriority="high">
@@ -23,7 +28,6 @@
       imagesrcset="assets/img/erika-wordmark-stage-480.jpg 480w, assets/img/erika-wordmark-stage-800.jpg 800w, assets/img/erika-wordmark-stage.jpg 1024w"
       imagesizes="(max-width: 860px) 100vw, 46vw"
       href="assets/img/erika-wordmark-stage-800.jpg">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Instrument+Sans:wght@400..700&display=swap">
 <link rel="stylesheet" href="css/style.css">
 <script type="speculationrules">
 {"prerender":[{"where":{"href_matches":"/*.html"},"eagerness":"moderate"}]}
@@ -162,7 +166,7 @@
 
 <!-- ABOUT TEASER -->
 <section class="pad depth-2">
-  <div class="wrap split" data-reveal>
+  <div class="wrap split">
     <div class="split-media">
       <img srcset="assets/img/portrait-gloves-480.jpg 480w, assets/img/portrait-gloves-800.jpg 800w, assets/img/portrait-gloves.jpg 1024w" sizes="auto" src="assets/img/portrait-gloves.jpg" alt="Erika Vikman studio portrait" loading="lazy" width="1024" height="1280">
       <div class="stat-badge">
@@ -185,7 +189,7 @@
 
 <!-- BIG FEATURE -->
 <section class="big-feature pad pavilion">
-  <div class="wrap big-feature-inner" data-reveal>
+  <div class="wrap big-feature-inner">
     <span class="big-num display" aria-hidden="true">25</span>
     <div class="big-feature-text">
       <h3>The golden microphone moment.</h3>
@@ -197,7 +201,7 @@
 </section>
 
 <!-- FULL BLEED BANNER -->
-<section class="banner-par" data-reveal>
+<section class="banner-par">
   <img srcset="assets/img/erika-wordmark-stage-480.jpg 480w, assets/img/erika-wordmark-stage-800.jpg 800w, assets/img/erika-wordmark-stage.jpg 1024w" sizes="auto" class="pos-band" src="assets/img/erika-wordmark-stage.jpg" alt="ERIKA lit up in giant red letters on stage in Basel"  loading="lazy" width="1024" height="1280">
 </section>
 
@@ -233,7 +237,7 @@
 
 <!-- RELEASES -->
 <section class="pad depth-3">
-  <div class="wrap" data-reveal>
+  <div class="wrap">
     <h2 class="section-title">The <em>hits</em>, so far.</h2>
     <p class="section-lede">From tango-pop confessionals to Eurovision electro-bangers — a run of singles that keeps getting louder.</p>
 
@@ -275,7 +279,7 @@
 
 <!-- TOUR TEASER -->
 <section class="pad sec-panel pavilion">
-  <div class="wrap" data-reveal>
+  <div class="wrap">
     <h2 class="section-title">See it <em>live.</em></h2>
     <p class="section-lede">Finnish festival summer now, Helsinki in September — and <strong class="hi">Ich Komme Europe Spring 2027</strong>, the first headline tour: Hamburg, Berlin, Utrecht, Cologne, London, Glasgow, Manchester.</p>
     <div class="tour-list">
@@ -319,7 +323,7 @@
 
 <!-- TOUR ALERTS CTA -->
 <section class="pad sec-loud">
-  <div class="wrap" data-reveal>
+  <div class="wrap">
     <h2 class="section-title">Get tour <em>alerts.</em></h2>
     <p class="section-lede">March 2027 is the first European headline run there has ever been. Follow her where you already track live music and the dates come to you.</p>
     <div class="btn-row">

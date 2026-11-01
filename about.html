@@ -14,10 +14,14 @@
 <meta property="og:url" content="https://website-erika-vikman.vercel.app/about.html">
 <meta property="og:image" content="https://website-erika-vikman.vercel.app/assets/img/portrait-jacket.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- The two faces are served from this origin. They used to come from Google,
+     which put a render-blocking stylesheet on a third-party host in front of
+     every page: on a slow phone that chain, not the image, was what held the
+     first paint. Deliberately not preloaded: the largest element here is an
+     image, and measured on a throttled phone a high-priority font preload
+     took bandwidth from it and pushed LCP out by ~700ms. font-display: swap
+     lets the text arrive in the fallback and change under you instead. -->
 <link rel="preload" as="image" href="assets/img/portrait-jacket.jpg" fetchpriority="high">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Instrument+Sans:wght@400..700&display=swap">
 <link rel="stylesheet" href="css/style.css">
 <script type="speculationrules">
 {"prerender":[{"where":{"href_matches":"/*.html"},"eagerness":"moderate"}]}
@@ -89,14 +93,14 @@
 
 <!-- OPENING -->
 <section class="pad depth-4">
-  <div class="wrap prose" data-reveal>
+  <div class="wrap prose">
     <p class="lead">Erika Susanna Vikman won Finland's tango crown, then took everything it taught her about holding a room and pointed it at the pop charts. Basel got the full version: a golden microphone, live fireworks, and nothing toned down.</p>
   </div>
 </section>
 
 <!-- TIMELINE -->
 <section class="pad pt-0">
-  <div class="wrap" data-reveal>
+  <div class="wrap">
     <h2 class="section-title is-minor">From Tampere <em>to Basel.</em></h2>
 
     <div class="tl mt-lg">
@@ -167,7 +171,7 @@
 
 <!-- AWARDS -->
 <section class="pad awards-band pavilion">
-  <div class="wrap" data-reveal>
+  <div class="wrap">
     <h2 class="section-title is-minor">The <em>wins.</em></h2>
     <div class="awards-row">
       <div class="award-cell">
@@ -191,7 +195,7 @@
 
 <!-- OFF STAGE -->
 <section class="pad depth-1">
-  <div class="wrap" data-reveal>
+  <div class="wrap">
     <h2 class="section-title is-minor">Beyond the <em>spotlight.</em></h2>
     <div class="prose">
       <p>The EP "Erikavision" arrived in May 2025. The writing still moves between tango-rooted balladry and maximalist electropop, because she has never accepted that those are two different jobs. The latex, the spikes, the sky-high boots are the same argument in another medium — and the crowd makes it back, turning up show after show in matching "ICH" shirts.</p>
@@ -207,8 +211,10 @@
 
 <!-- NEXT -->
 <section class="pad sec-panel pavilion">
-  <div class="wrap" data-reveal>
+  <div class="wrap">
     <h2 class="section-title is-minor">Where <em>next.</em></h2>
+    <p class="section-lede next-lede">Everything she has recorded plays on this page — previews and her official videos, without leaving for anywhere else.</p>
+    <p class="next-act"><a class="btn btn-solid" data-open-jukebox href="music.html#listen">Hear Ich Komme</a></p>
     <div class="next-row">
       <a class="next-card" href="music.html">
         <span class="k">Discography</span>

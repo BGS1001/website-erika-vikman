@@ -181,3 +181,60 @@ No illustrated or stock substitutes, ever: on an artist site the photography
 
 Before shipping any page: **swap in a different artist's name and photographs.
 If the page still works, the direction has not been applied.**
+
+---
+
+## THE ANALYSIS BEHIND IT
+
+Recorded because a direction that only lives in someone's head cannot be
+checked against. The world above says what the site looks like; this says what
+it is for.
+
+**Purpose.** A visitor arrives from the Eurovision broadcast knowing one image —
+the woman on the golden microphone — and leaves knowing she is a tango queen
+who meant it, having heard her.
+
+**The single action: listen, here.** Not "stream on Spotify", not "follow".
+Every page carries the same call, worded the same way, and it opens the jukebox
+on the page the visitor is already on. The tour dates, the archive and the merch
+are real and useful, but none of them is the action. If a screen offers two
+things in the same voice, one of them is wrong.
+
+**Audience.** Mixed, weighted international — see AUDIENCE above.
+
+**What they arrive asking, and what answers it:**
+
+| The question | Where the site answers it |
+|---|---|
+| Who is she beyond the Eurovision clip? | The first screen, in one line, then the biography as a printed programme |
+| Is "tango queen" a joke? | 2016, Tangomarkkinat, in crown gold — the only year the gold is spent on |
+| Can I actually hear her without leaving? | The jukebox: 39 tracks, 14 videos, nothing links out |
+| Is this her official site? | The fan-tribute line on every page, and the contact page says plainly that it cannot pass on a message |
+| Where can I see her? | The tour list, with real dates and venues |
+
+**Comparable sites looked at.** charlixcx.com — full-bleed photograph, wordmark,
+no action in the first screen. roisinmurphyofficial.com — black ground and two
+buttons of equal weight, "STREAM / BUY" beside "TOUR DATES", which is the
+failure this site is built to avoid. kaarija.com is a parked domain, not his.
+A small sample, and treated as a small sample.
+
+## THE FEELING
+
+One word: **defiance played straight.** Not irony, not camp as an alibi. She
+sings about sex with a tango singer's sincerity, and the site has to be as
+unembarrassed as she is.
+
+Three levers carry it:
+
+- **Tempo.** Tango: attack and arrest. One authored moment at the door, and
+  nothing anywhere else allowed to compete with it. Pauses are long on purpose.
+- **Temperature.** The ground alternates — warm cream pavilion, cold lacquered
+  club — and neither is the default. A site that is only dark is a pop site; a
+  site that is only warm is a folk site. She is both and apologises for neither.
+- **Composition and scale.** Archivo on its width axis at painted-signage size,
+  and photographs full-bleed rather than cropped into cards. Nothing on this
+  site is politely sized.
+
+Two signature details carry the character where the system cannot: the flying
+golden microphone that follows the cursor, and the portal through the O of
+KOMME. Both are hers from Basel; neither could belong to anybody else.

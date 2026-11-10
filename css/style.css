@@ -996,6 +996,33 @@ section { position: relative; }
 }
 .tour-row.next { border-color: var(--red-glow); }
 
+/* A show that has already happened. It stays on the page — she played it, and
+   the run is part of the record — but it stops competing with the dates you can
+   still get to. Receding is done by restating the colour roles, not by dropping
+   opacity on the row: these rows sit on a photographic ground, and a blanket
+   fade would take the venue names under 4.5:1 with it.
+
+   The ticket link and the "On sale" badge go, because neither is true any more.
+   The row keeps its grid so the dates stay in one column down the list. */
+.tour-row.is-past .tour-date,
+.tour-row.is-past .tour-info h3,
+.tour-row.is-past .tour-info h4 { color: var(--gray); }
+.tour-row.is-past .tour-status { display: none; }
+.tour-row.is-past .btn { display: none; }
+
+.tag-past {
+  font-size: var(--t-2xs);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray);
+  border: 1px solid rgba(198, 188, 210, 0.3);
+  padding: 0.25em 0.7em;
+  margin-left: 0.7em;
+  white-space: nowrap;
+  align-self: center;
+}
+
 .tour-date {
   font-family: var(--font-display);
   color: var(--gold-bright);

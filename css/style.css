@@ -281,29 +281,6 @@ h1, h2, h3, .display {
   font-weight: 400;
 }
 
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5em;
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: var(--t-xs);
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--gold-bright);
-}
-
-.eyebrow::before {
-  content: '';
-  width: 26px;
-  height: 2px;
-  background: var(--gold-bright);
-}
-
-/* On the red CTA panel gold falls to 2.5:1 against the ground; white clears
-   5.2:1 instead. */
-.cta-eyebrow { color: var(--white); }
-.cta-eyebrow::before { background: var(--white); }
 
 .section-title {
   font-size: clamp(2.4rem, 6vw, 4.2rem);
@@ -351,9 +328,7 @@ section { position: relative; }
    button, the way light catches patent leather. */
 .btn { position: relative; overflow: hidden; isolation: isolate; }
 .btn-solid::before,
-.btn-gold::before,
-.btn-ink::before,
-.btn-paper::before {
+.btn-gold::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -549,6 +524,10 @@ section { position: relative; }
     padding: 1.5rem clamp(1.25rem, 4vw, 3rem) 2rem;
     gap: var(--s-4);
     border-top: 1px solid rgba(216,174,87,0.2);
+    /* to the foot of the screen: the hero and its button used to show
+       through underneath and compete with the list */
+    min-height: calc(100vh - var(--nav-h));
+    min-height: calc(100svh - var(--nav-h));
   }
   @starting-style {
     .nav-links.open { opacity: 0; transform: translateY(-8px); }
@@ -916,7 +895,7 @@ section { position: relative; }
 }
 @media (hover: hover) and (pointer: fine) {
 
-  .lightbox-nav:hover { background: var(--red); border-color: var(--red); }
+  .lightbox-nav:hover { background: var(--magenta-dp); border-color: var(--magenta-dp); }
 
 }
 .lightbox-prev { left: -1.4rem; }
@@ -941,13 +920,6 @@ section { position: relative; }
   font-size: var(--t-card-title);
   color: var(--white);
   white-space: nowrap;
-}
-.set-head .n {
-  font-size: var(--t-2xs);
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  color: var(--gold-bright);
-  font-variant-numeric: tabular-nums;
 }
 .set-head::after {
   content: '';
@@ -1598,96 +1570,6 @@ img { height: auto; }
 }
 
 /* ==========================================================================
-   TIMELINE
-   A life is a sequence, so the years are the structure rather than a
-   decorative counter bolted onto generic blocks.
-   ========================================================================== */
-.tl { position: relative; }
-.tl::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 0.6rem; bottom: 0.6rem;
-  width: 1px;
-  background: linear-gradient(var(--gold), rgba(216, 174, 87, 0.05));
-}
-@media (min-width: 901px) {
-  .tl::before { left: 8.5rem; }
-}
-
-.tl-item {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--s-4);
-  padding: 0 0 clamp(3rem, 6vw, 5rem) 1.6rem;
-}
-@media (min-width: 901px) {
-  .tl-item {
-    grid-template-columns: 8.5rem minmax(0, 1fr);
-    gap: 0 clamp(2rem, 4vw, 3.5rem);
-    padding-left: 0;
-  }
-}
-.tl-item:last-child { padding-bottom: 0; }
-
-.tl-year {
-  font-family: var(--font-display);
-  font-size: var(--t-card-title);
-  line-height: 1;
-  color: var(--gold-bright);
-  letter-spacing: 0.01em;
-  font-variant-numeric: tabular-nums;
-}
-@media (min-width: 901px) {
-  .tl-year { text-align: right; padding-right: var(--s-5); }
-}
-
-/* The marker sits on the rule itself. */
-.tl-item::before {
-  content: '';
-  position: absolute;
-  left: -4px;
-  top: 0.75rem;
-  width: 9px; height: 9px;
-  border-radius: 50%;
-  background: var(--red-glow);
-  box-shadow: 0 0 0 4px var(--black);
-}
-@media (min-width: 901px) {
-  .tl-item::before { left: calc(8.5rem - 4px); }
-}
-
-.tl-body h3 {
-  font-family: var(--font-body);
-  font-size: var(--t-lg);
-  font-weight: 800;
-  text-transform: none;
-  letter-spacing: 0;
-  color: var(--white);
-  margin-bottom: var(--s-2);
-  line-height: 1.3;
-}
-.tl-media {
-  margin-top: var(--s-5);
-  max-width: 420px;
-}
-.tl-media img {
-  width: 100%;
-  aspect-ratio: 4/5;
-  object-fit: cover;
-  border: 1px solid rgba(216, 174, 87, 0.22);
-}
-.tl-media.is-wide img { aspect-ratio: 3/2; }
-.tl-media figcaption {
-  margin-top: var(--s-2);
-  font-size: var(--t-2xs);
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--gray);
-}
-
-/* ==========================================================================
    AWARDS BAND — the strongest credential gets its own moment
    ========================================================================== */
 .awards-band {
@@ -1786,17 +1668,8 @@ img { height: auto; }
   border-top: 1px solid rgba(216, 174, 87, 0.15);
   border-bottom: 1px solid rgba(216, 174, 87, 0.15);
 }
-.sec-loud {
-  background: var(--red);
-  border-top: 2px solid var(--black);
-}
-.sec-loud .section-title { color: var(--white); }
-.sec-loud .section-title em { color: var(--black); }
-.sec-loud .section-lede { color: var(--white); font-weight: 600; }
 
 .btn-row { display: flex; gap: var(--s-4); flex-wrap: wrap; margin-top: var(--s-6); }
-.btn-ink   { background: var(--black); color: var(--white); }
-.btn-paper { background: var(--white); color: var(--red-deep); }
 
 /* Section scale. Not every heading is a headline — the quiet ones step down
    so the loud ones read as loud. */
@@ -2223,12 +2096,9 @@ imagery
 
 /* --- accents glow --- */
 .section-title em,
-.track-year,
-.tl-year {
+.track-year {
   text-shadow: 0 0 26px rgba(224, 51, 140, 0.45);
 }
-.eyebrow { text-shadow: 0 0 20px rgba(255, 223, 148, 0.35); }
-.eyebrow::before { box-shadow: 0 0 12px rgba(255, 223, 148, 0.6); }
 
 .stat-badge {
   background: var(--gold-metal);
@@ -2240,7 +2110,6 @@ imagery
 .tag-next {
   box-shadow: var(--edge), 0 0 20px rgba(168, 30, 102, 0.5);
 }
-.tour-status { box-shadow: 0 0 16px rgba(23, 182, 196, 0.2); }
 
 /* the "25" and the outlined type read as neon now */
 .big-num { filter: drop-shadow(0 0 26px rgba(224, 51, 140, 0.32)); }
@@ -2250,7 +2119,6 @@ imagery
 /* --- imagery sits in a lit frame --- */
 .split-media img,
 .release-cover img,
-.tl-media img,
 .release-hero .cover img {
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
 }
@@ -2275,20 +2143,6 @@ imagery
 
 }
 
-/* --- the loud panel gets depth instead of a flat fill ---
-   The ramp never goes lighter than --red, and the sheen here is halved:
-   white body copy needs 4.5:1, and a brighter ground drops below it. */
-.sec-loud {
-  background: linear-gradient(158deg, var(--red) 0%, #a30c1f 100%);
-}
-/* No wash over this panel — even an 8% sheen lifted the red to 4.36:1
-   against white body copy, under the 4.5:1 it needs. The gloss here comes
-   from the ramp and a hairline top edge, which cover too little area to
-   move the text contrast. */
-.sec-loud {
-  box-shadow: var(--edge), inset 0 -1px 0 rgba(0, 0, 0, 0.35);
-}
-.sec-loud > * { position: relative; z-index: 1; }
 
 /* --- marquee: a painted board, not an enamel strip ---
    Carried over as a glossy pink ribbon it read as candy, and a bright
@@ -2701,8 +2555,6 @@ body::before {
 .pavilion h1, .pavilion h2, .pavilion h3,
 .pavilion .display, .pavilion .section-title { color: var(--pine-deep); }
 .pavilion p, .pavilion li { color: var(--ink-soft); }
-.pavilion .eyebrow { color: var(--pine); }
-.pavilion .eyebrow::before { background: var(--pine); }
 .pavilion a { color: var(--pine-deep); }
 .pavilion em { color: var(--magenta-dp); font-style: normal; }
 
@@ -3133,53 +2985,138 @@ html.gsap { scroll-behavior: auto; }
 }
 
 /* ==========================================================================
-   TIMELINE — a printed programme, not a glowing rail
+   THE PROGRAMME — the biography, set as print
    ==========================================================================
-   A vertical gradient line with a glowing dot at every year is the default
-   timeline of the web; it was here only because a timeline usually looks like
-   that. The pavilion's version of a sequence is printed: a festival programme,
-   a results sheet pinned by the door. Each year opens with a full-width rule
-   and is set large in wide figures, and the rule does the work the dot and the
-   line were doing between them.
+   DESIGN.md promised "a printed programme" on the pavilion ground and what
+   shipped was the web's default timeline with the dots taken off, on the club
+   ground: year, heading, paragraph, six times, four thousand pixels on a
+   phone, photographs held to 420px inside a 1200px column.
 
-   Gold lands on one year only. The contract allows gold on the crown and on
-   nothing else, so 2016 — the year she won Tangomarkkinat — is the single gold
-   figure in the biography, and the colour means what it says. */
-.tl::before,
-.tl-item::before { display: none; }
+   This is the programme. Paper, a double rule at the head the way a printed
+   bill opens, pine hairlines between acts, plates the full width of their
+   column with nothing around them — a photograph pasted onto paper has no
+   border and casts no shadow. No two spreads share a layout: a pair of short
+   acts side by side, a plate-led spread, a margin-year act set in two
+   columns, the mirror spread, and a finale under its own head.
 
-.tl-item {
-  border-top: 2px solid rgba(242, 233, 218, 0.2);
-  padding: var(--s-6) 0 var(--s-9);
+   Gold lands on one year. The contract allows it on the crown and nowhere
+   else, so 2016 is the single gold mark in the biography — as a bar under
+   pine figures, because gold type on cream sits near 2:1 and the year has to
+   be read, not just admired. */
+.programme { --pg-rule: rgba(63, 41, 22, 0.28); }
+.pg {
+  margin-top: var(--s-7);
+  border-top: 4px double var(--pine-deep);
 }
-.tl-item:last-child { padding-bottom: 0; }
+.pg-act { padding: var(--s-7) 0 var(--s-9); }
+.pg > .pg-act { border-top: 1px solid var(--pg-rule); }
+.pg-finale { padding-bottom: 0; }
 
-.tl-year {
+.pg-year {
+  font-family: var(--font-display);
   font-variation-settings: 'wdth' 125, 'wght' 800;
   font-size: var(--t-num);
   line-height: 0.9;
-  color: var(--paper);
-  text-align: left;
-  padding-right: 0;
+  font-variant-numeric: tabular-nums;
+  color: var(--pine-deep);
+  margin-bottom: var(--s-4);
 }
+.is-crown .pg-year {
+  text-decoration: underline 6px var(--crown);
+  text-underline-offset: 0.14em;
+}
+.pg h3 {
+  font-family: var(--font-body);
+  font-size: var(--t-lg);
+  font-weight: 800;
+  text-transform: none;
+  letter-spacing: 0;
+  line-height: 1.3;
+  color: var(--pine-deep);
+  margin-bottom: var(--s-3);
+}
+/* the two acts the whole story turns on take the painted-sign voice */
+.is-crown h3, .pg-finale h3 {
+  font-family: var(--font-display);
+  font-variation-settings: 'wdth' 118, 'wght' 800;
+  font-size: var(--t-xl);
+  text-transform: uppercase;
+  line-height: 1.02;
+  margin-bottom: var(--s-4);
+}
+.pg p {
+  color: var(--ink);
+  font-size: var(--t-md);
+  line-height: 1.72;
+  max-width: 54ch;
+}
+.pg p + p { margin-top: 1.1em; }
+.pg strong { color: var(--pine-deep); }
+/* titles of shows are titles: italic, in the text colour, not an accent */
+.pg p em { color: inherit; font-style: italic; }
+
+.pg-plate { margin: var(--s-6) 0 0; }
+.pg-plate img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+/* stacked on a phone: a plate that leads its act needs air before the year,
+   and the two short acts need the hairline the desktop gives them sideways */
+.pg-plate + .pg-copy { margin-top: var(--s-7); }
+.pg-pair .pg-act + .pg-act { border-top: 1px solid var(--pg-rule); }
+.pg-plate figcaption {
+  margin-top: var(--s-3);
+  font-size: var(--t-2xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
 @media (min-width: 901px) {
-  .tl-item {
-    grid-template-columns: 13rem minmax(0, 1fr);
-    padding-left: 0;
+  .pg-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 clamp(2rem, 5vw, 5rem);
   }
-  .tl-year { text-align: left; padding-right: 0; }
+  .pg-pair .pg-act + .pg-act {
+    border-top: 0;
+    border-left: 1px solid var(--pg-rule);
+    padding-left: clamp(2rem, 5vw, 5rem);
+    margin-left: calc(clamp(2rem, 5vw, 5rem) * -0.5);
+  }
+
+  .pg-spread {
+    display: grid;
+    grid-template-columns: 5fr 7fr;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: end;
+  }
+  .pg-spread.is-flip { grid-template-columns: 7fr 5fr; }
+  .pg-spread .pg-plate { margin-top: 0; }
+  .pg-plate + .pg-copy { margin-top: 0; }
+
+  .pg-margin {
+    display: grid;
+    grid-template-columns: 13rem minmax(0, 1fr);
+    gap: clamp(2rem, 4vw, 3.5rem);
+  }
+  .pg-text { columns: 2; column-gap: var(--s-8); }
+  .pg-text p { break-inside: avoid; max-width: none; }
+  .pg-text p + p { margin-top: 0; }
+
+  .pg-finale {
+    display: grid;
+    grid-template-columns: 7fr 5fr;
+    gap: var(--s-6) clamp(2rem, 5vw, 5rem);
+    align-items: start;
+  }
+  .pg-finale .pg-head { grid-column: 1 / -1; }
+  .pg-finale .pg-text { columns: 1; }
+  .pg-finale .pg-text p + p { margin-top: 1.1em; }
+  .pg-finale .pg-plate { margin-top: 0; }
 }
-.tl-body h3 { color: var(--paper); }
-.tl-media img { border: 0; }
-
-.tl-item.is-crown { border-top-color: var(--crown); }
-.tl-item.is-crown .tl-year { color: var(--crown-lit); }
-
-.pavilion .tl-item { border-top-color: rgba(63, 41, 22, 0.28); }
-.pavilion .tl-year,
-.pavilion .tl-body h3 { color: var(--pine-deep); }
-.pavilion .tl-item.is-crown { border-top-color: var(--crown); }
-.pavilion .tl-item.is-crown .tl-year { color: var(--pine-deep); text-decoration: underline 4px var(--crown); text-underline-offset: 0.12em; }
 
 /* The three homepage milestones are the same sequence at small scale, so
    they take the same treatment: ruled rows, wide figures, gold on the crown. */
@@ -3406,19 +3343,6 @@ html.portal-locked, html.portal-locked body { overflow: hidden; overscroll-behav
   color: var(--pine);
 }
 .portal__line i { font-style: normal; color: var(--magenta-dp); }
-.portal__cue {
-  position: absolute;
-  left: 0; right: 0;
-  bottom: calc(clamp(1.75rem, 5vh, 3rem) + env(safe-area-inset-bottom, 0px));
-  margin: 0;
-  font-size: var(--t-2xs);
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-}
-.cue-touch { display: none; }
-.portal--auto .cue-touch { display: inline; }
-.portal--auto .cue-mouse { display: none; }
 
 .portal__copy {
   position: absolute;
@@ -3449,15 +3373,26 @@ html.portal-locked, html.portal-locked body { overflow: hidden; overscroll-behav
   margin-top: var(--s-6);
 }
 .portal__replay {
-  width: 44px; height: 44px;
-  border-radius: 50%;
+  /* It was an unlabelled 44px circle, third in rank, on a door that plays
+     itself once. If the moment can only be seen again through this control,
+     the control has to say what it is. */
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 44px;
+  padding: 0 var(--s-4) 0 var(--s-3);
+  border-radius: 999px;
   border: 1.5px solid rgba(242, 233, 218, 0.5);
   background: transparent;
   color: var(--paper);
-  font-size: 1.25rem;
+  font-size: var(--t-2xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   line-height: 1;
   cursor: pointer;
 }
+.portal__replay .i { width: 16px; height: 16px; }
 @media (hover: hover) and (pointer: fine) {
 
   .portal__replay:hover { border-color: var(--paper); }
@@ -3990,7 +3925,6 @@ html.has-dock body { padding-bottom: 4.5rem; }
    not large text. Everywhere magenta is a ground under white, it is the
    deeper stop, which carries white at 6.8:1. Magenta stays the lit colour
    for type, rules and glows, where it sits on dark and measures fine. */
-.sec-loud { background: var(--magenta-dp); }
 .jb-btn.is-full { background: transparent; border-color: var(--magenta-dp); color: var(--magenta-dp); }
 @media (hover: hover) and (pointer: fine) {
 
@@ -4214,3 +4148,34 @@ html.has-dock body { padding-bottom: 4.5rem; }
   .gallery-item:active img { transform: none; }
   .btn:active, .jb-btn:active, .lightbox-nav:active { filter: brightness(1.18); }
 }
+
+/* ==========================================================================
+   IMPECCABLE CRITIQUE PASS — 2026-11
+   ========================================================================== */
+/* The jukebox is the site's one action and it was missing from the phone
+   menu; on wide screens the record in the bar already is this link. */
+.nav-jukebox { display: none; }
+@media (max-width: 860px) {
+  .nav-jukebox { display: block; }
+  .nav-jukebox a { color: var(--magenta-lit); }
+}
+
+/* Four strips in a three-column grid left one orphaned on its own row. */
+@media (min-width: 700px) {
+  .release-grid.is-four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* The homepage ends on the action, at the scale it opens with. */
+.home-end .next-act { margin-bottom: 0; }
+
+/* Links inside a note on the club ground: the label light, underlined. */
+.section-note a {
+  color: var(--label-lit);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
+.pavilion .section-note a { color: var(--magenta-dp); }
+
+/* The teaser shows one row once js/main.js has picked it. */
+[data-tour-teaser] .tour-row[hidden] { display: none; }

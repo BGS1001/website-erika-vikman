@@ -140,6 +140,43 @@
     }
   });
 
+  /* ================= tour dates =========================================
+     Every row carries its date; which one is next is worked out here, on the
+     visitor's own calendar. The badge used to be typed into the markup, and
+     twice it sat on a show that had already happened - once for three months.
+     The markup is still written true for the day it was edited, so nothing is
+     wrong without JS; this only keeps it true afterwards. ISO dates compare
+     correctly as plain strings, so there is no date arithmetic to get wrong. */
+  (function () {
+    var rows = Array.prototype.slice.call(document.querySelectorAll('.tour-row[data-date]'));
+    if (!rows.length) return;
+    var n = new Date();
+    var today = n.getFullYear() + '-' + ('0' + (n.getMonth() + 1)).slice(-2) + '-' + ('0' + n.getDate()).slice(-2);
+    var teaser = document.querySelector('[data-tour-teaser]');
+    var tag = function (row, cls, text) {
+      var head = row.querySelector('h3, h4');
+      if (!head || head.querySelector('.' + cls)) return;
+      var s = document.createElement('span');
+      s.className = cls;
+      s.textContent = text;
+      head.appendChild(document.createTextNode(' '));
+      head.appendChild(s);
+    };
+    var drop = function (row, cls) { var t = row.querySelector('.' + cls); if (t) t.remove(); };
+    var next = null;
+    rows.forEach(function (row) {
+      var past = row.getAttribute('data-date') < today;
+      row.classList.toggle('is-past', past);
+      row.classList.remove('next');
+      drop(row, 'tag-next');
+      if (past && !teaser) tag(row, 'tag-past', 'Played'); else drop(row, 'tag-past');
+      if (!past && (!next || row.getAttribute('data-date') < next.getAttribute('data-date'))) next = row;
+    });
+    if (next) { next.classList.add('next'); tag(next, 'tag-next', 'Next show'); }
+    // the homepage teaser shows the one row that is next, and nothing stale
+    if (teaser) rows.forEach(function (row) { row.hidden = row !== next; });
+  })();
+
   /* ================= streaming embed facades ============================ */
   document.querySelectorAll('[data-embed]').forEach(function (facade) {
     facade.addEventListener('click', function () {

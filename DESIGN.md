@@ -238,3 +238,42 @@ Three levers carry it:
 Two signature details carry the character where the system cannot: the flying
 golden microphone that follows the cursor, and the portal through the O of
 KOMME. Both are hers from Basel; neither could belong to anybody else.
+
+## MADE BY HAND
+
+A tanssilava is run by hand, so the site's handmade layer is the pavilion's own
+objects and nothing borrowed. Six devices, each traceable:
+
+| Device | Where | The object it is |
+|---|---|---|
+| Ticket stubs | every tour date | the ticket torn at the door: paper, a stub, a perforation, two punch marks |
+| Ink stamps | "Played", and one gold seal on 2016 | the stamp on the wrist; the seal is the only gold object in the biography |
+| Tape | photographs in the programme, one snapshot on the homepage | pictures pasted in, a little off square, straightening under the cursor |
+| The brush | the accent word of headings on paper | a sign-painter's underline, one loaded stroke |
+| Misregistration | page titles and programme years on paper | a poster run one colour at a time, the plates a hair apart |
+| The eaves | above the footer board, with a colophon beneath | the string of bulbs: warm, with one magenta and one cyan per run |
+
+Rules that keep it from turning into costume: every device sits on paper or is
+itself paper, never on latex; none of them animates on entry; gold still
+appears on 2016 and nowhere else. Refused: film grain, and a handwriting
+typeface — the first is banned by the craft floor, the second is a third
+family the system does not have.
+
+### Responses
+
+Added at the owner's request, after the site read as correct but quiet for an
+artist this loud. The door is still the one authored scene. These are not
+scenes and none of them animates content in; each is the site answering the
+visitor, in her vocabulary (js/wow.js):
+
+- **Fireworks** — three shells as the door lands on Basel, and a burst from
+  wherever a song is started. Gold first, because it is her microphone.
+- **KOMME fills** — the outlined word goes solid, edge first, as the stage is
+  crossed.
+- **The club comes on** — while music plays: magenta from the left and cyan
+  from the right, switching in the tango count; the record in the bar turns.
+- **Latex** — on a fine pointer, light follows the cursor and gallery
+  photographs tilt under it with a moving gloss.
+
+Reduced motion removes the fireworks, the tilt and the switching, fills KOMME
+outright, and leaves the club light on steady.

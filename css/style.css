@@ -4179,3 +4179,272 @@ html.has-dock body { padding-bottom: 4.5rem; }
 
 /* The teaser shows one row once js/main.js has picked it. */
 [data-tour-teaser] .tour-row[hidden] { display: none; }
+
+/* ==========================================================================
+   MADE BY HAND — six devices, all taken from the pavilion
+   ==========================================================================
+   A tanssilava is a place where everything is done by hand: tickets torn at
+   the door, a stamp on the wrist, a programme with photographs pasted in,
+   signs lettered by a painter, a poster run off one colour at a time, a string
+   of bulbs along the eaves. Each device below is one of those, which is why
+   none of them is a "handmade" sticker laid over the site.
+
+   Refused on purpose: film grain (the craft floor bans it and it was removed
+   once already) and a handwriting typeface (a third family, and a new file). */
+
+/* ---- 1. Tickets. A date is a ticket: paper, a stub, a perforation. --------
+   The row is a paper island on the club ground, so it restates the colour
+   roles the way .pavilion does — otherwise the cyan label light lands on
+   cream at about 2:1. */
+.tour-list { border-top: 0; display: grid; gap: var(--s-3); }
+.tour-row {
+  --ticket: #fbf7ef;
+  --stub: 128px;
+  --cut: calc(var(--s-5) + var(--stub) + var(--s-5) / 2);
+  --gold: var(--magenta-dp);
+  --gold-bright: var(--magenta-dp);
+  --gray: var(--ink-soft);
+  background: var(--ticket);
+  color: var(--ink);
+  padding: var(--s-4) var(--s-5);
+  border-bottom: 0;
+  /* the two half-moons a ticket punch leaves at each end of the perforation */
+  -webkit-mask:
+    radial-gradient(circle 8px at var(--cut) 0, #0000 98%, #000) top / 100% 51% no-repeat,
+    radial-gradient(circle 8px at var(--cut) 100%, #0000 98%, #000) bottom / 100% 51% no-repeat;
+          mask:
+    radial-gradient(circle 8px at var(--cut) 0, #0000 98%, #000) top / 100% 51% no-repeat,
+    radial-gradient(circle 8px at var(--cut) 100%, #0000 98%, #000) bottom / 100% 51% no-repeat;
+  transition: rotate var(--d-base) var(--ease-out), translate var(--d-base) var(--ease-out);
+}
+/* laid down by hand, so no two sit quite square */
+.tour-list > .tour-row:nth-child(odd)  { rotate: -0.3deg; }
+.tour-list > .tour-row:nth-child(even) { rotate: 0.25deg; }
+@media (hover: hover) and (pointer: fine) {
+  .tour-row:hover { background: var(--ticket); rotate: 0deg; translate: 0 -2px; }
+}
+.tour-date { position: relative; }
+.tour-date::after {
+  content: '';
+  position: absolute;
+  top: calc(var(--s-4) * -1 + 8px);
+  bottom: calc(var(--s-4) * -1 + 8px);
+  right: calc(var(--s-5) / -2 - 1px);
+  border-right: 2px dashed rgba(63, 41, 22, 0.32);
+}
+.tour-row .tour-info h3,
+.tour-row .tour-info h4 { color: var(--pine-deep); }
+.tour-row .tour-status { border-color: rgba(168, 30, 102, 0.4); }
+.tour-row .tag-next { box-shadow: none; }
+.tour-row .btn-outline {
+  color: var(--pine-deep);
+  border-color: var(--pine-deep);
+  background: transparent;
+  box-shadow: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .tour-row .btn-outline:hover { background: var(--pine-deep); color: var(--paper); border-color: var(--pine-deep); box-shadow: none; }
+}
+.tour-row.is-past { --ticket: #ece3d2; }
+.pavilion .tour-row { filter: drop-shadow(0 1px 2px rgba(28, 21, 16, 0.28)); }
+@media (max-width: 700px) {
+  .tour-row { --stub: 88px; padding: var(--s-4); --cut: calc(var(--s-4) + var(--stub) + var(--s-5) / 2); }
+}
+
+/* ---- 2. Stamps. The wrist stamp at the door, and one seal. ----------------
+   "Played" stops being an outlined tag and becomes what it is on a used
+   ticket: a rubber stamp, slightly off square, in the one ink the door has. */
+.tag-past,
+.tour-info .tag-past {
+  font-family: var(--font-display);
+  font-variation-settings: 'wdth' 118, 'wght' 800;
+  letter-spacing: 0.14em;
+  color: var(--magenta-dp);
+  border: 2px solid currentColor;
+  outline: 1px solid currentColor;
+  outline-offset: 2px;
+  padding: 0.3em 0.7em;
+  rotate: -5deg;
+}
+/* The seal: the only gold object in the biography, on the only gold year. */
+.pg-seal {
+  position: absolute;
+  z-index: 2;
+  right: -1.4rem;
+  bottom: 2.2rem;
+  width: clamp(6.5rem, 12vw, 8.5rem);
+  height: auto;
+  rotate: 11deg;
+  pointer-events: none;
+}
+.pg-seal text {
+  font-family: var(--font-display);
+  font-variation-settings: 'wdth' 110, 'wght' 800;
+  font-size: 9.4px;
+  fill: var(--pine-deep);
+}
+@media (max-width: 900px) { .pg-seal { right: -0.4rem; } }
+
+/* ---- 3. Tape. Photographs pasted into the programme, not placed. ----------*/
+.pg-plate, .snap { position: relative; transition: rotate var(--d-base) var(--ease-out); }
+.pg-plate { rotate: -1deg; }
+.is-flip .pg-plate { rotate: 1.2deg; }
+.pg-finale .pg-plate { rotate: -0.7deg; }
+.snap { rotate: 2deg; }
+.pg-plate::before, .pg-plate::after, .snap::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  width: 5.2rem;
+  height: 1.45rem;
+  background: rgba(231, 217, 192, 0.8);
+  box-shadow: 0 1px 2px rgba(28, 21, 16, 0.22);
+  /* torn ends, the way tape comes off the roll */
+  clip-path: polygon(0 12%, 4% 0, 8% 14%, 12% 0, 100% 0, 96% 20%, 100% 38%, 96% 58%, 100% 78%, 97% 100%, 0 100%, 3% 78%, 0 56%, 3% 34%);
+}
+.pg-plate::before { top: -0.55rem; left: -0.9rem; rotate: -34deg; }
+.pg-plate::after  { top: -0.55rem; right: -0.9rem; rotate: 31deg; }
+.snap::before     { top: -0.7rem; left: calc(50% - 2.6rem); rotate: -4deg; }
+@media (hover: hover) and (pointer: fine) {
+  .pg-plate:hover, .snap:hover { rotate: 0deg; }
+}
+.snap { width: min(17rem, 78%); margin: 0 0 var(--s-6); }
+.snap img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border: 0.5rem solid #fbf7ef; }
+.snap figcaption {
+  margin-top: var(--s-2);
+  font-size: var(--t-2xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ---- 4. The brush. A sign-painter underlines the word that matters. -------
+   On paper the accent word used to carry a soft glow, which on cream reads as
+   a smudge. It carries one loaded stroke instead. */
+.pavilion .section-title em {
+  text-shadow: none;
+  padding-bottom: 0.12em;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 16' preserveAspectRatio='none'%3E%3Cpath d='M2 9 C 48 3 122 12 190 6 C 232 3 270 6 298 4 L 299 8 C 250 11 210 9 168 12 C 110 16 58 8 3 13 Z' fill='%238A5A2B'/%3E%3C/svg%3E") no-repeat left 100% / 100% 0.3em;
+  -webkit-box-decoration-break: clone;
+          box-decoration-break: clone;
+}
+
+/* ---- 5. Misregistration. A second plate, a hair off the first. ------------
+   Posters for a dance are run one colour at a time and the colours never
+   quite meet. Hard offset, no blur — it is ink, not light. */
+.page-header.pavilion .page-title,
+.pg-year {
+  text-shadow: 0.045em 0.04em 0 rgba(224, 51, 140, 0.28);
+}
+
+/* ---- 6. The eaves. A string of bulbs, and a colophon. ---------------------
+   Warm bulbs with one magenta and one cyan in every run: the pavilion, lit by
+   the club, which is the whole thesis in eight pixels. The two coloured bulbs
+   switch in the tango count — switch, not fade. */
+.site-footer { position: relative; padding-top: var(--s-10); }
+.site-footer::before, .site-footer::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 44px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 520 44'%3E%3Cpath d='M0 3 Q130 34 260 3 T520 3' fill='none' stroke='%231C1510' stroke-width='1.5'/%3E%3Cpath d='M45 12 v5' stroke='%231C1510' stroke-width='3'/%3E%3Ccircle cx='45' cy='22' r='5.5' fill='%23F6E3B0'/%3E%3Cpath d='M130 18 v5' stroke='%231C1510' stroke-width='3'/%3E%3Ccircle cx='130' cy='28' r='5.5' fill='%23FF5AA8'/%3E%3Cpath d='M215 12 v5' stroke='%231C1510' stroke-width='3'/%3E%3Ccircle cx='215' cy='22' r='5.5' fill='%23F6E3B0'/%3E%3Cpath d='M305 12 v5' stroke='%231C1510' stroke-width='3'/%3E%3Ccircle cx='305' cy='22' r='5.5' fill='%23F6E3B0'/%3E%3Cpath d='M390 18 v5' stroke='%231C1510' stroke-width='3'/%3E%3Ccircle cx='390' cy='28' r='5.5' fill='%235FD5DE'/%3E%3Cpath d='M475 12 v5' stroke='%231C1510' stroke-width='3'/%3E%3Ccircle cx='475' cy='22' r='5.5' fill='%23F6E3B0'/%3E%3C/svg%3E") repeat-x center top / 520px 44px;
+  pointer-events: none;
+}
+.site-footer::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 520 44'%3E%3Ccircle cx='130' cy='28' r='15' fill='%23FF5AA8' fill-opacity='.28'/%3E%3Ccircle cx='390' cy='28' r='15' fill='%235FD5DE' fill-opacity='.28'/%3E%3C/svg%3E");
+  animation: eaves 4.8s step-end infinite;
+}
+@keyframes eaves {
+  0%, 100% { opacity: 1; }
+  25% { opacity: 0.25; }
+  50% { opacity: 1; }
+  62% { opacity: 0.25; }
+  74% { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-footer::after { animation: none; }
+  .tour-row, .pg-plate, .snap { transition: none; }
+}
+.footer-bottom .colophon { flex-basis: 100%; }
+
+/* ==========================================================================
+   RESPONSES — see js/wow.js
+   ==========================================================================
+   Four ways the site answers the visitor, each in her own vocabulary:
+   fireworks on arrival and when a song starts, KOMME filling as the stage is
+   crossed, the club coming on while music plays, and latex catching the
+   pointer. None of them moves content in, and all of them stand down under
+   prefers-reduced-motion. */
+
+/* fireworks are drawn here; the canvas never takes a click */
+.wow-fire {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 250;
+  pointer-events: none;
+}
+
+/* KOMME: outline to solid. A hard edge travelling across the word, not a
+   blend — the letters are either lit or they are not. */
+.komme-stage .komme-type .fill {
+  background: linear-gradient(90deg, var(--magenta-lit) var(--k-fill, 0%), transparent var(--k-fill, 0%));
+  -webkit-background-clip: text;
+          background-clip: text;
+}
+
+/* The club comes on with the music: magenta from the left, cyan from the
+   right, which is exactly how DESIGN.md says the club is lit. It switches in
+   the tango count rather than pulsing, and stays under the dock and dialogs. */
+.club-light {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  pointer-events: none;
+  opacity: 0;
+  /* plain alpha, not screen: screen vanishes on the cream pavilion, and the
+     jukebox - where the music is actually started - is a paper panel */
+  background: linear-gradient(90deg, rgba(224, 51, 140, 0.34), rgba(224, 51, 140, 0) 15%, rgba(23, 182, 196, 0) 85%, rgba(23, 182, 196, 0.3));
+  transition: opacity var(--d-sheet) var(--ease-out);
+}
+html.is-playing .club-light { opacity: 1; animation: club 2.4s step-end infinite; }
+@keyframes club {
+  0%, 100% { opacity: 1; }
+  25% { opacity: 0.55; }
+  50% { opacity: 1; }
+  62% { opacity: 0.55; }
+  75% { opacity: 1; }
+}
+/* the record in the bar turns while something is on it */
+html.is-playing .disc-cta::after { animation: disc-spin 3.2s linear infinite; }
+html.is-playing .site-footer::after { animation-duration: 1.6s; }
+
+/* latex catches the light that follows the pointer */
+.latex-light {
+  position: fixed;
+  inset: 0;
+  z-index: 79;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(26rem circle at var(--lx, 50%) var(--ly, 30%), rgba(255, 90, 168, 0.13), transparent 62%);
+  mix-blend-mode: screen;
+  transition: opacity var(--d-sheet) var(--ease-out);
+}
+.latex-light.is-on { opacity: 1; }
+
+/* photographs tilt under the pointer and the gloss follows it */
+@media (hover: hover) and (pointer: fine) {
+  .gallery-item { transition: transform var(--d-base) var(--ease-out); will-change: auto; }
+  .gallery-item.is-tilting { transition-duration: 90ms; }
+  .gallery-item.is-tilting::before {
+    opacity: 1;
+    background: radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), rgba(255, 255, 255, 0.3), transparent 46%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.is-playing .club-light { animation: none; opacity: 0.7; }
+  html.is-playing .disc-cta::after { animation: none; }
+}

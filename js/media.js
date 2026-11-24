@@ -83,6 +83,12 @@
 
   audio.addEventListener('play', sync);
   audio.addEventListener('pause', sync);
+  /* the rest of the site listens for this: js/wow.js turns the club on */
+  audio.addEventListener('play', function () {
+    document.documentElement.classList.add('is-playing');
+    document.dispatchEvent(new CustomEvent('ev:play'));
+  });
+  audio.addEventListener('pause', function () { document.documentElement.classList.remove('is-playing'); });
   audio.addEventListener('timeupdate', progress);
   audio.addEventListener('ended', function () {
     var n = stepFrom(current, 1);
